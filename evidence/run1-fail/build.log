@@ -1,0 +1,334 @@
+build	Set up job	﻿2026-09-29T11:43:57.5008965Z Current runner version: '2.337.0'
+build	Set up job	2026-09-29T11:43:57.5036784Z ##[group]Runner Image Provisioner
+build	Set up job	2026-09-29T11:43:57.5037791Z Hosted Compute Agent
+build	Set up job	2026-09-29T11:43:57.5038430Z Version: 20260828.587
+build	Set up job	2026-09-29T11:43:57.5039254Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+build	Set up job	2026-09-29T11:43:57.5040046Z Build Date: 2026-08-28T16:44:25Z
+build	Set up job	2026-09-29T11:43:57.5040759Z Worker ID: {bce63449-0446-4069-8709-c207244db60e}
+build	Set up job	2026-09-29T11:43:57.5041568Z Azure Region: northcentralus
+build	Set up job	2026-09-29T11:43:57.5042222Z ##[endgroup]
+build	Set up job	2026-09-29T11:43:57.5043887Z ##[group]Operating System
+build	Set up job	2026-09-29T11:43:57.5044700Z Ubuntu
+build	Set up job	2026-09-29T11:43:57.5045435Z 24.04.5
+build	Set up job	2026-09-29T11:43:57.5046036Z LTS
+build	Set up job	2026-09-29T11:43:57.5046620Z ##[endgroup]
+build	Set up job	2026-09-29T11:43:57.5047269Z ##[group]Runner Image
+build	Set up job	2026-09-29T11:43:57.5047988Z Image: ubuntu-24.04
+build	Set up job	2026-09-29T11:43:57.5048605Z Version: 20260920.314.1
+build	Set up job	2026-09-29T11:43:57.5049755Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+build	Set up job	2026-09-29T11:43:57.5051608Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+build	Set up job	2026-09-29T11:43:57.5052697Z ##[endgroup]
+build	Set up job	2026-09-29T11:43:57.5053861Z ##[group]GITHUB_TOKEN Permissions
+build	Set up job	2026-09-29T11:43:57.5056885Z Contents: read
+build	Set up job	2026-09-29T11:43:57.5057580Z Metadata: read
+build	Set up job	2026-09-29T11:43:57.5058282Z ##[endgroup]
+build	Set up job	2026-09-29T11:43:57.5061029Z Secret source: Actions
+build	Set up job	2026-09-29T11:43:57.5062126Z Cache mode: write
+build	Set up job	2026-09-29T11:43:57.5063195Z Prepare workflow directory
+build	Set up job	2026-09-29T11:43:57.5570782Z Prepare all required actions
+build	Set up job	2026-09-29T11:43:57.5639229Z Getting action download info
+build	Set up job	2026-09-29T11:43:57.8056753Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+build	Set up job	2026-09-29T11:43:57.8899153Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+build	Set up job	2026-09-29T11:43:58.1013314Z Complete job name: build
+build	Run actions/checkout@v4	﻿2026-09-29T11:43:58.1766900Z ##[group]Run actions/checkout@v4
+build	Run actions/checkout@v4	2026-09-29T11:43:58.1767799Z with:
+build	Run actions/checkout@v4	2026-09-29T11:43:58.1768274Z   repository: venkatvellapalem/DevSecOps
+build	Run actions/checkout@v4	2026-09-29T11:43:58.1772134Z   token: ***
+build	Run actions/checkout@v4	2026-09-29T11:43:58.1772601Z   ssh-strict: true
+build	Run actions/checkout@v4	2026-09-29T11:43:58.1773055Z   ssh-user: git
+build	Run actions/checkout@v4	2026-09-29T11:43:58.1773516Z   persist-credentials: true
+build	Run actions/checkout@v4	2026-09-29T11:43:58.1774019Z   clean: true
+build	Run actions/checkout@v4	2026-09-29T11:43:58.1774472Z   sparse-checkout-cone-mode: true
+build	Run actions/checkout@v4	2026-09-29T11:43:58.1775165Z   fetch-depth: 1
+build	Run actions/checkout@v4	2026-09-29T11:43:58.1775605Z   fetch-tags: false
+build	Run actions/checkout@v4	2026-09-29T11:43:58.1776056Z   show-progress: true
+build	Run actions/checkout@v4	2026-09-29T11:43:58.1776509Z   lfs: false
+build	Run actions/checkout@v4	2026-09-29T11:43:58.1776925Z   submodules: false
+build	Run actions/checkout@v4	2026-09-29T11:43:58.1777379Z   set-safe-directory: true
+build	Run actions/checkout@v4	2026-09-29T11:43:58.1777923Z   allow-unsafe-pr-checkout: false
+build	Run actions/checkout@v4	2026-09-29T11:43:58.1778674Z env:
+build	Run actions/checkout@v4	2026-09-29T11:43:58.1779094Z   IMAGE_NAME: bcssl-demo-app
+build	Run actions/checkout@v4	2026-09-29T11:43:58.1779577Z ##[endgroup]
+build	Run actions/checkout@v4	2026-09-29T11:43:58.2811238Z Syncing repository: venkatvellapalem/DevSecOps
+build	Run actions/checkout@v4	2026-09-29T11:43:58.2814086Z ##[group]Getting Git version info
+build	Run actions/checkout@v4	2026-09-29T11:43:58.2815368Z Working directory is '/home/runner/work/DevSecOps/DevSecOps'
+build	Run actions/checkout@v4	2026-09-29T11:43:58.2817205Z [command]/usr/bin/git version
+build	Run actions/checkout@v4	2026-09-29T11:43:58.2920462Z git version 2.55.0
+build	Run actions/checkout@v4	2026-09-29T11:43:58.2946193Z ##[endgroup]
+build	Run actions/checkout@v4	2026-09-29T11:43:58.2963940Z Temporarily overriding HOME='/home/runner/work/_temp/52854b24-99a7-4ddc-86a5-7998cefef0a1' before making global git config changes
+build	Run actions/checkout@v4	2026-09-29T11:43:58.2966154Z Adding repository directory to the temporary git global config as a safe directory
+build	Run actions/checkout@v4	2026-09-29T11:43:58.2970970Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/DevSecOps/DevSecOps
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3029493Z Deleting the contents of '/home/runner/work/DevSecOps/DevSecOps'
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3033411Z ##[group]Initializing the repository
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3038957Z [command]/usr/bin/git init /home/runner/work/DevSecOps/DevSecOps
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3140138Z hint: Using 'master' as the name for the initial branch. This default branch name
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3141312Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3142532Z hint: to use in all of your new repositories, which will suppress this warning,
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3143272Z hint: call:
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3143680Z hint:
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3144215Z hint: 	git config --global init.defaultBranch <name>
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3145116Z hint:
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3146022Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3147455Z hint: 'development'. The just-created branch can be renamed via this command:
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3148608Z hint:
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3149311Z hint: 	git branch -m <name>
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3150086Z hint:
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3150722Z hint: Disable this message with "git config set advice.defaultBranchName false"
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3151758Z Initialized empty Git repository in /home/runner/work/DevSecOps/DevSecOps/.git/
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3170526Z [command]/usr/bin/git remote add origin https://github.com/venkatvellapalem/DevSecOps
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3216432Z ##[endgroup]
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3217472Z ##[group]Disabling automatic garbage collection
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3221058Z [command]/usr/bin/git config --local gc.auto 0
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3257326Z ##[endgroup]
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3258222Z ##[group]Setting up auth
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3265570Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3301155Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3688606Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3734144Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build	Run actions/checkout@v4	2026-09-29T11:43:58.3984178Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+build	Run actions/checkout@v4	2026-09-29T11:43:58.4025465Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+build	Run actions/checkout@v4	2026-09-29T11:43:58.4268067Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+build	Run actions/checkout@v4	2026-09-29T11:43:58.4312061Z ##[endgroup]
+build	Run actions/checkout@v4	2026-09-29T11:43:58.4312941Z ##[group]Fetching the repository
+build	Run actions/checkout@v4	2026-09-29T11:43:58.4321742Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +d3341a0455644e7f12ca0f93c5dacd58d56fd37c:refs/remotes/origin/main
+build	Run actions/checkout@v4	2026-09-29T11:43:58.7535072Z From https://github.com/venkatvellapalem/DevSecOps
+build	Run actions/checkout@v4	2026-09-29T11:43:58.7536787Z  * [new ref]         d3341a0455644e7f12ca0f93c5dacd58d56fd37c -> origin/main
+build	Run actions/checkout@v4	2026-09-29T11:43:58.7540507Z ##[endgroup]
+build	Run actions/checkout@v4	2026-09-29T11:43:58.7541881Z ##[group]Determining the checkout info
+build	Run actions/checkout@v4	2026-09-29T11:43:58.7544103Z ##[endgroup]
+build	Run actions/checkout@v4	2026-09-29T11:43:58.7551027Z [command]/usr/bin/git sparse-checkout disable
+build	Run actions/checkout@v4	2026-09-29T11:43:58.7606897Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+build	Run actions/checkout@v4	2026-09-29T11:43:58.7641819Z ##[group]Checking out the ref
+build	Run actions/checkout@v4	2026-09-29T11:43:58.7647454Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+build	Run actions/checkout@v4	2026-09-29T11:43:58.7711639Z Switched to a new branch 'main'
+build	Run actions/checkout@v4	2026-09-29T11:43:58.7716981Z branch 'main' set up to track 'origin/main'.
+build	Run actions/checkout@v4	2026-09-29T11:43:58.7722503Z ##[endgroup]
+build	Run actions/checkout@v4	2026-09-29T11:43:58.7769553Z [command]/usr/bin/git log -1 --format=%H
+build	Run actions/checkout@v4	2026-09-29T11:43:58.7799675Z d3341a0455644e7f12ca0f93c5dacd58d56fd37c
+build	Build image	﻿2026-09-29T11:43:58.8053321Z ##[group]Run docker build --tag "${IMAGE_NAME}:d3341a0455644e7f12ca0f93c5dacd58d56fd37c" ./app
+build	Build image	2026-09-29T11:43:58.8054734Z ^[[36;1mdocker build --tag "${IMAGE_NAME}:d3341a0455644e7f12ca0f93c5dacd58d56fd37c" ./app^[[0m
+build	Build image	2026-09-29T11:43:58.8312104Z shell: /usr/bin/bash -e {0}
+build	Build image	2026-09-29T11:43:58.8312779Z env:
+build	Build image	2026-09-29T11:43:58.8313529Z   IMAGE_NAME: bcssl-demo-app
+build	Build image	2026-09-29T11:43:58.8314091Z ##[endgroup]
+build	Build image	2026-09-29T11:43:59.2676408Z #0 building with "default" instance using docker driver
+build	Build image	2026-09-29T11:43:59.2677709Z 
+build	Build image	2026-09-29T11:43:59.2678413Z #1 [internal] load build definition from Dockerfile
+build	Build image	2026-09-29T11:43:59.2679989Z #1 transferring dockerfile: 1.60kB done
+build	Build image	2026-09-29T11:43:59.2681279Z #1 DONE 0.0s
+build	Build image	2026-09-29T11:43:59.2681863Z 
+build	Build image	2026-09-29T11:43:59.2682490Z #2 [auth] docker/dockerfile:pull token for registry-1.docker.io
+build	Build image	2026-09-29T11:43:59.4178691Z #2 DONE 0.0s
+build	Build image	2026-09-29T11:43:59.4179571Z 
+build	Build image	2026-09-29T11:43:59.4180383Z #3 resolve image config for docker-image://docker.io/docker/dockerfile:1
+build	Build image	2026-09-29T11:43:59.6544765Z #3 DONE 0.5s
+build	Build image	2026-09-29T11:43:59.7587191Z 
+build	Build image	2026-09-29T11:43:59.7590079Z #4 docker-image://docker.io/docker/dockerfile:1@sha256:ecfaec9ed6d810b56388c508f4121597bfbba70d41a6dfeee4d8cad5f295fc32
+build	Build image	2026-09-29T11:43:59.7594677Z #4 resolve docker.io/docker/dockerfile:1@sha256:ecfaec9ed6d810b56388c508f4121597bfbba70d41a6dfeee4d8cad5f295fc32 done
+build	Build image	2026-09-29T11:43:59.7599364Z #4 extracting sha256:9f624ef51ad55db0ea52d755cc777566386156106fbb4f465eecb22c67ac55ed
+build	Build image	2026-09-29T11:43:59.7603100Z #4 sha256:34b128e419449565adc5ed7f487a6f503a73f1077012cfed86354c731338c44f 1.13kB / 1.13kB done
+build	Build image	2026-09-29T11:43:59.7607298Z #4 sha256:c844dc65644b70ea8b391444db20ff38537384d800ea9896d46ab8f3ce897f51 1.33kB / 1.33kB done
+build	Build image	2026-09-29T11:43:59.7611456Z #4 sha256:9f624ef51ad55db0ea52d755cc777566386156106fbb4f465eecb22c67ac55ed 14.14MB / 14.14MB 0.1s done
+build	Build image	2026-09-29T11:43:59.7615909Z #4 sha256:ecfaec9ed6d810b56388c508f4121597bfbba70d41a6dfeee4d8cad5f295fc32 9.08kB / 9.08kB done
+build	Build image	2026-09-29T11:43:59.8689299Z #4 extracting sha256:9f624ef51ad55db0ea52d755cc777566386156106fbb4f465eecb22c67ac55ed 0.1s done
+build	Build image	2026-09-29T11:44:00.0064758Z #4 DONE 0.2s
+build	Build image	2026-09-29T11:44:00.0065815Z 
+build	Build image	2026-09-29T11:44:00.0066641Z #5 [auth] library/python:pull token for registry-1.docker.io
+build	Build image	2026-09-29T11:44:00.1565809Z #5 DONE 0.0s
+build	Build image	2026-09-29T11:44:00.1566323Z 
+build	Build image	2026-09-29T11:44:00.1566874Z #6 [internal] load metadata for docker.io/library/python:3.11-slim
+build	Build image	2026-09-29T11:44:00.3434525Z #6 DONE 0.4s
+build	Build image	2026-09-29T11:44:00.5006271Z 
+build	Build image	2026-09-29T11:44:00.5006858Z #7 [internal] load .dockerignore
+build	Build image	2026-09-29T11:44:00.5007252Z #7 transferring context: 2B done
+build	Build image	2026-09-29T11:44:00.5007532Z #7 DONE 0.0s
+build	Build image	2026-09-29T11:44:02.6608083Z 
+build	Build image	2026-09-29T11:44:02.6609172Z #8 [internal] load build context
+build	Build image	2026-09-29T11:44:02.6626016Z #8 transferring context: 2.51kB done
+build	Build image	2026-09-29T11:44:02.6626559Z #8 DONE 0.0s
+build	Build image	2026-09-29T11:44:02.6626769Z 
+build	Build image	2026-09-29T11:44:02.6627435Z #9 [build 1/4] FROM docker.io/library/python:3.11-slim@sha256:e41613d42d4891e4930f79523f93f81bbc7632584ec65e36ab055f41a800b41e
+build	Build image	2026-09-29T11:44:02.6628954Z #9 resolve docker.io/library/python:3.11-slim@sha256:e41613d42d4891e4930f79523f93f81bbc7632584ec65e36ab055f41a800b41e done
+build	Build image	2026-09-29T11:44:02.6630192Z #9 sha256:6b37362b3da78869050b894b799ad4df04f1f3b52774087db0d81151570244c8 26.21MB / 29.83MB 0.1s
+build	Build image	2026-09-29T11:44:02.6631328Z #9 sha256:41e7217c2e506d048f89ca0c5cfef848c05ef990900627c19f99938c4aae57f8 0B / 1.29MB 0.1s
+build	Build image	2026-09-29T11:44:02.6632419Z #9 sha256:58abdd9670ca8c69d03432ce188995dee67f0979357caf83866fe1ef2ec37138 0B / 14.45MB 0.1s
+build	Build image	2026-09-29T11:44:02.6633930Z #9 sha256:e41613d42d4891e4930f79523f93f81bbc7632584ec65e36ab055f41a800b41e 10.37kB / 10.37kB done
+build	Build image	2026-09-29T11:44:02.6635600Z #9 sha256:174bec68e0451bffabbb08c7d5d21c6b253f772d81d52b9558af97bb3159b761 1.75kB / 1.75kB done
+build	Build image	2026-09-29T11:44:02.6637125Z #9 sha256:274d131132dbdc6058ed77088525d77adaf0749a6d99f2cf7d42feb9a10737c8 5.49kB / 5.49kB done
+build	Build image	2026-09-29T11:44:02.8157372Z #9 sha256:6b37362b3da78869050b894b799ad4df04f1f3b52774087db0d81151570244c8 29.83MB / 29.83MB 0.1s done
+build	Build image	2026-09-29T11:44:02.8159347Z #9 sha256:41e7217c2e506d048f89ca0c5cfef848c05ef990900627c19f99938c4aae57f8 1.29MB / 1.29MB 0.1s done
+build	Build image	2026-09-29T11:44:02.8165053Z #9 sha256:58abdd9670ca8c69d03432ce188995dee67f0979357caf83866fe1ef2ec37138 14.45MB / 14.45MB 0.2s done
+build	Build image	2026-09-29T11:44:02.8166266Z #9 extracting sha256:6b37362b3da78869050b894b799ad4df04f1f3b52774087db0d81151570244c8 0.1s
+build	Build image	2026-09-29T11:44:02.8167750Z #9 sha256:0526d5e29bf341cb1941d46a6d4ab64fcde4fca3dc3adccfb4dbf5728b88b61e 249B / 249B 0.1s done
+build	Build image	2026-09-29T11:44:03.6172014Z #9 extracting sha256:6b37362b3da78869050b894b799ad4df04f1f3b52774087db0d81151570244c8 0.9s done
+build	Build image	2026-09-29T11:44:03.6173914Z #9 extracting sha256:41e7217c2e506d048f89ca0c5cfef848c05ef990900627c19f99938c4aae57f8
+build	Build image	2026-09-29T11:44:03.7176509Z #9 extracting sha256:41e7217c2e506d048f89ca0c5cfef848c05ef990900627c19f99938c4aae57f8 0.1s done
+build	Build image	2026-09-29T11:44:03.8953954Z #9 extracting sha256:58abdd9670ca8c69d03432ce188995dee67f0979357caf83866fe1ef2ec37138 0.1s
+build	Build image	2026-09-29T11:44:04.5580644Z #9 extracting sha256:58abdd9670ca8c69d03432ce188995dee67f0979357caf83866fe1ef2ec37138 0.7s done
+build	Build image	2026-09-29T11:44:04.5581764Z #9 extracting sha256:0526d5e29bf341cb1941d46a6d4ab64fcde4fca3dc3adccfb4dbf5728b88b61e done
+build	Build image	2026-09-29T11:44:04.5582486Z #9 DONE 2.0s
+build	Build image	2026-09-29T11:44:04.7249121Z 
+build	Build image	2026-09-29T11:44:04.7249717Z #10 [runtime 2/7] WORKDIR /app
+build	Build image	2026-09-29T11:44:04.7250257Z #10 DONE 0.0s
+build	Build image	2026-09-29T11:44:04.7250438Z 
+build	Build image	2026-09-29T11:44:04.7250577Z #11 [build 2/4] WORKDIR /build
+build	Build image	2026-09-29T11:44:04.7250944Z #11 DONE 0.0s
+build	Build image	2026-09-29T11:44:04.7251124Z 
+build	Build image	2026-09-29T11:44:04.7251297Z #12 [build 3/4] COPY requirements.txt .
+build	Build image	2026-09-29T11:44:04.7251709Z #12 DONE 0.0s
+build	Build image	2026-09-29T11:44:04.7251874Z 
+build	Build image	2026-09-29T11:44:04.7252269Z #13 [build 4/4] RUN pip wheel --no-cache-dir --wheel-dir /wheels -r requirements.txt
+build	Build image	2026-09-29T11:44:06.0836313Z #13 1.509 Collecting flask==2.0.1 (from -r requirements.txt (line 10))
+build	Build image	2026-09-29T11:44:06.1929844Z #13 1.528   Downloading Flask-2.0.1-py3-none-any.whl.metadata (3.8 kB)
+build	Build image	2026-09-29T11:44:06.1930824Z #13 1.557 Collecting Werkzeug==2.0.3 (from -r requirements.txt (line 11))
+build	Build image	2026-09-29T11:44:06.1931673Z #13 1.561   Downloading Werkzeug-2.0.3-py3-none-any.whl.metadata (4.5 kB)
+build	Build image	2026-09-29T11:44:06.1932471Z #13 1.579 Collecting Jinja2==3.0.3 (from -r requirements.txt (line 12))
+build	Build image	2026-09-29T11:44:06.1933252Z #13 1.582   Downloading Jinja2-3.0.3-py3-none-any.whl.metadata (3.5 kB)
+build	Build image	2026-09-29T11:44:06.1934072Z #13 1.595 Collecting itsdangerous==2.0.1 (from -r requirements.txt (line 13))
+build	Build image	2026-09-29T11:44:06.1935181Z #13 1.599   Downloading itsdangerous-2.0.1-py3-none-any.whl.metadata (2.9 kB)
+build	Build image	2026-09-29T11:44:06.1935962Z #13 1.619 Collecting click==8.0.4 (from -r requirements.txt (line 14))
+build	Build image	2026-09-29T11:44:06.4087857Z #13 1.622   Downloading click-8.0.4-py3-none-any.whl.metadata (3.2 kB)
+build	Build image	2026-09-29T11:44:06.4088467Z #13 1.672 Collecting MarkupSafe==2.0.1 (from -r requirements.txt (line 15))
+build	Build image	2026-09-29T11:44:06.4088905Z #13 1.676   Downloading MarkupSafe-2.0.1.tar.gz (18 kB)
+build	Build image	2026-09-29T11:44:06.4089315Z #13 1.684   Preparing metadata (setup.py): started
+build	Build image	2026-09-29T11:44:06.5847742Z #13 2.011   Preparing metadata (setup.py): finished with status 'done'
+build	Build image	2026-09-29T11:44:06.7084373Z #13 2.041 Collecting requests==2.19.1 (from -r requirements.txt (line 20))
+build	Build image	2026-09-29T11:44:06.7085534Z #13 2.053   Downloading requests-2.19.1-py2.py3-none-any.whl.metadata (52 kB)
+build	Build image	2026-09-29T11:44:06.7086575Z #13 2.055      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 52.0/52.0 kB 146.4 MB/s eta 0:00:00
+build	Build image	2026-09-29T11:44:06.7087110Z #13 2.093 Collecting urllib3==1.23 (from -r requirements.txt (line 21))
+build	Build image	2026-09-29T11:44:06.7087628Z #13 2.096   Downloading urllib3-1.23-py2.py3-none-any.whl.metadata (34 kB)
+build	Build image	2026-09-29T11:44:06.7088126Z #13 2.134 Collecting chardet==3.0.4 (from -r requirements.txt (line 22))
+build	Build image	2026-09-29T11:44:06.8186964Z #13 2.138   Downloading chardet-3.0.4-py2.py3-none-any.whl.metadata (3.2 kB)
+build	Build image	2026-09-29T11:44:06.8187849Z #13 2.154 Collecting idna==2.6 (from -r requirements.txt (line 23))
+build	Build image	2026-09-29T11:44:06.8188993Z #13 2.158   Downloading idna-2.6-py2.py3-none-any.whl.metadata (8.9 kB)
+build	Build image	2026-09-29T11:44:06.8195916Z #13 2.180 Collecting certifi==2018.4.16 (from -r requirements.txt (line 24))
+build	Build image	2026-09-29T11:44:06.8196525Z #13 2.183   Downloading certifi-2018.4.16-py2.py3-none-any.whl.metadata (2.6 kB)
+build	Build image	2026-09-29T11:44:06.8197283Z #13 2.245 Downloading Flask-2.0.1-py3-none-any.whl (94 kB)
+build	Build image	2026-09-29T11:44:06.9215621Z #13 2.248    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 94.8/94.8 kB 167.8 MB/s eta 0:00:00
+build	Build image	2026-09-29T11:44:06.9216440Z #13 2.253 Downloading Werkzeug-2.0.3-py3-none-any.whl (289 kB)
+build	Build image	2026-09-29T11:44:06.9217340Z #13 2.258    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 289.2/289.2 kB 100.4 MB/s eta 0:00:00
+build	Build image	2026-09-29T11:44:06.9218007Z #13 2.261 Downloading Jinja2-3.0.3-py3-none-any.whl (133 kB)
+build	Build image	2026-09-29T11:44:06.9218777Z #13 2.263    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 133.6/133.6 kB 358.2 MB/s eta 0:00:00
+build	Build image	2026-09-29T11:44:06.9219430Z #13 2.266 Downloading itsdangerous-2.0.1-py3-none-any.whl (18 kB)
+build	Build image	2026-09-29T11:44:06.9220109Z #13 2.269 Downloading click-8.0.4-py3-none-any.whl (97 kB)
+build	Build image	2026-09-29T11:44:06.9220865Z #13 2.270    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 97.5/97.5 kB 333.0 MB/s eta 0:00:00
+build	Build image	2026-09-29T11:44:06.9221447Z #13 2.274 Downloading requests-2.19.1-py2.py3-none-any.whl (91 kB)
+build	Build image	2026-09-29T11:44:06.9222145Z #13 2.276    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 92.0/92.0 kB 346.8 MB/s eta 0:00:00
+build	Build image	2026-09-29T11:44:06.9222638Z #13 2.281 Downloading urllib3-1.23-py2.py3-none-any.whl (133 kB)
+build	Build image	2026-09-29T11:44:06.9223464Z #13 2.283    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 133.3/133.3 kB 345.0 MB/s eta 0:00:00
+build	Build image	2026-09-29T11:44:06.9224031Z #13 2.286 Downloading chardet-3.0.4-py2.py3-none-any.whl (133 kB)
+build	Build image	2026-09-29T11:44:06.9224643Z #13 2.288    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 133.4/133.4 kB 280.4 MB/s eta 0:00:00
+build	Build image	2026-09-29T11:44:06.9225336Z #13 2.293 Downloading idna-2.6-py2.py3-none-any.whl (56 kB)
+build	Build image	2026-09-29T11:44:06.9226100Z #13 2.295    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 56.5/56.5 kB 314.7 MB/s eta 0:00:00
+build	Build image	2026-09-29T11:44:06.9226765Z #13 2.299 Downloading certifi-2018.4.16-py2.py3-none-any.whl (150 kB)
+build	Build image	2026-09-29T11:44:06.9227440Z #13 2.301    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 150.4/150.4 kB 376.5 MB/s eta 0:00:00
+build	Build image	2026-09-29T11:44:06.9227923Z #13 2.311 Saved /wheels/Flask-2.0.1-py3-none-any.whl
+build	Build image	2026-09-29T11:44:06.9228378Z #13 2.312 Saved /wheels/Werkzeug-2.0.3-py3-none-any.whl
+build	Build image	2026-09-29T11:44:06.9228915Z #13 2.312 Saved /wheels/Jinja2-3.0.3-py3-none-any.whl
+build	Build image	2026-09-29T11:44:06.9229495Z #13 2.313 Saved /wheels/itsdangerous-2.0.1-py3-none-any.whl
+build	Build image	2026-09-29T11:44:06.9230070Z #13 2.313 Saved /wheels/click-8.0.4-py3-none-any.whl
+build	Build image	2026-09-29T11:44:06.9230655Z #13 2.314 Saved /wheels/requests-2.19.1-py2.py3-none-any.whl
+build	Build image	2026-09-29T11:44:06.9231248Z #13 2.314 Saved /wheels/urllib3-1.23-py2.py3-none-any.whl
+build	Build image	2026-09-29T11:44:06.9231707Z #13 2.315 Saved /wheels/chardet-3.0.4-py2.py3-none-any.whl
+build	Build image	2026-09-29T11:44:06.9311625Z #13 2.315 Saved /wheels/idna-2.6-py2.py3-none-any.whl
+build	Build image	2026-09-29T11:44:06.9312264Z #13 2.315 Saved /wheels/certifi-2018.4.16-py2.py3-none-any.whl
+build	Build image	2026-09-29T11:44:06.9312972Z #13 2.347 Building wheels for collected packages: MarkupSafe
+build	Build image	2026-09-29T11:44:07.0731722Z #13 2.349   Building wheel for MarkupSafe (setup.py): started
+build	Build image	2026-09-29T11:44:07.1466207Z #13 2.572   Building wheel for MarkupSafe (setup.py): finished with status 'done'
+build	Build image	2026-09-29T11:44:07.3382905Z #13 2.573   Created wheel for MarkupSafe: filename=markupsafe-2.0.1-py3-none-any.whl size=9774 sha256=3e79f936fd7af002d6b2bc50c2bbcd7a45c544a893a68c04949034ca9fed165a
+build	Build image	2026-09-29T11:44:07.3406466Z #13 2.573   Stored in directory: /tmp/pip-ephem-wheel-cache-l5hzxclf/wheels/ea/18/79/6266ea508b8164a77b95aa19534c77eb805f2878612c37efca
+build	Build image	2026-09-29T11:44:07.3407932Z #13 2.575 Successfully built MarkupSafe
+build	Build image	2026-09-29T11:44:07.3408641Z #13 2.639 
+build	Build image	2026-09-29T11:44:07.3409389Z #13 2.639 [notice] A new release of pip is available: 24.0 -> 26.2.1
+build	Build image	2026-09-29T11:44:07.3410346Z #13 2.639 [notice] To update, run: pip install --upgrade pip
+build	Build image	2026-09-29T11:44:07.3411196Z #13 DONE 2.8s
+build	Build image	2026-09-29T11:44:07.4783154Z 
+build	Build image	2026-09-29T11:44:07.4783906Z #14 [runtime 3/7] COPY --from=build /wheels /wheels
+build	Build image	2026-09-29T11:44:07.6538446Z #14 DONE 0.0s
+build	Build image	2026-09-29T11:44:07.6538734Z 
+build	Build image	2026-09-29T11:44:07.6538894Z #15 [runtime 4/7] COPY requirements.txt .
+build	Build image	2026-09-29T11:44:07.6539797Z #15 DONE 0.0s
+build	Build image	2026-09-29T11:44:07.6539969Z 
+build	Build image	2026-09-29T11:44:07.6540423Z #16 [runtime 5/7] RUN pip install --no-index --find-links=/wheels -r requirements.txt     && rm -rf /wheels
+build	Build image	2026-09-29T11:44:08.8205838Z #16 1.317 Looking in links: /wheels
+build	Build image	2026-09-29T11:44:08.9898966Z #16 1.330 Processing /wheels/Flask-2.0.1-py3-none-any.whl (from -r requirements.txt (line 10))
+build	Build image	2026-09-29T11:44:08.9900111Z #16 1.339 Processing /wheels/Werkzeug-2.0.3-py3-none-any.whl (from -r requirements.txt (line 11))
+build	Build image	2026-09-29T11:44:08.9901283Z #16 1.346 Processing /wheels/Jinja2-3.0.3-py3-none-any.whl (from -r requirements.txt (line 12))
+build	Build image	2026-09-29T11:44:08.9902374Z #16 1.352 Processing /wheels/itsdangerous-2.0.1-py3-none-any.whl (from -r requirements.txt (line 13))
+build	Build image	2026-09-29T11:44:08.9903506Z #16 1.358 Processing /wheels/click-8.0.4-py3-none-any.whl (from -r requirements.txt (line 14))
+build	Build image	2026-09-29T11:44:08.9904573Z #16 1.365 Processing /wheels/markupsafe-2.0.1-py3-none-any.whl (from -r requirements.txt (line 15))
+build	Build image	2026-09-29T11:44:08.9905934Z #16 1.371 Processing /wheels/requests-2.19.1-py2.py3-none-any.whl (from -r requirements.txt (line 20))
+build	Build image	2026-09-29T11:44:08.9906960Z #16 1.379 Processing /wheels/urllib3-1.23-py2.py3-none-any.whl (from -r requirements.txt (line 21))
+build	Build image	2026-09-29T11:44:08.9907893Z #16 1.386 Processing /wheels/chardet-3.0.4-py2.py3-none-any.whl (from -r requirements.txt (line 22))
+build	Build image	2026-09-29T11:44:08.9908708Z #16 1.392 Processing /wheels/idna-2.6-py2.py3-none-any.whl (from -r requirements.txt (line 23))
+build	Build image	2026-09-29T11:44:08.9909343Z #16 1.399 Processing /wheels/certifi-2018.4.16-py2.py3-none-any.whl (from -r requirements.txt (line 24))
+build	Build image	2026-09-29T11:44:09.5679933Z #16 1.486 Installing collected packages: idna, chardet, certifi, Werkzeug, urllib3, MarkupSafe, itsdangerous, click, requests, Jinja2, flask
+build	Build image	2026-09-29T11:44:09.5681132Z #16 2.064 Successfully installed Jinja2-3.0.3 MarkupSafe-2.0.1 Werkzeug-2.0.3 certifi-2018.4.16 chardet-3.0.4 click-8.0.4 flask-2.0.1 idna-2.6 itsdangerous-2.0.1 requests-2.19.1 urllib3-1.23
+build	Build image	2026-09-29T11:44:09.6720909Z #16 2.065 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+build	Build image	2026-09-29T11:44:09.6722602Z #16 DONE 2.2s
+build	Build image	2026-09-29T11:44:09.6722792Z 
+build	Build image	2026-09-29T11:44:09.6722948Z #17 [runtime 6/7] COPY app.py .
+build	Build image	2026-09-29T11:44:09.6723356Z #17 DONE 0.0s
+build	Build image	2026-09-29T11:44:09.8068385Z 
+build	Build image	2026-09-29T11:44:09.8069509Z #18 [runtime 7/7] RUN useradd --uid 10001 --create-home appuser
+build	Build image	2026-09-29T11:44:09.8070953Z #18 DONE 0.1s
+build	Build image	2026-09-29T11:44:09.9588090Z 
+build	Build image	2026-09-29T11:44:09.9588989Z #19 exporting to image
+build	Build image	2026-09-29T11:44:09.9589778Z #19 exporting layers
+build	Build image	2026-09-29T11:44:10.3879669Z #19 exporting layers 0.6s done
+build	Build image	2026-09-29T11:44:10.4014476Z #19 writing image sha256:307c1e3ec5509bb0cad3aae2b6a99b1c335180ebeb5ea4472f3fd006fb2d969b done
+build	Build image	2026-09-29T11:44:10.4015788Z #19 naming to docker.io/library/bcssl-demo-app:d3341a0455644e7f12ca0f93c5dacd58d56fd37c done
+build	Build image	2026-09-29T11:44:10.4016533Z #19 DONE 0.6s
+build	Save image	﻿2026-09-29T11:44:10.4111164Z ##[group]Run docker save "${IMAGE_NAME}:d3341a0455644e7f12ca0f93c5dacd58d56fd37c" | gzip > /tmp/image.tgz
+build	Save image	2026-09-29T11:44:10.4111923Z ^[[36;1mdocker save "${IMAGE_NAME}:d3341a0455644e7f12ca0f93c5dacd58d56fd37c" | gzip > /tmp/image.tgz^[[0m
+build	Save image	2026-09-29T11:44:10.4184491Z shell: /usr/bin/bash -e {0}
+build	Save image	2026-09-29T11:44:10.4184774Z env:
+build	Save image	2026-09-29T11:44:10.4185256Z   IMAGE_NAME: bcssl-demo-app
+build	Save image	2026-09-29T11:44:10.4185519Z ##[endgroup]
+build	Upload image artifact	﻿2026-09-29T11:44:17.5729349Z ##[group]Run actions/upload-artifact@v4
+build	Upload image artifact	2026-09-29T11:44:17.5729662Z with:
+build	Upload image artifact	2026-09-29T11:44:17.5729865Z   name: image
+build	Upload image artifact	2026-09-29T11:44:17.5730079Z   path: /tmp/image.tgz
+build	Upload image artifact	2026-09-29T11:44:17.5730315Z   retention-days: 1
+build	Upload image artifact	2026-09-29T11:44:17.5730543Z   if-no-files-found: warn
+build	Upload image artifact	2026-09-29T11:44:17.5730783Z   compression-level: 6
+build	Upload image artifact	2026-09-29T11:44:17.5731014Z   overwrite: false
+build	Upload image artifact	2026-09-29T11:44:17.5731250Z   include-hidden-files: false
+build	Upload image artifact	2026-09-29T11:44:17.5731697Z env:
+build	Upload image artifact	2026-09-29T11:44:17.5731915Z   IMAGE_NAME: bcssl-demo-app
+build	Upload image artifact	2026-09-29T11:44:17.5732156Z ##[endgroup]
+build	Upload image artifact	2026-09-29T11:44:17.7409691Z (node:2577) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+build	Upload image artifact	2026-09-29T11:44:17.7410626Z (Use `node --trace-deprecation ...` to show where the warning was created)
+build	Upload image artifact	2026-09-29T11:44:17.7478351Z With the provided path, there will be 1 file uploaded
+build	Upload image artifact	2026-09-29T11:44:17.7487826Z Artifact name is valid!
+build	Upload image artifact	2026-09-29T11:44:17.7488584Z Root directory input is valid!
+build	Upload image artifact	2026-09-29T11:44:17.9854646Z Beginning upload of artifact content to blob storage
+build	Upload image artifact	2026-09-29T11:44:18.2716068Z (node:2577) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+build	Upload image artifact	2026-09-29T11:44:18.6083219Z Uploaded bytes 8388608
+build	Upload image artifact	2026-09-29T11:44:18.9034692Z Uploaded bytes 16777216
+build	Upload image artifact	2026-09-29T11:44:19.0135698Z Uploaded bytes 25165824
+build	Upload image artifact	2026-09-29T11:44:19.3455740Z Uploaded bytes 33554432
+build	Upload image artifact	2026-09-29T11:44:19.5502308Z Uploaded bytes 41943040
+build	Upload image artifact	2026-09-29T11:44:19.7668420Z Uploaded bytes 49035197
+build	Upload image artifact	2026-09-29T11:44:19.8001341Z Finished uploading artifact content to blob storage!
+build	Upload image artifact	2026-09-29T11:44:19.8004159Z SHA256 digest of uploaded artifact zip is cf4c2b60547858f4158c6f7f605fdb65d3aa8116714612f3a30a35170b573ab7
+build	Upload image artifact	2026-09-29T11:44:19.8006860Z Finalizing artifact upload
+build	Upload image artifact	2026-09-29T11:44:20.0103026Z Artifact image.zip successfully finalized. Artifact ID 11030259942
+build	Upload image artifact	2026-09-29T11:44:20.0104009Z Artifact image has been successfully uploaded! Final size is 49035197 bytes. Artifact ID is 11030259942
+build	Upload image artifact	2026-09-29T11:44:20.0114630Z Artifact download URL: https://github.com/venkatvellapalem/DevSecOps/actions/runs/36563555891/artifacts/11030259942
+build	Post Run actions/checkout@v4	﻿2026-09-29T11:44:20.0361269Z Post job cleanup.
+build	Post Run actions/checkout@v4	2026-09-29T11:44:20.1230869Z [command]/usr/bin/git version
+build	Post Run actions/checkout@v4	2026-09-29T11:44:20.1275562Z git version 2.55.0
+build	Post Run actions/checkout@v4	2026-09-29T11:44:20.1312376Z Temporarily overriding HOME='/home/runner/work/_temp/d9839096-a5cd-4527-91fc-8cb4eaa1f337' before making global git config changes
+build	Post Run actions/checkout@v4	2026-09-29T11:44:20.1313742Z Adding repository directory to the temporary git global config as a safe directory
+build	Post Run actions/checkout@v4	2026-09-29T11:44:20.1317658Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/DevSecOps/DevSecOps
+build	Post Run actions/checkout@v4	2026-09-29T11:44:20.1361212Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build	Post Run actions/checkout@v4	2026-09-29T11:44:20.1400240Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build	Post Run actions/checkout@v4	2026-09-29T11:44:20.1685056Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build	Post Run actions/checkout@v4	2026-09-29T11:44:20.1716499Z http.https://github.com/.extraheader
+build	Post Run actions/checkout@v4	2026-09-29T11:44:20.1727733Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+build	Post Run actions/checkout@v4	2026-09-29T11:44:20.1765101Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build	Post Run actions/checkout@v4	2026-09-29T11:44:20.2045527Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+build	Post Run actions/checkout@v4	2026-09-29T11:44:20.2077716Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+build	Complete job	﻿2026-09-29T11:44:20.2495959Z Cleaning up orphan processes
+build	Complete job	2026-09-29T11:44:20.2821570Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
