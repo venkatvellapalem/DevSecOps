@@ -1,0 +1,52 @@
+notify	Set up job	﻿2026-09-29T13:38:53.5848514Z Current runner version: '2.337.0'
+notify	Set up job	2026-09-29T13:38:53.5885845Z ##[group]Runner Image Provisioner
+notify	Set up job	2026-09-29T13:38:53.5887102Z Hosted Compute Agent
+notify	Set up job	2026-09-29T13:38:53.5888579Z Version: 20260828.587
+notify	Set up job	2026-09-29T13:38:53.5889693Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+notify	Set up job	2026-09-29T13:38:53.5891060Z Build Date: 2026-08-28T16:44:25Z
+notify	Set up job	2026-09-29T13:38:53.5892222Z Worker ID: {84221863-597a-4d97-911e-f3e8d4602fba}
+notify	Set up job	2026-09-29T13:38:53.5893425Z Azure Region: eastus2
+notify	Set up job	2026-09-29T13:38:53.5894414Z ##[endgroup]
+notify	Set up job	2026-09-29T13:38:53.5896742Z ##[group]Operating System
+notify	Set up job	2026-09-29T13:38:53.5898098Z Ubuntu
+notify	Set up job	2026-09-29T13:38:53.5899016Z 24.04.5
+notify	Set up job	2026-09-29T13:38:53.5899880Z LTS
+notify	Set up job	2026-09-29T13:38:53.5900798Z ##[endgroup]
+notify	Set up job	2026-09-29T13:38:53.5901657Z ##[group]Runner Image
+notify	Set up job	2026-09-29T13:38:53.5902821Z Image: ubuntu-24.04
+notify	Set up job	2026-09-29T13:38:53.5903795Z Version: 20260920.314.1
+notify	Set up job	2026-09-29T13:38:53.5905628Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+notify	Set up job	2026-09-29T13:38:53.5908956Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+notify	Set up job	2026-09-29T13:38:53.5910819Z ##[endgroup]
+notify	Set up job	2026-09-29T13:38:53.5912588Z ##[group]GITHUB_TOKEN Permissions
+notify	Set up job	2026-09-29T13:38:53.5915257Z Contents: read
+notify	Set up job	2026-09-29T13:38:53.5916262Z Metadata: read
+notify	Set up job	2026-09-29T13:38:53.5917138Z ##[endgroup]
+notify	Set up job	2026-09-29T13:38:53.5920483Z Secret source: Actions
+notify	Set up job	2026-09-29T13:38:53.5922040Z Cache mode: write
+notify	Set up job	2026-09-29T13:38:53.5923192Z Prepare workflow directory
+notify	Set up job	2026-09-29T13:38:53.6664566Z Prepare all required actions
+notify	Set up job	2026-09-29T13:38:53.6760968Z Complete job name: notify
+notify	Explain what was blocked	﻿2026-09-29T13:38:53.7750958Z ##[group]Run {
+notify	Explain what was blocked	2026-09-29T13:38:53.7829180Z ^[[36;1m{^[[0m
+notify	Explain what was blocked	2026-09-29T13:38:53.7830065Z ^[[36;1m  echo "## Deployment blocked"^[[0m
+notify	Explain what was blocked	2026-09-29T13:38:53.7831024Z ^[[36;1m  echo ""^[[0m
+notify	Explain what was blocked	2026-09-29T13:38:53.7831968Z ^[[36;1m  echo "| gate | result |"^[[0m
+notify	Explain what was blocked	2026-09-29T13:38:53.7832953Z ^[[36;1m  echo "|---|---|"^[[0m
+notify	Explain what was blocked	2026-09-29T13:38:53.7833852Z ^[[36;1m  echo "| build | success |"^[[0m
+notify	Explain what was blocked	2026-09-29T13:38:53.7834859Z ^[[36;1m  echo "| hadolint | success |"^[[0m
+notify	Explain what was blocked	2026-09-29T13:38:53.7835827Z ^[[36;1m  echo "| sast | success |"^[[0m
+notify	Explain what was blocked	2026-09-29T13:38:53.7836807Z ^[[36;1m  echo "| sca | success |"^[[0m
+notify	Explain what was blocked	2026-09-29T13:38:53.7838017Z ^[[36;1m  echo "| gitleaks | failure |"^[[0m
+notify	Explain what was blocked	2026-09-29T13:38:53.7839059Z ^[[36;1m  echo "| image-scan | success |"^[[0m
+notify	Explain what was blocked	2026-09-29T13:38:53.7840047Z ^[[36;1m  echo ""^[[0m
+notify	Explain what was blocked	2026-09-29T13:38:53.7841003Z ^[[36;1m  echo "The image was **not** published to GHCR."^[[0m
+notify	Explain what was blocked	2026-09-29T13:38:53.7842077Z ^[[36;1m  echo ""^[[0m
+notify	Explain what was blocked	2026-09-29T13:38:53.7843335Z ^[[36;1m  echo "Run: https://github.com/venkatvellapalem/DevSecOps/actions/runs/36576497068"^[[0m
+notify	Explain what was blocked	2026-09-29T13:38:53.7844924Z ^[[36;1m} >> "$GITHUB_STEP_SUMMARY"^[[0m
+notify	Explain what was blocked	2026-09-29T13:38:53.8645982Z shell: /usr/bin/bash -e {0}
+notify	Explain what was blocked	2026-09-29T13:38:53.8646947Z env:
+notify	Explain what was blocked	2026-09-29T13:38:53.8647772Z   IMAGE_NAME: bcssl-demo-app
+notify	Explain what was blocked	2026-09-29T13:38:53.8648377Z   SLACK_WEBHOOK_URL: 
+notify	Explain what was blocked	2026-09-29T13:38:53.8648908Z ##[endgroup]
+notify	Complete job	﻿2026-09-29T13:38:53.9062883Z Cleaning up orphan processes

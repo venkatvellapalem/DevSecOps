@@ -1,0 +1,196 @@
+gitleaks	Set up job	﻿2026-09-29T13:37:49.5969232Z Current runner version: '2.337.0'
+gitleaks	Set up job	2026-09-29T13:37:49.5991169Z ##[group]Runner Image Provisioner
+gitleaks	Set up job	2026-09-29T13:37:49.5991877Z Hosted Compute Agent
+gitleaks	Set up job	2026-09-29T13:37:49.5992381Z Version: 20260828.587
+gitleaks	Set up job	2026-09-29T13:37:49.5993009Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+gitleaks	Set up job	2026-09-29T13:37:49.5993607Z Build Date: 2026-08-28T16:44:25Z
+gitleaks	Set up job	2026-09-29T13:37:49.5994366Z Worker ID: {0d563b2a-62a3-40d8-8d23-109740431230}
+gitleaks	Set up job	2026-09-29T13:37:49.5995002Z Azure Region: mexicocentral
+gitleaks	Set up job	2026-09-29T13:37:49.5995483Z ##[endgroup]
+gitleaks	Set up job	2026-09-29T13:37:49.5996595Z ##[group]Operating System
+gitleaks	Set up job	2026-09-29T13:37:49.5997106Z Ubuntu
+gitleaks	Set up job	2026-09-29T13:37:49.5997608Z 24.04.5
+gitleaks	Set up job	2026-09-29T13:37:49.5998042Z LTS
+gitleaks	Set up job	2026-09-29T13:37:49.5998462Z ##[endgroup]
+gitleaks	Set up job	2026-09-29T13:37:49.5998946Z ##[group]Runner Image
+gitleaks	Set up job	2026-09-29T13:37:49.5999438Z Image: ubuntu-24.04
+gitleaks	Set up job	2026-09-29T13:37:49.5999992Z Version: 20260920.314.1
+gitleaks	Set up job	2026-09-29T13:37:49.6000857Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+gitleaks	Set up job	2026-09-29T13:37:49.6002233Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+gitleaks	Set up job	2026-09-29T13:37:49.6003017Z ##[endgroup]
+gitleaks	Set up job	2026-09-29T13:37:49.6004157Z ##[group]GITHUB_TOKEN Permissions
+gitleaks	Set up job	2026-09-29T13:37:49.6005665Z Contents: read
+gitleaks	Set up job	2026-09-29T13:37:49.6006217Z Metadata: read
+gitleaks	Set up job	2026-09-29T13:37:49.6006685Z ##[endgroup]
+gitleaks	Set up job	2026-09-29T13:37:49.6008301Z Secret source: Actions
+gitleaks	Set up job	2026-09-29T13:37:49.6009121Z Cache mode: write
+gitleaks	Set up job	2026-09-29T13:37:49.6009708Z Prepare workflow directory
+gitleaks	Set up job	2026-09-29T13:37:49.6823034Z Prepare all required actions
+gitleaks	Set up job	2026-09-29T13:37:49.6865332Z Getting action download info
+gitleaks	Set up job	2026-09-29T13:37:49.9930286Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+gitleaks	Set up job	2026-09-29T13:37:50.2761554Z Complete job name: gitleaks
+gitleaks	Run actions/checkout@v4	﻿2026-09-29T13:37:50.3339004Z ##[group]Run actions/checkout@v4
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.3339671Z with:
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.3340039Z   repository: venkatvellapalem/DevSecOps
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.3343136Z   token: ***
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.3343508Z   ssh-strict: true
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.3344008Z   ssh-user: git
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.3344373Z   persist-credentials: true
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.3344778Z   clean: true
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.3345141Z   sparse-checkout-cone-mode: true
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.3345546Z   fetch-depth: 1
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.3345894Z   fetch-tags: false
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.3346246Z   show-progress: true
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.3346607Z   lfs: false
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.3346934Z   submodules: false
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.3347286Z   set-safe-directory: true
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.3347684Z   allow-unsafe-pr-checkout: false
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.3348254Z env:
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.3348590Z   IMAGE_NAME: bcssl-demo-app
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.3348979Z ##[endgroup]
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4177077Z Syncing repository: venkatvellapalem/DevSecOps
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4179384Z ##[group]Getting Git version info
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4180229Z Working directory is '/home/runner/work/DevSecOps/DevSecOps'
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4181157Z [command]/usr/bin/git version
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4251290Z git version 2.55.0
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4268945Z ##[endgroup]
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4281389Z Temporarily overriding HOME='/home/runner/work/_temp/0063132f-b0e5-428b-90ec-4c5d14afdcc3' before making global git config changes
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4286518Z Adding repository directory to the temporary git global config as a safe directory
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4287575Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/DevSecOps/DevSecOps
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4330620Z Deleting the contents of '/home/runner/work/DevSecOps/DevSecOps'
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4334847Z ##[group]Initializing the repository
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4338491Z [command]/usr/bin/git init /home/runner/work/DevSecOps/DevSecOps
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4432213Z hint: Using 'master' as the name for the initial branch. This default branch name
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4433564Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4434763Z hint: to use in all of your new repositories, which will suppress this warning,
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4435957Z hint: call:
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4436470Z hint:
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4437102Z hint: 	git config --global init.defaultBranch <name>
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4437837Z hint:
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4438650Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4439778Z hint: 'development'. The just-created branch can be renamed via this command:
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4440683Z hint:
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4441177Z hint: 	git branch -m <name>
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4441740Z hint:
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4442505Z hint: Disable this message with "git config set advice.defaultBranchName false"
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4443717Z Initialized empty Git repository in /home/runner/work/DevSecOps/DevSecOps/.git/
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4448720Z [command]/usr/bin/git remote add origin https://github.com/venkatvellapalem/DevSecOps
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4505501Z ##[endgroup]
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4506435Z ##[group]Disabling automatic garbage collection
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4511307Z [command]/usr/bin/git config --local gc.auto 0
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4536508Z ##[endgroup]
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4537487Z ##[group]Setting up auth
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4541486Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4568545Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4896184Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.4928644Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.5116472Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.5145442Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.5332797Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.5366860Z ##[endgroup]
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.5367592Z ##[group]Fetching the repository
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:50.5374136Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +a54355b486c6a2101aad124476c2ef69e1c45451:refs/remotes/pull/1/merge
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4221644Z From https://github.com/venkatvellapalem/DevSecOps
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4224171Z  * [new ref]         a54355b486c6a2101aad124476c2ef69e1c45451 -> pull/1/merge
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4229133Z ##[endgroup]
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4230654Z ##[group]Determining the checkout info
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4232246Z ##[endgroup]
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4233348Z [command]/usr/bin/git sparse-checkout disable
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4282361Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4311604Z ##[group]Checking out the ref
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4313780Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/1/merge
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4389812Z Note: switching to 'refs/remotes/pull/1/merge'.
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4390744Z 
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4391656Z You are in 'detached HEAD' state. You can look around, make experimental
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4393171Z changes and commit them, and you can discard any commits you make in this
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4394669Z state without impacting any branches by switching back to a branch.
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4395474Z 
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4396040Z If you want to create a new branch to retain commits you create, you may
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4397225Z do so (now or later) by using -c with the switch command. Example:
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4398119Z 
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4398544Z   git switch -c <new-branch-name>
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4399051Z 
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4399407Z Or undo this operation with:
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4400230Z 
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4400727Z   git switch -
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4401341Z 
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4402034Z Turn off this advice by setting config variable advice.detachedHead to false
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4403050Z 
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4404382Z HEAD is now at a54355b Merge ee1b7f7783d3ecdb1958fe2099589c4146bff795 into ca7593e1a917093fb4a69450fd0c89ba4848efa1
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4408206Z ##[endgroup]
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4434265Z [command]/usr/bin/git log -1 --format=%H
+gitleaks	Run actions/checkout@v4	2026-09-29T13:37:51.4456778Z a54355b486c6a2101aad124476c2ef69e1c45451
+gitleaks	Scan for committed secrets	﻿2026-09-29T13:37:51.4667467Z ##[group]Run # Pinned image, not :latest. --no-git scans the checked-out tree
+gitleaks	Scan for committed secrets	2026-09-29T13:37:51.4669315Z ^[[36;1m# Pinned image, not :latest. --no-git scans the checked-out tree^[[0m
+gitleaks	Scan for committed secrets	2026-09-29T13:37:51.4670947Z ^[[36;1m# (deterministic); drop it to walk git history instead.^[[0m
+gitleaks	Scan for committed secrets	2026-09-29T13:37:51.4672515Z ^[[36;1m# --redact keeps the secret out of the CI log, which is itself a^[[0m
+gitleaks	Scan for committed secrets	2026-09-29T13:37:51.4674036Z ^[[36;1m# place secrets leak.^[[0m
+gitleaks	Scan for committed secrets	2026-09-29T13:37:51.4675319Z ^[[36;1mdocker run --rm -v "$PWD:/repo" ghcr.io/gitleaks/gitleaks:v8.28.0 \^[[0m
+gitleaks	Scan for committed secrets	2026-09-29T13:37:51.4676925Z ^[[36;1m  detect --source=/repo --no-git --redact --verbose^[[0m
+gitleaks	Scan for committed secrets	2026-09-29T13:37:51.4918189Z shell: /usr/bin/bash -e {0}
+gitleaks	Scan for committed secrets	2026-09-29T13:37:51.4919189Z env:
+gitleaks	Scan for committed secrets	2026-09-29T13:37:51.4919978Z   IMAGE_NAME: bcssl-demo-app
+gitleaks	Scan for committed secrets	2026-09-29T13:37:51.4920903Z ##[endgroup]
+gitleaks	Scan for committed secrets	2026-09-29T13:37:51.5959106Z Unable to find image 'ghcr.io/gitleaks/gitleaks:v8.28.0' locally
+gitleaks	Scan for committed secrets	2026-09-29T13:37:52.4458629Z v8.28.0: Pulling from gitleaks/gitleaks
+gitleaks	Scan for committed secrets	2026-09-29T13:37:52.6508504Z 1747dece9491: Pulling fs layer
+gitleaks	Scan for committed secrets	2026-09-29T13:37:52.6508917Z daed8b4062ea: Pulling fs layer
+gitleaks	Scan for committed secrets	2026-09-29T13:37:52.6509203Z e590f02e913a: Pulling fs layer
+gitleaks	Scan for committed secrets	2026-09-29T13:37:52.6509476Z 91da3791a8e8: Pulling fs layer
+gitleaks	Scan for committed secrets	2026-09-29T13:37:52.6509723Z 91da3791a8e8: Waiting
+gitleaks	Scan for committed secrets	2026-09-29T13:37:52.9873498Z 1747dece9491: Verifying Checksum
+gitleaks	Scan for committed secrets	2026-09-29T13:37:53.0319734Z 1747dece9491: Download complete
+gitleaks	Scan for committed secrets	2026-09-29T13:37:53.0320281Z daed8b4062ea: Verifying Checksum
+gitleaks	Scan for committed secrets	2026-09-29T13:37:53.0320614Z daed8b4062ea: Download complete
+gitleaks	Scan for committed secrets	2026-09-29T13:37:53.0684069Z 1747dece9491: Pull complete
+gitleaks	Scan for committed secrets	2026-09-29T13:37:53.0755125Z e590f02e913a: Verifying Checksum
+gitleaks	Scan for committed secrets	2026-09-29T13:37:53.0755619Z e590f02e913a: Download complete
+gitleaks	Scan for committed secrets	2026-09-29T13:37:53.2506871Z 91da3791a8e8: Verifying Checksum
+gitleaks	Scan for committed secrets	2026-09-29T13:37:53.2507295Z 91da3791a8e8: Download complete
+gitleaks	Scan for committed secrets	2026-09-29T13:37:58.7973309Z daed8b4062ea: Pull complete
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.0254419Z e590f02e913a: Pull complete
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.0357691Z 91da3791a8e8: Pull complete
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.0391893Z Digest: sha256:cdbb7c955abce02001a9f6c9f602fb195b7fadc1e812065883f695d1eeaba854
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.0404254Z Status: Downloaded newer image for ghcr.io/gitleaks/gitleaks:v8.28.0
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.2653253Z 
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.2654386Z     ○
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.2654897Z     │╲
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.2655162Z     │ ○
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.2655430Z     ○ ░
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.2655663Z     ░    gitleaks
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.2655905Z 
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.3026241Z Finding:     DB_PASSWORD = "^[[1;3;mREDACTED^[[0m"
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.3026990Z Secret:      ^[[1;3;mREDACTED^[[0m
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.3027907Z RuleID:      generic-api-key
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.3054225Z Entropy:     5.000000
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.3073953Z File:        /repo/app/settings.py
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.3119438Z Line:        4
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.3134480Z Fingerprint: /repo/app/settings.py:generic-api-key:4
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.3164058Z 
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.3170181Z Finding:     API_SECRET   = "^[[1;3;mREDACTED^[[0m"
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.3194322Z Secret:      ^[[1;3;mREDACTED^[[0m
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.3224370Z RuleID:      generic-api-key
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.3244238Z Entropy:     3.932999
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.3254448Z File:        /repo/app/settings.py
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.3297295Z Line:        5
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.3297978Z Fingerprint: /repo/app/settings.py:generic-api-key:5
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.3324149Z 
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.4180799Z ^[[90m1:37PM^[[0m ^[[32mINF^[[0m ^[[1mscanned ~564694 bytes (564.69 KB) in 153ms^[[0m
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.4181601Z ^[[90m1:37PM^[[0m ^[[33mWRN^[[0m ^[[1mleaks found: 2^[[0m
+gitleaks	Scan for committed secrets	2026-09-29T13:37:59.4964951Z ##[error]Process completed with exit code 1.
+gitleaks	Post Run actions/checkout@v4	﻿2026-09-29T13:37:59.5135663Z Post job cleanup.
+gitleaks	Post Run actions/checkout@v4	2026-09-29T13:37:59.5796286Z [command]/usr/bin/git version
+gitleaks	Post Run actions/checkout@v4	2026-09-29T13:37:59.5830232Z git version 2.55.0
+gitleaks	Post Run actions/checkout@v4	2026-09-29T13:37:59.5889436Z Temporarily overriding HOME='/home/runner/work/_temp/c3e17d19-6ec5-4b32-9122-15114193a74b' before making global git config changes
+gitleaks	Post Run actions/checkout@v4	2026-09-29T13:37:59.5890464Z Adding repository directory to the temporary git global config as a safe directory
+gitleaks	Post Run actions/checkout@v4	2026-09-29T13:37:59.5893009Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/DevSecOps/DevSecOps
+gitleaks	Post Run actions/checkout@v4	2026-09-29T13:37:59.5927017Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+gitleaks	Post Run actions/checkout@v4	2026-09-29T13:37:59.5956819Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+gitleaks	Post Run actions/checkout@v4	2026-09-29T13:37:59.6165123Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+gitleaks	Post Run actions/checkout@v4	2026-09-29T13:37:59.6186800Z http.https://github.com/.extraheader
+gitleaks	Post Run actions/checkout@v4	2026-09-29T13:37:59.6225960Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+gitleaks	Post Run actions/checkout@v4	2026-09-29T13:37:59.6262018Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+gitleaks	Post Run actions/checkout@v4	2026-09-29T13:37:59.6565601Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+gitleaks	Post Run actions/checkout@v4	2026-09-29T13:37:59.6610626Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+gitleaks	Complete job	﻿2026-09-29T13:37:59.6976125Z Cleaning up orphan processes
+gitleaks	Complete job	2026-09-29T13:37:59.7310992Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

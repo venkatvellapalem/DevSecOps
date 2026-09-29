@@ -1,0 +1,201 @@
+hadolint	Set up job	﻿2026-09-29T13:37:49.1706367Z Current runner version: '2.337.0'
+hadolint	Set up job	2026-09-29T13:37:49.1731759Z ##[group]Runner Image Provisioner
+hadolint	Set up job	2026-09-29T13:37:49.1732705Z Hosted Compute Agent
+hadolint	Set up job	2026-09-29T13:37:49.1733339Z Version: 20260828.587
+hadolint	Set up job	2026-09-29T13:37:49.1734048Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+hadolint	Set up job	2026-09-29T13:37:49.1734847Z Build Date: 2026-08-28T16:44:25Z
+hadolint	Set up job	2026-09-29T13:37:49.1735543Z Worker ID: {0f8d5bd6-a851-44a0-9ab8-d01a45e0faea}
+hadolint	Set up job	2026-09-29T13:37:49.1736289Z Azure Region: eastus2
+hadolint	Set up job	2026-09-29T13:37:49.1736891Z ##[endgroup]
+hadolint	Set up job	2026-09-29T13:37:49.1739126Z ##[group]Operating System
+hadolint	Set up job	2026-09-29T13:37:49.1739997Z Ubuntu
+hadolint	Set up job	2026-09-29T13:37:49.1740585Z 24.04.5
+hadolint	Set up job	2026-09-29T13:37:49.1741168Z LTS
+hadolint	Set up job	2026-09-29T13:37:49.1741706Z ##[endgroup]
+hadolint	Set up job	2026-09-29T13:37:49.1742302Z ##[group]Runner Image
+hadolint	Set up job	2026-09-29T13:37:49.1742965Z Image: ubuntu-24.04
+hadolint	Set up job	2026-09-29T13:37:49.1743531Z Version: 20260920.314.1
+hadolint	Set up job	2026-09-29T13:37:49.1744574Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+hadolint	Set up job	2026-09-29T13:37:49.1746437Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+hadolint	Set up job	2026-09-29T13:37:49.1747456Z ##[endgroup]
+hadolint	Set up job	2026-09-29T13:37:49.1748775Z ##[group]GITHUB_TOKEN Permissions
+hadolint	Set up job	2026-09-29T13:37:49.1750747Z Contents: read
+hadolint	Set up job	2026-09-29T13:37:49.1751454Z Metadata: read
+hadolint	Set up job	2026-09-29T13:37:49.1752115Z ##[endgroup]
+hadolint	Set up job	2026-09-29T13:37:49.1754341Z Secret source: Actions
+hadolint	Set up job	2026-09-29T13:37:49.1755311Z Cache mode: write
+hadolint	Set up job	2026-09-29T13:37:49.1756114Z Prepare workflow directory
+hadolint	Set up job	2026-09-29T13:37:49.2197019Z Prepare all required actions
+hadolint	Set up job	2026-09-29T13:37:49.2265140Z Getting action download info
+hadolint	Set up job	2026-09-29T13:37:49.5025767Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+hadolint	Set up job	2026-09-29T13:37:49.6243941Z Download action repository 'hadolint/hadolint-action@v3.1.0' (SHA:54c9adbab1582c2ef04b2016b760714a4bfde3cf)
+hadolint	Set up job	2026-09-29T13:37:49.8271532Z Complete job name: hadolint
+hadolint	Build hadolint/hadolint-action@v3.1.0	﻿2026-09-29T13:37:49.8763155Z ##[group]Build container for action use: '/home/runner/work/_actions/hadolint/hadolint-action/v3.1.0/Dockerfile'.
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:49.8895465Z ##[command]/usr/bin/docker build -t eb96b4:f03737ad7c8142459190c3710d8312b6 -f "/home/runner/work/_actions/hadolint/hadolint-action/v3.1.0/Dockerfile" "/home/runner/work/_actions/hadolint/hadolint-action/v3.1.0"
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:50.7988987Z #0 building with "default" instance using docker driver
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:50.7990183Z 
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:50.7990638Z #1 [internal] load build definition from Dockerfile
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:50.7991727Z #1 transferring dockerfile: 221B 0.0s done
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:50.7992641Z #1 DONE 0.0s
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:50.7993037Z 
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:50.7993626Z #2 [internal] load metadata for ghcr.io/hadolint/hadolint:v2.12.0-debian
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:51.0300723Z #2 DONE 0.4s
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:51.1531382Z 
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:51.1532711Z #3 [internal] load .dockerignore
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:51.1534108Z #3 transferring context: 2B done
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:51.1534599Z #3 DONE 0.0s
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:51.1535195Z 
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:51.1535493Z #4 [internal] load build context
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:51.1536673Z #4 transferring context: 9.11kB done
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:51.1537360Z #4 DONE 0.0s
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:51.1537548Z 
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:51.1537974Z #5 [1/3] FROM ghcr.io/hadolint/hadolint:v2.12.0-debian@sha256:27173fe25e062448490a32de410c08491c626a0bef360aa2ce5d5bdd9384b50d
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:51.1541114Z #5 resolve ghcr.io/hadolint/hadolint:v2.12.0-debian@sha256:27173fe25e062448490a32de410c08491c626a0bef360aa2ce5d5bdd9384b50d done
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:51.1542001Z #5 sha256:665ea7c2febb5533f964e122bb1f3a4d2226072269bd55139f7c00aebd464db3 740B / 740B done
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:51.1543106Z #5 sha256:df21c2da50822cd910a7abab5f311996c4b363cdd8f61937694873326c836650 1.27kB / 1.27kB done
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:51.1543842Z #5 sha256:e9995326b091af7b3ce352fad4d76cf3a3cb62b7a0c35cc5f625e8e649d23c50 6.29MB / 31.42MB 0.1s
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:51.1544531Z #5 sha256:405c84fd6fe2ec3923fb21bdc293f6d8c7ee5c91d7d64a25ef2a168539cc303f 0B / 2.38MB 0.1s
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:51.1545880Z #5 sha256:27173fe25e062448490a32de410c08491c626a0bef360aa2ce5d5bdd9384b50d 741B / 741B done
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:51.3305818Z #5 sha256:e9995326b091af7b3ce352fad4d76cf3a3cb62b7a0c35cc5f625e8e649d23c50 31.42MB / 31.42MB 0.2s done
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:51.3308229Z #5 sha256:405c84fd6fe2ec3923fb21bdc293f6d8c7ee5c91d7d64a25ef2a168539cc303f 2.38MB / 2.38MB 0.1s done
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:51.3310977Z #5 extracting sha256:e9995326b091af7b3ce352fad4d76cf3a3cb62b7a0c35cc5f625e8e649d23c50 0.1s
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:52.4685843Z #5 extracting sha256:e9995326b091af7b3ce352fad4d76cf3a3cb62b7a0c35cc5f625e8e649d23c50 1.2s done
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:52.6040403Z #5 extracting sha256:405c84fd6fe2ec3923fb21bdc293f6d8c7ee5c91d7d64a25ef2a168539cc303f 0.0s done
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:52.6042181Z #5 DONE 1.6s
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:52.7856947Z 
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:52.7859498Z #6 [2/3] COPY LICENSE README.md problem-matcher.json /
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:52.7860523Z #6 DONE 0.0s
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:52.7860980Z 
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:52.7861544Z #7 [3/3] COPY hadolint.sh /usr/local/bin/hadolint.sh
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:52.7862437Z #7 DONE 0.0s
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:52.7862959Z 
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:52.7863322Z #8 exporting to image
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:52.7864020Z #8 exporting layers
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:53.0068097Z #8 exporting layers 0.4s done
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:53.0260365Z #8 writing image sha256:bee4f6ffb3c553f9b7874827fe694ba021176e393917edbdfd7431ae59d6d0b9 done
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:53.0261632Z #8 naming to docker.io/library/eb96b4:f03737ad7c8142459190c3710d8312b6 done
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:53.0262523Z #8 DONE 0.4s
+hadolint	Build hadolint/hadolint-action@v3.1.0	2026-09-29T13:37:53.0407802Z ##[endgroup]
+hadolint	Run actions/checkout@v4	﻿2026-09-29T13:37:53.0717978Z ##[group]Run actions/checkout@v4
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.0718804Z with:
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.0719056Z   repository: venkatvellapalem/DevSecOps
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.0721448Z   token: ***
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.0721673Z   ssh-strict: true
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.0721877Z   ssh-user: git
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.0722095Z   persist-credentials: true
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.0722329Z   clean: true
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.0722540Z   sparse-checkout-cone-mode: true
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.0722821Z   fetch-depth: 1
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.0723017Z   fetch-tags: false
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.0723219Z   show-progress: true
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.0723438Z   lfs: false
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.0723628Z   submodules: false
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.0723833Z   set-safe-directory: true
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.0724105Z   allow-unsafe-pr-checkout: false
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.0724558Z env:
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.0724813Z   IMAGE_NAME: bcssl-demo-app
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.0725067Z ##[endgroup]
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.1775022Z Syncing repository: venkatvellapalem/DevSecOps
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.1777353Z ##[group]Getting Git version info
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.1778074Z Working directory is '/home/runner/work/DevSecOps/DevSecOps'
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.1779417Z [command]/usr/bin/git version
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.1779997Z git version 2.55.0
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.1800137Z ##[endgroup]
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.1816963Z Temporarily overriding HOME='/home/runner/work/_temp/5626b0de-a322-4efb-be87-4afe06a6b4e2' before making global git config changes
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.1823932Z Adding repository directory to the temporary git global config as a safe directory
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.1825102Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/DevSecOps/DevSecOps
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.1875005Z Deleting the contents of '/home/runner/work/DevSecOps/DevSecOps'
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.1880555Z ##[group]Initializing the repository
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.1887097Z [command]/usr/bin/git init /home/runner/work/DevSecOps/DevSecOps
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2035943Z hint: Using 'master' as the name for the initial branch. This default branch name
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2037537Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2039123Z hint: to use in all of your new repositories, which will suppress this warning,
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2040210Z hint: call:
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2040788Z hint:
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2041425Z hint: 	git config --global init.defaultBranch <name>
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2042068Z hint:
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2043398Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2044794Z hint: 'development'. The just-created branch can be renamed via this command:
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2045865Z hint:
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2046522Z hint: 	git branch -m <name>
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2047104Z hint:
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2047832Z hint: Disable this message with "git config set advice.defaultBranchName false"
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2049358Z Initialized empty Git repository in /home/runner/work/DevSecOps/DevSecOps/.git/
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2057018Z [command]/usr/bin/git remote add origin https://github.com/venkatvellapalem/DevSecOps
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2109341Z ##[endgroup]
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2110175Z ##[group]Disabling automatic garbage collection
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2113899Z [command]/usr/bin/git config --local gc.auto 0
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2156287Z ##[endgroup]
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2157009Z ##[group]Setting up auth
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2165243Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2202022Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2621324Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2662283Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2886606Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.2924657Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.3149184Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.3190500Z ##[endgroup]
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.3191307Z ##[group]Fetching the repository
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.3202310Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +a54355b486c6a2101aad124476c2ef69e1c45451:refs/remotes/pull/1/merge
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7460275Z From https://github.com/venkatvellapalem/DevSecOps
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7461355Z  * [new ref]         a54355b486c6a2101aad124476c2ef69e1c45451 -> pull/1/merge
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7465565Z ##[endgroup]
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7466326Z ##[group]Determining the checkout info
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7469412Z ##[endgroup]
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7475604Z [command]/usr/bin/git sparse-checkout disable
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7554769Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7591552Z ##[group]Checking out the ref
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7595735Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/1/merge
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7691775Z Note: switching to 'refs/remotes/pull/1/merge'.
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7692240Z 
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7692560Z You are in 'detached HEAD' state. You can look around, make experimental
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7693287Z changes and commit them, and you can discard any commits you make in this
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7694171Z state without impacting any branches by switching back to a branch.
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7694670Z 
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7695018Z If you want to create a new branch to retain commits you create, you may
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7695821Z do so (now or later) by using -c with the switch command. Example:
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7696373Z 
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7696559Z   git switch -c <new-branch-name>
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7696863Z 
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7697044Z Or undo this operation with:
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7697319Z 
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7697468Z   git switch -
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7697681Z 
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7698055Z Turn off this advice by setting config variable advice.detachedHead to false
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7698798Z 
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7699698Z HEAD is now at a54355b Merge ee1b7f7783d3ecdb1958fe2099589c4146bff795 into ca7593e1a917093fb4a69450fd0c89ba4848efa1
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7703640Z ##[endgroup]
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7745636Z [command]/usr/bin/git log -1 --format=%H
+hadolint	Run actions/checkout@v4	2026-09-29T13:37:53.7772338Z a54355b486c6a2101aad124476c2ef69e1c45451
+hadolint	Lint the Dockerfile	﻿2026-09-29T13:37:53.8106596Z ##[group]Run hadolint/hadolint-action@v3.1.0
+hadolint	Lint the Dockerfile	2026-09-29T13:37:53.8106923Z with:
+hadolint	Lint the Dockerfile	2026-09-29T13:37:53.8107132Z   dockerfile: app/Dockerfile
+hadolint	Lint the Dockerfile	2026-09-29T13:37:53.8107388Z   failure-threshold: warning
+hadolint	Lint the Dockerfile	2026-09-29T13:37:53.8107619Z   recursive: false
+hadolint	Lint the Dockerfile	2026-09-29T13:37:53.8107833Z   output-file: /dev/stdout
+hadolint	Lint the Dockerfile	2026-09-29T13:37:53.8108061Z   no-color: false
+hadolint	Lint the Dockerfile	2026-09-29T13:37:53.8108262Z   no-fail: false
+hadolint	Lint the Dockerfile	2026-09-29T13:37:53.8108763Z   verbose: false
+hadolint	Lint the Dockerfile	2026-09-29T13:37:53.8108949Z   format: tty
+hadolint	Lint the Dockerfile	2026-09-29T13:37:53.8109135Z env:
+hadolint	Lint the Dockerfile	2026-09-29T13:37:53.8109332Z   IMAGE_NAME: bcssl-demo-app
+hadolint	Lint the Dockerfile	2026-09-29T13:37:53.8109570Z ##[endgroup]
+hadolint	Lint the Dockerfile	2026-09-29T13:37:53.8237379Z ##[command]/usr/bin/docker run --name eb96b4f03737ad7c8142459190c3710d8312b6_7b47b0 --label eb96b4 --workdir /github/workspace --rm -e "IMAGE_NAME" -e "INPUT_DOCKERFILE" -e "INPUT_FAILURE-THRESHOLD" -e "INPUT_CONFIG" -e "INPUT_RECURSIVE" -e "INPUT_OUTPUT-FILE" -e "INPUT_NO-COLOR" -e "INPUT_NO-FAIL" -e "INPUT_VERBOSE" -e "INPUT_FORMAT" -e "INPUT_OVERRIDE-ERROR" -e "INPUT_OVERRIDE-WARNING" -e "INPUT_OVERRIDE-INFO" -e "INPUT_OVERRIDE-STYLE" -e "INPUT_IGNORE" -e "INPUT_TRUSTED-REGISTRIES" -e "NO_COLOR" -e "HADOLINT_NOFAIL" -e "HADOLINT_VERBOSE" -e "HADOLINT_FORMAT" -e "HADOLINT_FAILURE_THRESHOLD" -e "HADOLINT_OVERRIDE_ERROR" -e "HADOLINT_OVERRIDE_WARNING" -e "HADOLINT_OVERRIDE_INFO" -e "HADOLINT_OVERRIDE_STYLE" -e "HADOLINT_IGNORE" -e "HADOLINT_TRUSTED_REGISTRIES" -e "HADOLINT_CONFIG" -e "HADOLINT_RECURSIVE" -e "HADOLINT_OUTPUT" -e "HOME" -e "GITHUB_JOB" -e "GITHUB_REF" -e "GITHUB_SHA" -e "GITHUB_REPOSITORY" -e "GITHUB_REPOSITORY_OWNER" -e "GITHUB_REPOSITORY_OWNER_ID" -e "GITHUB_RUN_ID" -e "GITHUB_RUN_NUMBER" -e "GITHUB_RETENTION_DAYS" -e "GITHUB_RUN_ATTEMPT" -e "GITHUB_ACTOR_ID" -e "GITHUB_ACTOR" -e "GITHUB_WORKFLOW" -e "GITHUB_HEAD_REF" -e "GITHUB_BASE_REF" -e "GITHUB_EVENT_NAME" -e "GITHUB_SERVER_URL" -e "GITHUB_API_URL" -e "GITHUB_GRAPHQL_URL" -e "GITHUB_REF_NAME" -e "GITHUB_REF_PROTECTED" -e "GITHUB_REF_TYPE" -e "GITHUB_WORKFLOW_REF" -e "GITHUB_WORKFLOW_SHA" -e "GITHUB_REPOSITORY_ID" -e "GITHUB_TRIGGERING_ACTOR" -e "GITHUB_WORKSPACE" -e "GITHUB_ACTION" -e "GITHUB_EVENT_PATH" -e "GITHUB_ACTION_REPOSITORY" -e "GITHUB_ACTION_REF" -e "GITHUB_PATH" -e "GITHUB_ENV" -e "GITHUB_STEP_SUMMARY" -e "GITHUB_STATE" -e "GITHUB_OUTPUT" -e "GITHUB_ARTIFACTS" -e "GITHUB_ARTIFACTS_LIST" -e "RUNNER_OS" -e "RUNNER_ARCH" -e "RUNNER_NAME" -e "RUNNER_ENVIRONMENT" -e "RUNNER_TOOL_CACHE" -e "RUNNER_TEMP" -e "RUNNER_WORKSPACE" -e "ACTIONS_RUNTIME_URL" -e "ACTIONS_RUNTIME_TOKEN" -e "ACTIONS_CACHE_URL" -e "ACTIONS_RESULTS_URL" -e "ACTIONS_CACHE_MODE" -e "ACTIONS_ORCHESTRATION_ID" -e GITHUB_ACTIONS=true -e CI=true -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work/_temp":"/github/runner_temp" -v "/home/runner/work/_temp/_github_home":"/github/home" -v "/home/runner/work/_temp/_github_workflow":"/github/workflow" -v "/home/runner/work/_temp/_runner_file_commands":"/github/file_commands" -v "/home/runner/work/DevSecOps/DevSecOps":"/github/workspace" eb96b4:f03737ad7c8142459190c3710d8312b6  "app/Dockerfile"
+hadolint	Lint the Dockerfile	2026-09-29T13:37:54.1166336Z 
+hadolint	Lint the Dockerfile	2026-09-29T13:37:54.1169379Z Hadolint output saved to: /dev/stdout
+hadolint	Post Run actions/checkout@v4	﻿2026-09-29T13:37:54.2087019Z Post job cleanup.
+hadolint	Post Run actions/checkout@v4	2026-09-29T13:37:54.2943287Z [command]/usr/bin/git version
+hadolint	Post Run actions/checkout@v4	2026-09-29T13:37:54.2988562Z git version 2.55.0
+hadolint	Post Run actions/checkout@v4	2026-09-29T13:37:54.3034147Z Temporarily overriding HOME='/home/runner/work/_temp/a6111c1b-e811-48f2-9332-c724e00ef99d' before making global git config changes
+hadolint	Post Run actions/checkout@v4	2026-09-29T13:37:54.3036310Z Adding repository directory to the temporary git global config as a safe directory
+hadolint	Post Run actions/checkout@v4	2026-09-29T13:37:54.3040700Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/DevSecOps/DevSecOps
+hadolint	Post Run actions/checkout@v4	2026-09-29T13:37:54.3079356Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+hadolint	Post Run actions/checkout@v4	2026-09-29T13:37:54.3115488Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+hadolint	Post Run actions/checkout@v4	2026-09-29T13:37:54.3383489Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+hadolint	Post Run actions/checkout@v4	2026-09-29T13:37:54.3411099Z http.https://github.com/.extraheader
+hadolint	Post Run actions/checkout@v4	2026-09-29T13:37:54.3422887Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+hadolint	Post Run actions/checkout@v4	2026-09-29T13:37:54.3459326Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+hadolint	Post Run actions/checkout@v4	2026-09-29T13:37:54.3721802Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+hadolint	Post Run actions/checkout@v4	2026-09-29T13:37:54.3761262Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+hadolint	Complete job	﻿2026-09-29T13:37:54.4140890Z Cleaning up orphan processes
+hadolint	Complete job	2026-09-29T13:37:54.4538277Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
