@@ -22,10 +22,23 @@ WORKDIR /app
 # Install from the wheel dir only. --no-index means the build cannot silently
 # reach out to PyPI for a dependency that pip-audit never saw. Whatever this
 # image contains is whatever requirements.txt said, and nothing else.
+#
+# Then strip the build tooling. pip, setuptools and wheel are not executed by a
+# running container, and two of them are the last HIGH findings in this image:
+#   wheel 0.45.1          CVE-2026-24049  (fixed 0.46.2)
+#   jaraco.context 5.3.0  CVE-2026-23949  (fixed 6.1.0)
+# Both arrive with the python:3.11-slim base, neither is ours, and because both
+# have upstream fixes `ignore-unfixed` rightly refuses to hide them. Removing
+# them beats upgrading them: no new downloads, smaller image, less surface.
 COPY --from=build /wheels /wheels
 COPY requirements.txt .
 RUN pip install --no-index --find-links=/wheels -r requirements.txt \
-    && rm -rf /wheels
+    && rm -rf /wheels \
+    && pip uninstall -y pip setuptools wheel \
+    && rm -rf /usr/local/lib/python3.11/site-packages/jaraco* \
+              /usr/local/lib/python3.11/site-packages/pkg_resources \
+              /usr/local/lib/python3.11/site-packages/_distutils_hack \
+    && rm -f /usr/local/bin/pip /usr/local/bin/pip3 /usr/local/bin/pip3.11
 
 COPY app.py .
 

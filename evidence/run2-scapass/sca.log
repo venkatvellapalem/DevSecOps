@@ -1,0 +1,257 @@
+sca	Set up job	﻿2026-09-29T11:53:52.2381485Z Current runner version: '2.337.0'
+sca	Set up job	2026-09-29T11:53:52.2408939Z ##[group]Runner Image Provisioner
+sca	Set up job	2026-09-29T11:53:52.2410010Z Hosted Compute Agent
+sca	Set up job	2026-09-29T11:53:52.2410615Z Version: 20260828.587
+sca	Set up job	2026-09-29T11:53:52.2411300Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+sca	Set up job	2026-09-29T11:53:52.2412093Z Build Date: 2026-08-28T16:44:25Z
+sca	Set up job	2026-09-29T11:53:52.2412813Z Worker ID: {ab68d634-81c6-4c98-9a69-bcd740fc1697}
+sca	Set up job	2026-09-29T11:53:52.2413629Z Azure Region: eastus
+sca	Set up job	2026-09-29T11:53:52.2414209Z ##[endgroup]
+sca	Set up job	2026-09-29T11:53:52.2415798Z ##[group]Operating System
+sca	Set up job	2026-09-29T11:53:52.2416478Z Ubuntu
+sca	Set up job	2026-09-29T11:53:52.2417019Z 24.04.5
+sca	Set up job	2026-09-29T11:53:52.2417790Z LTS
+sca	Set up job	2026-09-29T11:53:52.2418341Z ##[endgroup]
+sca	Set up job	2026-09-29T11:53:52.2418948Z ##[group]Runner Image
+sca	Set up job	2026-09-29T11:53:52.2419587Z Image: ubuntu-24.04
+sca	Set up job	2026-09-29T11:53:52.2420177Z Version: 20260920.314.1
+sca	Set up job	2026-09-29T11:53:52.2421352Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+sca	Set up job	2026-09-29T11:53:52.2423086Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+sca	Set up job	2026-09-29T11:53:52.2424116Z ##[endgroup]
+sca	Set up job	2026-09-29T11:53:52.2425632Z ##[group]GITHUB_TOKEN Permissions
+sca	Set up job	2026-09-29T11:53:52.2428198Z Contents: read
+sca	Set up job	2026-09-29T11:53:52.2428945Z Metadata: read
+sca	Set up job	2026-09-29T11:53:52.2429548Z ##[endgroup]
+sca	Set up job	2026-09-29T11:53:52.2431691Z Secret source: Actions
+sca	Set up job	2026-09-29T11:53:52.2432808Z Cache mode: write
+sca	Set up job	2026-09-29T11:53:52.2433782Z Prepare workflow directory
+sca	Set up job	2026-09-29T11:53:52.3797021Z Prepare all required actions
+sca	Set up job	2026-09-29T11:53:52.3847104Z Getting action download info
+sca	Set up job	2026-09-29T11:53:52.5478805Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+sca	Set up job	2026-09-29T11:53:52.6417182Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+sca	Set up job	2026-09-29T11:53:52.8992962Z Complete job name: sca
+sca	Run actions/checkout@v4	﻿2026-09-29T11:53:53.1199734Z ##[group]Run actions/checkout@v4
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.1200674Z with:
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.1201190Z   repository: venkatvellapalem/DevSecOps
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.1205419Z   token: ***
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.1205872Z   ssh-strict: true
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.1206317Z   ssh-user: git
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.1206772Z   persist-credentials: true
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.1207267Z   clean: true
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.1207996Z   sparse-checkout-cone-mode: true
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.1208527Z   fetch-depth: 1
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.1208969Z   fetch-tags: false
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.1209413Z   show-progress: true
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.1209857Z   lfs: false
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.1210266Z   submodules: false
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.1210709Z   set-safe-directory: true
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.1211219Z   allow-unsafe-pr-checkout: false
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.1212008Z env:
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.1212444Z   IMAGE_NAME: bcssl-demo-app
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.1212991Z ##[endgroup]
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2258964Z Syncing repository: venkatvellapalem/DevSecOps
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2262075Z ##[group]Getting Git version info
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2263596Z Working directory is '/home/runner/work/DevSecOps/DevSecOps'
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2265267Z [command]/usr/bin/git version
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2349428Z git version 2.55.0
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2371760Z ##[endgroup]
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2387209Z Temporarily overriding HOME='/home/runner/work/_temp/5a577e50-0c7e-472f-b9a8-552673457a3b' before making global git config changes
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2419052Z Adding repository directory to the temporary git global config as a safe directory
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2449118Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/DevSecOps/DevSecOps
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2475429Z Deleting the contents of '/home/runner/work/DevSecOps/DevSecOps'
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2483037Z ##[group]Initializing the repository
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2489355Z [command]/usr/bin/git init /home/runner/work/DevSecOps/DevSecOps
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2618467Z hint: Using 'master' as the name for the initial branch. This default branch name
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2620509Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2622591Z hint: to use in all of your new repositories, which will suppress this warning,
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2624081Z hint: call:
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2624961Z hint:
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2625940Z hint: 	git config --global init.defaultBranch <name>
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2627111Z hint:
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2628509Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2630468Z hint: 'development'. The just-created branch can be renamed via this command:
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2632021Z hint:
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2633016Z hint: 	git branch -m <name>
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2634089Z hint:
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2635318Z hint: Disable this message with "git config set advice.defaultBranchName false"
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2637327Z Initialized empty Git repository in /home/runner/work/DevSecOps/DevSecOps/.git/
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2646363Z [command]/usr/bin/git remote add origin https://github.com/venkatvellapalem/DevSecOps
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2709466Z ##[endgroup]
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2710929Z ##[group]Disabling automatic garbage collection
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2715238Z [command]/usr/bin/git config --local gc.auto 0
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2780007Z ##[endgroup]
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2781378Z ##[group]Setting up auth
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2785487Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.2835209Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.3282244Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.3334676Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.3604103Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.3641517Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.3871114Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.3918386Z ##[endgroup]
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.3919528Z ##[group]Fetching the repository
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.3929293Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +4f5b136d2e0a51429689c6705399f956f2688fe6:refs/remotes/origin/main
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.6389419Z From https://github.com/venkatvellapalem/DevSecOps
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.6391529Z  * [new ref]         4f5b136d2e0a51429689c6705399f956f2688fe6 -> origin/main
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.6396063Z ##[endgroup]
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.6398103Z ##[group]Determining the checkout info
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.6400224Z ##[endgroup]
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.6402915Z [command]/usr/bin/git sparse-checkout disable
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.6460082Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.6502168Z ##[group]Checking out the ref
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.6503861Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.6579561Z Switched to a new branch 'main'
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.6585570Z branch 'main' set up to track 'origin/main'.
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.6593341Z ##[endgroup]
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.6641930Z [command]/usr/bin/git log -1 --format=%H
+sca	Run actions/checkout@v4	2026-09-29T11:53:53.6671654Z 4f5b136d2e0a51429689c6705399f956f2688fe6
+sca	Run actions/setup-python@v5	﻿2026-09-29T11:53:53.7932184Z ##[group]Run actions/setup-python@v5
+sca	Run actions/setup-python@v5	2026-09-29T11:53:53.7933461Z with:
+sca	Run actions/setup-python@v5	2026-09-29T11:53:53.7934248Z   python-version: 3.11
+sca	Run actions/setup-python@v5	2026-09-29T11:53:53.7935156Z   check-latest: false
+sca	Run actions/setup-python@v5	2026-09-29T11:53:53.7945776Z   token: ***
+sca	Run actions/setup-python@v5	2026-09-29T11:53:53.7946616Z   update-environment: true
+sca	Run actions/setup-python@v5	2026-09-29T11:53:53.7947724Z   allow-prereleases: false
+sca	Run actions/setup-python@v5	2026-09-29T11:53:53.7948975Z   freethreaded: false
+sca	Run actions/setup-python@v5	2026-09-29T11:53:53.7949829Z env:
+sca	Run actions/setup-python@v5	2026-09-29T11:53:53.7950599Z   IMAGE_NAME: bcssl-demo-app
+sca	Run actions/setup-python@v5	2026-09-29T11:53:53.7951544Z ##[endgroup]
+sca	Run actions/setup-python@v5	2026-09-29T11:53:53.9341419Z ##[group]Installed versions
+sca	Run actions/setup-python@v5	2026-09-29T11:53:53.9488121Z (node:2225) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+sca	Run actions/setup-python@v5	2026-09-29T11:53:53.9492489Z (Use `node --trace-deprecation ...` to show where the warning was created)
+sca	Run actions/setup-python@v5	2026-09-29T11:53:53.9494513Z Successfully set up CPython (3.11.16)
+sca	Run actions/setup-python@v5	2026-09-29T11:53:53.9496315Z ##[endgroup]
+sca	Install pip-audit	﻿2026-09-29T11:53:53.9991983Z ##[group]Run pip install pip-audit
+sca	Install pip-audit	2026-09-29T11:53:53.9993268Z ^[[36;1mpip install pip-audit^[[0m
+sca	Install pip-audit	2026-09-29T11:53:54.0279735Z shell: /usr/bin/bash -e {0}
+sca	Install pip-audit	2026-09-29T11:53:54.0280956Z env:
+sca	Install pip-audit	2026-09-29T11:53:54.0281884Z   IMAGE_NAME: bcssl-demo-app
+sca	Install pip-audit	2026-09-29T11:53:54.0283340Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.16/x64
+sca	Install pip-audit	2026-09-29T11:53:54.0285627Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.16/x64/lib/pkgconfig
+sca	Install pip-audit	2026-09-29T11:53:54.0287842Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+sca	Install pip-audit	2026-09-29T11:53:54.0289375Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+sca	Install pip-audit	2026-09-29T11:53:54.0290916Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+sca	Install pip-audit	2026-09-29T11:53:54.0292465Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.16/x64/lib
+sca	Install pip-audit	2026-09-29T11:53:54.0293768Z ##[endgroup]
+sca	Install pip-audit	2026-09-29T11:53:56.7257182Z Collecting pip-audit
+sca	Install pip-audit	2026-09-29T11:53:56.7890552Z   Downloading pip_audit-2.10.1-py3-none-any.whl.metadata (28 kB)
+sca	Install pip-audit	2026-09-29T11:53:56.8094846Z Collecting CacheControl>=0.13.0 (from CacheControl[filecache]>=0.13.0->pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:56.8129190Z   Downloading cachecontrol-0.14.4-py3-none-any.whl.metadata (3.1 kB)
+sca	Install pip-audit	2026-09-29T11:53:56.8468688Z Collecting cyclonedx-python-lib<12,>=5 (from pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:56.8508147Z   Downloading cyclonedx_python_lib-11.12.0-py3-none-any.whl.metadata (6.9 kB)
+sca	Install pip-audit	2026-09-29T11:53:56.8671141Z Collecting packaging>=23.0.0 (from pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:56.8705753Z   Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+sca	Install pip-audit	2026-09-29T11:53:56.8838000Z Collecting pip-api>=0.0.28 (from pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:56.8873688Z   Downloading pip_api-0.0.35-py3-none-any.whl.metadata (17 kB)
+sca	Install pip-audit	2026-09-29T11:53:56.8996796Z Collecting pip-requirements-parser>=32.0.0 (from pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:56.9030900Z   Downloading pip_requirements_parser-32.0.1-py3-none-any.whl.metadata (9.3 kB)
+sca	Install pip-audit	2026-09-29T11:53:56.9341350Z Collecting requests>=2.31.0 (from pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:56.9411389Z   Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+sca	Install pip-audit	2026-09-29T11:53:56.9691828Z Collecting rich>=12.4 (from pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:56.9739791Z   Downloading rich-15.0.0-py3-none-any.whl.metadata (18 kB)
+sca	Install pip-audit	2026-09-29T11:53:56.9961108Z Collecting tomli>=2.2.1 (from pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:56.9997311Z   Downloading tomli-2.4.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (10 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.0097519Z Collecting tomli-w>=1.2.0 (from pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:57.0132279Z   Downloading tomli_w-1.2.0-py3-none-any.whl.metadata (5.7 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.0317372Z Collecting platformdirs>=4.2.0 (from pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:57.0354373Z   Downloading platformdirs-4.12.1-py3-none-any.whl.metadata (5.5 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.0495928Z Collecting license-expression<31,>=30 (from cyclonedx-python-lib<12,>=5->pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:57.0532262Z   Downloading license_expression-30.4.4-py3-none-any.whl.metadata (11 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.0709303Z Collecting packageurl-python<2,>=0.11 (from cyclonedx-python-lib<12,>=5->pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:57.0746107Z   Downloading packageurl_python-0.17.6-py3-none-any.whl.metadata (5.1 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.0909062Z Collecting py-serializable<3.0.0,>=2.1.0 (from cyclonedx-python-lib<12,>=5->pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:57.0943786Z   Downloading py_serializable-2.1.0-py3-none-any.whl.metadata (4.3 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.1064729Z Collecting sortedcontainers<3.0.0,>=2.4.0 (from cyclonedx-python-lib<12,>=5->pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:57.1100795Z   Downloading sortedcontainers-2.4.0-py2.py3-none-any.whl.metadata (10 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.1265033Z Collecting typing_extensions<5.0,>=4.6 (from cyclonedx-python-lib<12,>=5->pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:57.1301457Z   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.1438151Z Collecting boolean.py>=4.0 (from license-expression<31,>=30->cyclonedx-python-lib<12,>=5->pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:57.1479539Z   Downloading boolean_py-5.0-py3-none-any.whl.metadata (2.3 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.1656174Z Collecting defusedxml<0.8.0,>=0.7.1 (from py-serializable<3.0.0,>=2.1.0->cyclonedx-python-lib<12,>=5->pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:57.1693041Z   Downloading defusedxml-0.7.1-py2.py3-none-any.whl.metadata (32 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.2562800Z Collecting msgpack<2.0.0,>=0.5.2 (from CacheControl>=0.13.0->CacheControl[filecache]>=0.13.0->pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:57.2623964Z   Downloading msgpack-1.2.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (8.3 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.2981936Z Collecting filelock>=3.8.0 (from CacheControl[filecache]>=0.13.0->pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:57.3020643Z   Downloading filelock-4.0.6-py3-none-any.whl.metadata (2.0 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.3066076Z Requirement already satisfied: pip in /opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages (from pip-api>=0.0.28->pip-audit) (26.2.1)
+sca	Install pip-audit	2026-09-29T11:53:57.3276195Z Collecting pyparsing (from pip-requirements-parser>=32.0.0->pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:57.3312928Z   Downloading pyparsing-3.3.3-py3-none-any.whl.metadata (5.9 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.4440292Z Collecting charset_normalizer<4,>=2 (from requests>=2.31.0->pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:57.4483372Z   Downloading charset_normalizer-3.5.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (45 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.4652674Z Collecting idna<4,>=2.5 (from requests>=2.31.0->pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:57.4698038Z   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.4897579Z Collecting urllib3<3,>=1.26 (from requests>=2.31.0->pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:57.4963750Z   Downloading urllib3-2.8.0-py3-none-any.whl.metadata (7.4 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.5137579Z Collecting certifi>=2023.5.7 (from requests>=2.31.0->pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:57.5173020Z   Downloading certifi-2026.7.22-py3-none-any.whl.metadata (2.5 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.5328259Z Collecting markdown-it-py>=2.2.0 (from rich>=12.4->pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:57.5363768Z   Downloading markdown_it_py-4.2.0-py3-none-any.whl.metadata (7.4 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.5553376Z Collecting pygments<3.0.0,>=2.13.0 (from rich>=12.4->pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:57.5593999Z   Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.5707308Z Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich>=12.4->pip-audit)
+sca	Install pip-audit	2026-09-29T11:53:57.5742493Z   Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.5869594Z Downloading pip_audit-2.10.1-py3-none-any.whl (62 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.5926832Z Downloading cyclonedx_python_lib-11.12.0-py3-none-any.whl (529 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.6041421Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 529.5/529.5 kB 42.2 MB/s  0:00:00
+sca	Install pip-audit	2026-09-29T11:53:57.6076548Z Downloading license_expression-30.4.4-py3-none-any.whl (120 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.6134690Z Downloading packageurl_python-0.17.6-py3-none-any.whl (36 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.6190262Z Downloading py_serializable-2.1.0-py3-none-any.whl (23 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.6242576Z Downloading defusedxml-0.7.1-py2.py3-none-any.whl (25 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.6299173Z Downloading sortedcontainers-2.4.0-py2.py3-none-any.whl (29 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.6359794Z Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.6413264Z Downloading boolean_py-5.0-py3-none-any.whl (26 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.6467618Z Downloading cachecontrol-0.14.4-py3-none-any.whl (22 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.6528755Z Downloading msgpack-1.2.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (477 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.6612416Z Downloading filelock-4.0.6-py3-none-any.whl (109 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.6686282Z Downloading packaging-26.3-py3-none-any.whl (129 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.6763993Z Downloading pip_api-0.0.35-py3-none-any.whl (123 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.6830222Z Downloading pip_requirements_parser-32.0.1-py3-none-any.whl (35 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.6883504Z Downloading platformdirs-4.12.1-py3-none-any.whl (33 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.6935414Z Downloading requests-2.34.2-py3-none-any.whl (73 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.6992734Z Downloading charset_normalizer-3.5.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (262 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.7051655Z Downloading idna-3.20-py3-none-any.whl (69 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.7151055Z Downloading urllib3-2.8.0-py3-none-any.whl (135 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.7208255Z Downloading certifi-2026.7.22-py3-none-any.whl (136 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.7270544Z Downloading rich-15.0.0-py3-none-any.whl (310 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.7337593Z Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+sca	Install pip-audit	2026-09-29T11:53:57.7412165Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 204.4 MB/s  0:00:00
+sca	Install pip-audit	2026-09-29T11:53:57.7457697Z Downloading markdown_it_py-4.2.0-py3-none-any.whl (91 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.7517970Z Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.7574813Z Downloading tomli-2.4.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (243 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.7634464Z Downloading tomli_w-1.2.0-py3-none-any.whl (6.7 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.7689654Z Downloading pyparsing-3.3.3-py3-none-any.whl (126 kB)
+sca	Install pip-audit	2026-09-29T11:53:57.9856125Z Installing collected packages: sortedcontainers, boolean.py, urllib3, typing_extensions, tomli-w, tomli, pyparsing, pygments, platformdirs, pip-api, packaging, packageurl-python, msgpack, mdurl, license-expression, idna, filelock, defusedxml, charset_normalizer, certifi, requests, py-serializable, pip-requirements-parser, markdown-it-py, rich, cyclonedx-python-lib, CacheControl, pip-audit
+sca	Install pip-audit	2026-09-29T11:53:59.7519703Z 
+sca	Install pip-audit	2026-09-29T11:53:59.7539020Z Successfully installed CacheControl-0.14.4 boolean.py-5.0 certifi-2026.7.22 charset_normalizer-3.5.1 cyclonedx-python-lib-11.12.0 defusedxml-0.7.1 filelock-4.0.6 idna-3.20 license-expression-30.4.4 markdown-it-py-4.2.0 mdurl-0.1.2 msgpack-1.2.3 packageurl-python-0.17.6 packaging-26.3 pip-api-0.0.35 pip-audit-2.10.1 pip-requirements-parser-32.0.1 platformdirs-4.12.1 py-serializable-2.1.0 pygments-2.21.0 pyparsing-3.3.3 requests-2.34.2 rich-15.0.0 sortedcontainers-2.4.0 tomli-2.4.1 tomli-w-1.2.0 typing_extensions-4.16.0 urllib3-2.8.0
+sca	Audit dependencies against requirements.txt	﻿2026-09-29T11:53:59.8699722Z ##[group]Run pip-audit -r app/requirements.txt
+sca	Audit dependencies against requirements.txt	2026-09-29T11:53:59.8700169Z ^[[36;1mpip-audit -r app/requirements.txt^[[0m
+sca	Audit dependencies against requirements.txt	2026-09-29T11:53:59.8766836Z shell: /usr/bin/bash -e {0}
+sca	Audit dependencies against requirements.txt	2026-09-29T11:53:59.8767182Z env:
+sca	Audit dependencies against requirements.txt	2026-09-29T11:53:59.8767394Z   IMAGE_NAME: bcssl-demo-app
+sca	Audit dependencies against requirements.txt	2026-09-29T11:53:59.8767961Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.16/x64
+sca	Audit dependencies against requirements.txt	2026-09-29T11:53:59.8768422Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.16/x64/lib/pkgconfig
+sca	Audit dependencies against requirements.txt	2026-09-29T11:53:59.8768866Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+sca	Audit dependencies against requirements.txt	2026-09-29T11:53:59.8769257Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+sca	Audit dependencies against requirements.txt	2026-09-29T11:53:59.8769647Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+sca	Audit dependencies against requirements.txt	2026-09-29T11:53:59.8770041Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.16/x64/lib
+sca	Audit dependencies against requirements.txt	2026-09-29T11:53:59.8770368Z ##[endgroup]
+sca	Audit dependencies against requirements.txt	2026-09-29T11:54:08.0570085Z No known vulnerabilities found
+sca	Post Run actions/setup-python@v5	﻿2026-09-29T11:54:08.1398329Z Post job cleanup.
+sca	Post Run actions/setup-python@v5	2026-09-29T11:54:08.2646681Z (node:2346) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+sca	Post Run actions/setup-python@v5	2026-09-29T11:54:08.2647875Z (Use `node --trace-deprecation ...` to show where the warning was created)
+sca	Post Run actions/checkout@v4	﻿2026-09-29T11:54:08.3339939Z Post job cleanup.
+sca	Post Run actions/checkout@v4	2026-09-29T11:54:08.4235374Z [command]/usr/bin/git version
+sca	Post Run actions/checkout@v4	2026-09-29T11:54:08.4278901Z git version 2.55.0
+sca	Post Run actions/checkout@v4	2026-09-29T11:54:08.4318908Z Temporarily overriding HOME='/home/runner/work/_temp/d5a84c02-7aea-4f05-aaf6-c0089a3e5804' before making global git config changes
+sca	Post Run actions/checkout@v4	2026-09-29T11:54:08.4320297Z Adding repository directory to the temporary git global config as a safe directory
+sca	Post Run actions/checkout@v4	2026-09-29T11:54:08.4325254Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/DevSecOps/DevSecOps
+sca	Post Run actions/checkout@v4	2026-09-29T11:54:08.4365508Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+sca	Post Run actions/checkout@v4	2026-09-29T11:54:08.4403548Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+sca	Post Run actions/checkout@v4	2026-09-29T11:54:08.4679185Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+sca	Post Run actions/checkout@v4	2026-09-29T11:54:08.4718789Z http.https://github.com/.extraheader
+sca	Post Run actions/checkout@v4	2026-09-29T11:54:08.4730632Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+sca	Post Run actions/checkout@v4	2026-09-29T11:54:08.4775156Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+sca	Post Run actions/checkout@v4	2026-09-29T11:54:08.5097005Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+sca	Post Run actions/checkout@v4	2026-09-29T11:54:08.5154338Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+sca	Complete job	﻿2026-09-29T11:54:08.5741884Z Cleaning up orphan processes
+sca	Complete job	2026-09-29T11:54:08.6045378Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

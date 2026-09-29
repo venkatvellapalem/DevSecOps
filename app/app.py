@@ -1,16 +1,14 @@
 """Minimal Flask service for the DevSecOps pipeline lab.
 
-The app is not the point — the gates are. It exists so the pipeline has
-something real to build, scan, and ship.
+RUN 3 STATE — this is the clean version. The deliberately vulnerable
+/debug/echo endpoint from run 1 has been removed: it existed only to give
+Bandit's B602 rule something to catch, and leaving a working RCE in the repo
+after the demo is how lab code ends up in production.
 
-RUN 1 STATE: this file contains one deliberately vulnerable endpoint so the
-SAST gate has something to actually catch. Without it, Bandit finds nothing on
-20 lines of Flask and the "demonstrably functional SAST gate" rubric item is
-impossible to satisfy. See /debug/echo.
+The run-1 and run-2 versions are in git history if you need to re-demonstrate
+the SAST gate failing.
 """
-import subprocess
-
-from flask import Flask, request
+from flask import Flask
 
 app = Flask(__name__)
 
@@ -25,21 +23,6 @@ def healthz():
     # Container HEALTHCHECK hits this. Kept separate from / so a future
     # dependency-check on / doesn't break the liveness probe.
     return {"status": "healthy"}
-
-
-@app.route("/debug/echo")
-def debug_echo():
-    """DELIBERATELY VULNERABLE — the SAST gate's target.
-
-    Bandit reports this as B602: a request parameter flows into a shell, so
-    ?cmd=... is remote code execution as uid 10001. The fix commit replaces it
-    with the argv form (shell=False) and the sast job goes green.
-
-    Lab artifact. Do not copy this pattern, and do not run this image
-    anywhere that is actually reachable.
-    """
-    cmd = request.args.get("cmd", "id")
-    return {"output": subprocess.check_output(cmd, shell=True, text=True)}
 
 
 if __name__ == "__main__":

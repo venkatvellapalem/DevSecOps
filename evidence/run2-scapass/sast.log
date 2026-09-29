@@ -1,0 +1,225 @@
+sast	Set up job	﻿2026-09-29T11:53:53.4812191Z Current runner version: '2.337.0'
+sast	Set up job	2026-09-29T11:53:53.4838109Z ##[group]Runner Image Provisioner
+sast	Set up job	2026-09-29T11:53:53.4838992Z Hosted Compute Agent
+sast	Set up job	2026-09-29T11:53:53.4839661Z Version: 20260828.587
+sast	Set up job	2026-09-29T11:53:53.4840286Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+sast	Set up job	2026-09-29T11:53:53.4840998Z Build Date: 2026-08-28T16:44:25Z
+sast	Set up job	2026-09-29T11:53:53.4841788Z Worker ID: {ab66e694-ab8a-4aca-a309-dac16cc9cb1a}
+sast	Set up job	2026-09-29T11:53:53.4842745Z Azure Region: westus2
+sast	Set up job	2026-09-29T11:53:53.4843403Z ##[endgroup]
+sast	Set up job	2026-09-29T11:53:53.4845019Z ##[group]Operating System
+sast	Set up job	2026-09-29T11:53:53.4845676Z Ubuntu
+sast	Set up job	2026-09-29T11:53:53.4846336Z 24.04.5
+sast	Set up job	2026-09-29T11:53:53.4846844Z LTS
+sast	Set up job	2026-09-29T11:53:53.4847378Z ##[endgroup]
+sast	Set up job	2026-09-29T11:53:53.4847938Z ##[group]Runner Image
+sast	Set up job	2026-09-29T11:53:53.4848557Z Image: ubuntu-24.04
+sast	Set up job	2026-09-29T11:53:53.4849201Z Version: 20260920.314.1
+sast	Set up job	2026-09-29T11:53:53.4850327Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+sast	Set up job	2026-09-29T11:53:53.4852129Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+sast	Set up job	2026-09-29T11:53:53.4853401Z ##[endgroup]
+sast	Set up job	2026-09-29T11:53:53.4854710Z ##[group]GITHUB_TOKEN Permissions
+sast	Set up job	2026-09-29T11:53:53.4856923Z Contents: read
+sast	Set up job	2026-09-29T11:53:53.4857656Z Metadata: read
+sast	Set up job	2026-09-29T11:53:53.4858479Z ##[endgroup]
+sast	Set up job	2026-09-29T11:53:53.4860639Z Secret source: Actions
+sast	Set up job	2026-09-29T11:53:53.4861605Z Cache mode: write
+sast	Set up job	2026-09-29T11:53:53.4862856Z Prepare workflow directory
+sast	Set up job	2026-09-29T11:53:53.6215537Z Prepare all required actions
+sast	Set up job	2026-09-29T11:53:53.6266657Z Getting action download info
+sast	Set up job	2026-09-29T11:53:54.0033667Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+sast	Set up job	2026-09-29T11:53:54.1196410Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+sast	Set up job	2026-09-29T11:53:54.3798709Z Complete job name: sast
+sast	Run actions/checkout@v4	﻿2026-09-29T11:53:54.5992067Z ##[group]Run actions/checkout@v4
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.5993252Z with:
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.5993779Z   repository: venkatvellapalem/DevSecOps
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.5997874Z   token: ***
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.5998332Z   ssh-strict: true
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.5998790Z   ssh-user: git
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.5999250Z   persist-credentials: true
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.5999751Z   clean: true
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.6000214Z   sparse-checkout-cone-mode: true
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.6000752Z   fetch-depth: 1
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.6001204Z   fetch-tags: false
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.6001673Z   show-progress: true
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.6002132Z   lfs: false
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.6002922Z   submodules: false
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.6003472Z   set-safe-directory: true
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.6004015Z   allow-unsafe-pr-checkout: false
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.6004850Z env:
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.6005304Z   IMAGE_NAME: bcssl-demo-app
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.6005809Z ##[endgroup]
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7059755Z Syncing repository: venkatvellapalem/DevSecOps
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7062809Z ##[group]Getting Git version info
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7064040Z Working directory is '/home/runner/work/DevSecOps/DevSecOps'
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7065703Z [command]/usr/bin/git version
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7122858Z git version 2.55.0
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7146470Z ##[endgroup]
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7169289Z Temporarily overriding HOME='/home/runner/work/_temp/43c1b28f-75ce-4793-a147-78c3947f6558' before making global git config changes
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7171747Z Adding repository directory to the temporary git global config as a safe directory
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7175778Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/DevSecOps/DevSecOps
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7234541Z Deleting the contents of '/home/runner/work/DevSecOps/DevSecOps'
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7243958Z ##[group]Initializing the repository
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7255374Z [command]/usr/bin/git init /home/runner/work/DevSecOps/DevSecOps
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7377006Z hint: Using 'master' as the name for the initial branch. This default branch name
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7379159Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7381707Z hint: to use in all of your new repositories, which will suppress this warning,
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7383792Z hint: call:
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7384855Z hint:
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7386146Z hint: 	git config --global init.defaultBranch <name>
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7387615Z hint:
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7388959Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7390733Z hint: 'development'. The just-created branch can be renamed via this command:
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7392026Z hint:
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7393116Z hint: 	git branch -m <name>
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7394027Z hint:
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7395199Z hint: Disable this message with "git config set advice.defaultBranchName false"
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7397153Z Initialized empty Git repository in /home/runner/work/DevSecOps/DevSecOps/.git/
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7399203Z [command]/usr/bin/git remote add origin https://github.com/venkatvellapalem/DevSecOps
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7456639Z ##[endgroup]
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7458106Z ##[group]Disabling automatic garbage collection
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7462224Z [command]/usr/bin/git config --local gc.auto 0
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7496446Z ##[endgroup]
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7497823Z ##[group]Setting up auth
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7504358Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7539868Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.7961094Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.8004039Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.8242994Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.8279896Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.8513323Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.8556502Z ##[endgroup]
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.8557528Z ##[group]Fetching the repository
+sast	Run actions/checkout@v4	2026-09-29T11:53:54.8566583Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +4f5b136d2e0a51429689c6705399f956f2688fe6:refs/remotes/origin/main
+sast	Run actions/checkout@v4	2026-09-29T11:53:55.2677197Z From https://github.com/venkatvellapalem/DevSecOps
+sast	Run actions/checkout@v4	2026-09-29T11:53:55.2694554Z  * [new ref]         4f5b136d2e0a51429689c6705399f956f2688fe6 -> origin/main
+sast	Run actions/checkout@v4	2026-09-29T11:53:55.2698236Z ##[endgroup]
+sast	Run actions/checkout@v4	2026-09-29T11:53:55.2699838Z ##[group]Determining the checkout info
+sast	Run actions/checkout@v4	2026-09-29T11:53:55.2701962Z ##[endgroup]
+sast	Run actions/checkout@v4	2026-09-29T11:53:55.2703143Z [command]/usr/bin/git sparse-checkout disable
+sast	Run actions/checkout@v4	2026-09-29T11:53:55.2761764Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+sast	Run actions/checkout@v4	2026-09-29T11:53:55.2798408Z ##[group]Checking out the ref
+sast	Run actions/checkout@v4	2026-09-29T11:53:55.2804058Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+sast	Run actions/checkout@v4	2026-09-29T11:53:55.2888600Z Switched to a new branch 'main'
+sast	Run actions/checkout@v4	2026-09-29T11:53:55.2894978Z branch 'main' set up to track 'origin/main'.
+sast	Run actions/checkout@v4	2026-09-29T11:53:55.2901718Z ##[endgroup]
+sast	Run actions/checkout@v4	2026-09-29T11:53:55.2946619Z [command]/usr/bin/git log -1 --format=%H
+sast	Run actions/checkout@v4	2026-09-29T11:53:55.2973783Z 4f5b136d2e0a51429689c6705399f956f2688fe6
+sast	Run actions/setup-python@v5	﻿2026-09-29T11:53:55.4124098Z ##[group]Run actions/setup-python@v5
+sast	Run actions/setup-python@v5	2026-09-29T11:53:55.4124989Z with:
+sast	Run actions/setup-python@v5	2026-09-29T11:53:55.4125478Z   python-version: 3.11
+sast	Run actions/setup-python@v5	2026-09-29T11:53:55.4126076Z   check-latest: false
+sast	Run actions/setup-python@v5	2026-09-29T11:53:55.4135580Z   token: ***
+sast	Run actions/setup-python@v5	2026-09-29T11:53:55.4136133Z   update-environment: true
+sast	Run actions/setup-python@v5	2026-09-29T11:53:55.4136801Z   allow-prereleases: false
+sast	Run actions/setup-python@v5	2026-09-29T11:53:55.4137708Z   freethreaded: false
+sast	Run actions/setup-python@v5	2026-09-29T11:53:55.4138253Z env:
+sast	Run actions/setup-python@v5	2026-09-29T11:53:55.4138724Z   IMAGE_NAME: bcssl-demo-app
+sast	Run actions/setup-python@v5	2026-09-29T11:53:55.4139355Z ##[endgroup]
+sast	Run actions/setup-python@v5	2026-09-29T11:53:55.5513524Z ##[group]Installed versions
+sast	Run actions/setup-python@v5	2026-09-29T11:53:55.5645357Z (node:2233) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+sast	Run actions/setup-python@v5	2026-09-29T11:53:55.5649157Z (Use `node --trace-deprecation ...` to show where the warning was created)
+sast	Run actions/setup-python@v5	2026-09-29T11:53:55.5651149Z Successfully set up CPython (3.11.16)
+sast	Run actions/setup-python@v5	2026-09-29T11:53:55.5653574Z ##[endgroup]
+sast	Install Bandit	﻿2026-09-29T11:53:55.6143444Z ##[group]Run pip install bandit
+sast	Install Bandit	2026-09-29T11:53:55.6144441Z ^[[36;1mpip install bandit^[[0m
+sast	Install Bandit	2026-09-29T11:53:55.6462712Z shell: /usr/bin/bash -e {0}
+sast	Install Bandit	2026-09-29T11:53:55.6463751Z env:
+sast	Install Bandit	2026-09-29T11:53:55.6464448Z   IMAGE_NAME: bcssl-demo-app
+sast	Install Bandit	2026-09-29T11:53:55.6465689Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.16/x64
+sast	Install Bandit	2026-09-29T11:53:55.6467271Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.16/x64/lib/pkgconfig
+sast	Install Bandit	2026-09-29T11:53:55.6468762Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+sast	Install Bandit	2026-09-29T11:53:55.6470021Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+sast	Install Bandit	2026-09-29T11:53:55.6471299Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+sast	Install Bandit	2026-09-29T11:53:55.6472713Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.16/x64/lib
+sast	Install Bandit	2026-09-29T11:53:55.6473770Z ##[endgroup]
+sast	Install Bandit	2026-09-29T11:53:56.6081460Z Collecting bandit
+sast	Install Bandit	2026-09-29T11:53:56.6716618Z   Downloading bandit-1.9.4-py3-none-any.whl.metadata (7.1 kB)
+sast	Install Bandit	2026-09-29T11:53:56.7236222Z Collecting PyYAML>=5.3.1 (from bandit)
+sast	Install Bandit	2026-09-29T11:53:56.7311888Z   Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+sast	Install Bandit	2026-09-29T11:53:56.7564029Z Collecting stevedore>=1.20.0 (from bandit)
+sast	Install Bandit	2026-09-29T11:53:56.7637208Z   Downloading stevedore-5.9.1-py3-none-any.whl.metadata (2.3 kB)
+sast	Install Bandit	2026-09-29T11:53:56.8124163Z Collecting rich (from bandit)
+sast	Install Bandit	2026-09-29T11:53:56.8196828Z   Downloading rich-15.0.0-py3-none-any.whl.metadata (18 kB)
+sast	Install Bandit	2026-09-29T11:53:56.8495792Z Collecting markdown-it-py>=2.2.0 (from rich->bandit)
+sast	Install Bandit	2026-09-29T11:53:56.8579388Z   Downloading markdown_it_py-4.2.0-py3-none-any.whl.metadata (7.4 kB)
+sast	Install Bandit	2026-09-29T11:53:56.8949685Z Collecting pygments<3.0.0,>=2.13.0 (from rich->bandit)
+sast	Install Bandit	2026-09-29T11:53:56.9034082Z   Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+sast	Install Bandit	2026-09-29T11:53:56.9218846Z Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich->bandit)
+sast	Install Bandit	2026-09-29T11:53:56.9298174Z   Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+sast	Install Bandit	2026-09-29T11:53:56.9428445Z Downloading bandit-1.9.4-py3-none-any.whl (134 kB)
+sast	Install Bandit	2026-09-29T11:53:56.9636773Z Downloading pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (806 kB)
+sast	Install Bandit	2026-09-29T11:53:56.9903209Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 806.6/806.6 kB 41.5 MB/s  0:00:00
+sast	Install Bandit	2026-09-29T11:53:56.9983705Z Downloading stevedore-5.9.1-py3-none-any.whl (54 kB)
+sast	Install Bandit	2026-09-29T11:53:57.0089086Z Downloading rich-15.0.0-py3-none-any.whl (310 kB)
+sast	Install Bandit	2026-09-29T11:53:57.0202238Z Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+sast	Install Bandit	2026-09-29T11:53:57.0357636Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 81.7 MB/s  0:00:00
+sast	Install Bandit	2026-09-29T11:53:57.0440363Z Downloading markdown_it_py-4.2.0-py3-none-any.whl (91 kB)
+sast	Install Bandit	2026-09-29T11:53:57.0546473Z Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+sast	Install Bandit	2026-09-29T11:53:57.1405207Z Installing collected packages: stevedore, PyYAML, pygments, mdurl, markdown-it-py, rich, bandit
+sast	Install Bandit	2026-09-29T11:53:58.2343241Z 
+sast	Install Bandit	2026-09-29T11:53:58.2353542Z Successfully installed PyYAML-6.0.3 bandit-1.9.4 markdown-it-py-4.2.0 mdurl-0.1.2 pygments-2.21.0 rich-15.0.0 stevedore-5.9.1
+sast	Bandit — fail on High severity	﻿2026-09-29T11:53:58.3284875Z ##[group]Run bandit -r app -lll -f screen
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.3285265Z ^[[36;1mbandit -r app -lll -f screen^[[0m
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.3351994Z shell: /usr/bin/bash -e {0}
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.3352304Z env:
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.3352909Z   IMAGE_NAME: bcssl-demo-app
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.3353286Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.16/x64
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.3353823Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.16/x64/lib/pkgconfig
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.3354351Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.3354818Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.3355280Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.16/x64
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.3355767Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.16/x64/lib
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.3356170Z ##[endgroup]
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5221247Z [main]	INFO	profile include tests: None
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5222306Z [main]	INFO	profile exclude tests: None
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5223366Z [main]	INFO	cli include tests: None
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5224258Z [main]	INFO	cli exclude tests: None
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5224987Z [main]	INFO	running on Python 3.11.16
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5280408Z ^[[95mRun started:2026-09-29 11:53:58.527734+00:00^[[0m
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5281109Z ^[[95m
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5281489Z Test results:^[[0m
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5282822Z ^[[91m>> Issue: [B602:subprocess_popen_with_shell_equals_true] subprocess call with shell=True identified, security issue.
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5283809Z    Severity: High   Confidence: High
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5284456Z    CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html)
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5285424Z    More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b602_subprocess_popen_with_shell_equals_true.html
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5286411Z    Location: app/app.py:42:22^[[0m
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5286935Z 41	    cmd = request.args.get("cmd", "id")
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5287611Z 42	    return {"output": subprocess.check_output(cmd, shell=True, text=True)}
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5288254Z 43	
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5288439Z 
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5288623Z --------------------------------------------------
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5289127Z ^[[95m
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5289491Z Code scanned:^[[0m
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5289865Z 	Total lines of code: 30
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5290278Z 	Total lines skipped (#nosec): 0
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5290708Z ^[[95m
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5291051Z Run metrics:^[[0m
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5291409Z 	Total issues (by severity):
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5291789Z 		Undefined: 0
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5292120Z 		Low: 1
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5292663Z 		Medium: 1
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5293092Z 		High: 1
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5293442Z 	Total issues (by confidence):
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5293835Z 		Undefined: 0
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5294160Z 		Low: 0
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5294453Z 		Medium: 1
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5294795Z 		High: 2
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5295188Z ^[[95mFiles skipped (0):^[[0m
+sast	Bandit — fail on High severity	2026-09-29T11:53:58.5452161Z ##[error]Process completed with exit code 1.
+sast	Post Run actions/checkout@v4	﻿2026-09-29T11:53:58.7956865Z Post job cleanup.
+sast	Post Run actions/checkout@v4	2026-09-29T11:53:58.8877170Z [command]/usr/bin/git version
+sast	Post Run actions/checkout@v4	2026-09-29T11:53:58.8920210Z git version 2.55.0
+sast	Post Run actions/checkout@v4	2026-09-29T11:53:58.8993759Z Temporarily overriding HOME='/home/runner/work/_temp/407223c1-15d3-4ff2-a39a-6991126b4242' before making global git config changes
+sast	Post Run actions/checkout@v4	2026-09-29T11:53:58.8995163Z Adding repository directory to the temporary git global config as a safe directory
+sast	Post Run actions/checkout@v4	2026-09-29T11:53:58.9000596Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/DevSecOps/DevSecOps
+sast	Post Run actions/checkout@v4	2026-09-29T11:53:58.9044330Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+sast	Post Run actions/checkout@v4	2026-09-29T11:53:58.9090665Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+sast	Post Run actions/checkout@v4	2026-09-29T11:53:58.9350963Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+sast	Post Run actions/checkout@v4	2026-09-29T11:53:58.9386761Z http.https://github.com/.extraheader
+sast	Post Run actions/checkout@v4	2026-09-29T11:53:58.9400286Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+sast	Post Run actions/checkout@v4	2026-09-29T11:53:58.9438577Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+sast	Post Run actions/checkout@v4	2026-09-29T11:53:58.9711990Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+sast	Post Run actions/checkout@v4	2026-09-29T11:53:58.9750785Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+sast	Complete job	﻿2026-09-29T11:53:59.0152378Z Cleaning up orphan processes
+sast	Complete job	2026-09-29T11:53:59.0510101Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
