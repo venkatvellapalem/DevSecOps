@@ -724,7 +724,12 @@ async function load(){
     const runs = (await get(`${API}/actions/runs?per_page=20`)).workflow_runs || [];
     state.runs = runs;
     renderStats(); renderRuns(); renderCards();
-    if (runs.length) await hydrate(runs[0].id, true);
+    // Hydrate the newest few so the summary percentages mean something. Only the
+    // first is strictly needed for the pipeline graph; the rest make "releases
+    // blocked" and "fully green" honest rather than 100% of one run. Six
+    // requests in total, well inside the 60/hour anonymous allowance, and older
+    // runs still load on demand.
+    for (const r of runs.slice(0, 5)) await hydrate(r.id, true);
     renderFlow(); renderStats(); renderRuns(); renderCards(); inspectDefault();
     $("stamp").textContent = "updated " + new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
     const hydrated = state.runs.filter(r => state.jobs[r.id]);
@@ -790,7 +795,7 @@ $("lHand").href = `${WEB}/blob/main/docs/HANDOFF.md`;
 $("lWrite").href = `${WEB}/blob/main/docs/WRITEUP.md`;
 $("lArch").href = `${WEB}/blob/main/ARCHITECTURE.md`;
 $("repo").textContent = `${OWNER}/${REPO}`;
-$("spend").textContent = "2 requests on load, then one per run you expand";
+$("spend").textContent = "6 requests on load, then one per run you expand";
 load();
 </script>
 </body>
