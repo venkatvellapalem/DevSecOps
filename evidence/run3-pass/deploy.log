@@ -1,0 +1,149 @@
+deploy	Set up job	﻿2026-09-29T11:59:11.1766659Z Current runner version: '2.337.0'
+deploy	Set up job	2026-09-29T11:59:11.1790681Z ##[group]Runner Image Provisioner
+deploy	Set up job	2026-09-29T11:59:11.1791888Z Hosted Compute Agent
+deploy	Set up job	2026-09-29T11:59:11.1792564Z Version: 20260828.587
+deploy	Set up job	2026-09-29T11:59:11.1793200Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+deploy	Set up job	2026-09-29T11:59:11.1793982Z Build Date: 2026-08-28T16:44:25Z
+deploy	Set up job	2026-09-29T11:59:11.1794678Z Worker ID: {abb50d81-c11a-4905-9f6d-58c58c3f56d5}
+deploy	Set up job	2026-09-29T11:59:11.1795366Z Azure Region: westus2
+deploy	Set up job	2026-09-29T11:59:11.1795936Z ##[endgroup]
+deploy	Set up job	2026-09-29T11:59:11.1797389Z ##[group]Operating System
+deploy	Set up job	2026-09-29T11:59:11.1797986Z Ubuntu
+deploy	Set up job	2026-09-29T11:59:11.1798521Z 24.04.5
+deploy	Set up job	2026-09-29T11:59:11.1799027Z LTS
+deploy	Set up job	2026-09-29T11:59:11.1799532Z ##[endgroup]
+deploy	Set up job	2026-09-29T11:59:11.1800079Z ##[group]Runner Image
+deploy	Set up job	2026-09-29T11:59:11.1800650Z Image: ubuntu-24.04
+deploy	Set up job	2026-09-29T11:59:11.1801200Z Version: 20260920.314.1
+deploy	Set up job	2026-09-29T11:59:11.1802448Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+deploy	Set up job	2026-09-29T11:59:11.1804269Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+deploy	Set up job	2026-09-29T11:59:11.1805193Z ##[endgroup]
+deploy	Set up job	2026-09-29T11:59:11.1806687Z ##[group]GITHUB_TOKEN Permissions
+deploy	Set up job	2026-09-29T11:59:11.1808891Z Contents: read
+deploy	Set up job	2026-09-29T11:59:11.1809500Z Metadata: read
+deploy	Set up job	2026-09-29T11:59:11.1810051Z Packages: write
+deploy	Set up job	2026-09-29T11:59:11.1810570Z ##[endgroup]
+deploy	Set up job	2026-09-29T11:59:11.1812730Z Secret source: Actions
+deploy	Set up job	2026-09-29T11:59:11.1813676Z Cache mode: write
+deploy	Set up job	2026-09-29T11:59:11.1814354Z Prepare workflow directory
+deploy	Set up job	2026-09-29T11:59:11.2170115Z Prepare all required actions
+deploy	Set up job	2026-09-29T11:59:11.2222608Z Getting action download info
+deploy	Set up job	2026-09-29T11:59:11.5677445Z Download action repository 'actions/download-artifact@v4' (SHA:d3f86a106a0bac45b974a628896c90dbdf5c8093)
+deploy	Set up job	2026-09-29T11:59:12.0454577Z Complete job name: deploy
+deploy	Run actions/download-artifact@v4	﻿2026-09-29T11:59:12.1060734Z ##[group]Run actions/download-artifact@v4
+deploy	Run actions/download-artifact@v4	2026-09-29T11:59:12.1061875Z with:
+deploy	Run actions/download-artifact@v4	2026-09-29T11:59:12.1062466Z   name: image
+deploy	Run actions/download-artifact@v4	2026-09-29T11:59:12.1062984Z   path: /tmp
+deploy	Run actions/download-artifact@v4	2026-09-29T11:59:12.1063490Z   merge-multiple: false
+deploy	Run actions/download-artifact@v4	2026-09-29T11:59:12.1064063Z   repository: venkatvellapalem/DevSecOps
+deploy	Run actions/download-artifact@v4	2026-09-29T11:59:12.1064688Z   run-id: 36565013983
+deploy	Run actions/download-artifact@v4	2026-09-29T11:59:12.1065338Z env:
+deploy	Run actions/download-artifact@v4	2026-09-29T11:59:12.1065983Z   IMAGE_NAME: bcssl-demo-app
+deploy	Run actions/download-artifact@v4	2026-09-29T11:59:12.1066524Z ##[endgroup]
+deploy	Run actions/download-artifact@v4	2026-09-29T11:59:12.2853705Z Downloading single artifact
+deploy	Run actions/download-artifact@v4	2026-09-29T11:59:12.2971377Z (node:2113) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+deploy	Run actions/download-artifact@v4	2026-09-29T11:59:12.2973065Z (Use `node --trace-deprecation ...` to show where the warning was created)
+deploy	Run actions/download-artifact@v4	2026-09-29T11:59:12.5608027Z Preparing to download the following artifacts:
+deploy	Run actions/download-artifact@v4	2026-09-29T11:59:12.5609605Z - image (ID: 11030998536, Size: 49304697, Expected Digest: sha256:b88b28476453e3195b4ffa3dae4ef69bd93eb5c2f1e8c1d493ce1cdd5ce530cb)
+deploy	Run actions/download-artifact@v4	2026-09-29T11:59:12.8302659Z Redirecting to blob download url: https://productionresultssa8.blob.core.windows.net/actions-results/9045492c-22af-443c-99b9-f2806fc4949b/workflow-job-run-6d8b5262-1ad9-57b6-8ec2-dc710f6a9780/artifacts/6105d6cc76af400325e94d588ce511be5bfdbb73b437dc51eca43917d7a43e3d.zip
+deploy	Run actions/download-artifact@v4	2026-09-29T11:59:12.8309496Z Starting download of artifact to: /tmp
+deploy	Run actions/download-artifact@v4	2026-09-29T11:59:13.1805365Z (node:2113) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+deploy	Run actions/download-artifact@v4	2026-09-29T11:59:17.0408824Z SHA256 digest of downloaded artifact is b88b28476453e3195b4ffa3dae4ef69bd93eb5c2f1e8c1d493ce1cdd5ce530cb
+deploy	Run actions/download-artifact@v4	2026-09-29T11:59:17.0410374Z Artifact download completed successfully.
+deploy	Run actions/download-artifact@v4	2026-09-29T11:59:17.0411194Z Total of 1 artifact(s) downloaded
+deploy	Run actions/download-artifact@v4	2026-09-29T11:59:17.0423107Z Download artifact has finished successfully
+deploy	Load the image that passed every gate	﻿2026-09-29T11:59:17.0616072Z ##[group]Run docker load --input /tmp/image.tgz
+deploy	Load the image that passed every gate	2026-09-29T11:59:17.0617006Z ^[[36;1mdocker load --input /tmp/image.tgz^[[0m
+deploy	Load the image that passed every gate	2026-09-29T11:59:17.0835816Z shell: /usr/bin/bash -e {0}
+deploy	Load the image that passed every gate	2026-09-29T11:59:17.0836375Z env:
+deploy	Load the image that passed every gate	2026-09-29T11:59:17.0836969Z   IMAGE_NAME: bcssl-demo-app
+deploy	Load the image that passed every gate	2026-09-29T11:59:17.0837446Z ##[endgroup]
+deploy	Load the image that passed every gate	2026-09-29T11:59:27.9151193Z Loaded image: bcssl-demo-app:3c4ee7a4d6bb2a62bb4abe88d643bcb87dbc3690
+deploy	Log in to GitHub Container Registry	﻿2026-09-29T11:59:27.9399650Z ##[group]Run echo "***" \
+deploy	Log in to GitHub Container Registry	2026-09-29T11:59:27.9402362Z ^[[36;1mecho "***" \^[[0m
+deploy	Log in to GitHub Container Registry	2026-09-29T11:59:27.9402857Z ^[[36;1m  | docker login ghcr.io -u "venkatvellapalem" --password-stdin^[[0m
+deploy	Log in to GitHub Container Registry	2026-09-29T11:59:27.9446213Z shell: /usr/bin/bash -e {0}
+deploy	Log in to GitHub Container Registry	2026-09-29T11:59:27.9446753Z env:
+deploy	Log in to GitHub Container Registry	2026-09-29T11:59:27.9447075Z   IMAGE_NAME: bcssl-demo-app
+deploy	Log in to GitHub Container Registry	2026-09-29T11:59:27.9447471Z ##[endgroup]
+deploy	Log in to GitHub Container Registry	2026-09-29T11:59:28.3572660Z 
+deploy	Log in to GitHub Container Registry	2026-09-29T11:59:28.3573727Z WARNING! Your credentials are stored unencrypted in '/home/runner/.docker/config.json'.
+deploy	Log in to GitHub Container Registry	2026-09-29T11:59:28.3574330Z Login Succeeded
+deploy	Log in to GitHub Container Registry	2026-09-29T11:59:28.3574829Z Configure a credential helper to remove this warning. See
+deploy	Log in to GitHub Container Registry	2026-09-29T11:59:28.3575353Z https://docs.docker.com/go/credential-store/
+deploy	Log in to GitHub Container Registry	2026-09-29T11:59:28.3575624Z 
+deploy	Tag and push	﻿2026-09-29T11:59:28.3659421Z ##[group]Run # GHCR paths must be lowercase. github.repository preserves the case
+deploy	Tag and push	2026-09-29T11:59:28.3660601Z ^[[36;1m# GHCR paths must be lowercase. github.repository preserves the case^[[0m
+deploy	Tag and push	2026-09-29T11:59:28.3661785Z ^[[36;1m# of the repo name (DevSecOps), and docker rejects it outright with^[[0m
+deploy	Tag and push	2026-09-29T11:59:28.3662721Z ^[[36;1m# "repository name must be lowercase".^[[0m
+deploy	Tag and push	2026-09-29T11:59:28.3663393Z ^[[36;1mREGISTRY="ghcr.io/${GITHUB_REPOSITORY,,}"^[[0m
+deploy	Tag and push	2026-09-29T11:59:28.3664031Z ^[[36;1mSHA="${GITHUB_SHA}"^[[0m
+deploy	Tag and push	2026-09-29T11:59:28.3664580Z ^[[36;1m^[[0m
+deploy	Tag and push	2026-09-29T11:59:28.3665106Z ^[[36;1mdocker tag "${IMAGE_NAME}:${SHA}" "${REGISTRY}:${SHA}"^[[0m
+deploy	Tag and push	2026-09-29T11:59:28.3665936Z ^[[36;1mdocker tag "${IMAGE_NAME}:${SHA}" "${REGISTRY}:latest"^[[0m
+deploy	Tag and push	2026-09-29T11:59:28.3666555Z ^[[36;1m^[[0m
+deploy	Tag and push	2026-09-29T11:59:28.3667067Z ^[[36;1mdocker push "${REGISTRY}:${SHA}"^[[0m
+deploy	Tag and push	2026-09-29T11:59:28.3667652Z ^[[36;1mdocker push "${REGISTRY}:latest"^[[0m
+deploy	Tag and push	2026-09-29T11:59:28.3668132Z ^[[36;1m^[[0m
+deploy	Tag and push	2026-09-29T11:59:28.3668679Z ^[[36;1mecho "### Pushed" >> "$GITHUB_STEP_SUMMARY"^[[0m
+deploy	Tag and push	2026-09-29T11:59:28.3669503Z ^[[36;1mecho "\`${REGISTRY}:${SHA}\`" >> "$GITHUB_STEP_SUMMARY"^[[0m
+deploy	Tag and push	2026-09-29T11:59:28.3733960Z shell: /usr/bin/bash -e {0}
+deploy	Tag and push	2026-09-29T11:59:28.3734645Z env:
+deploy	Tag and push	2026-09-29T11:59:28.3735107Z   IMAGE_NAME: bcssl-demo-app
+deploy	Tag and push	2026-09-29T11:59:28.3735621Z ##[endgroup]
+deploy	Tag and push	2026-09-29T11:59:28.4466803Z The push refers to repository [ghcr.io/venkatvellapalem/devsecops]
+deploy	Tag and push	2026-09-29T11:59:28.5469711Z a1211dc4d6d6: Preparing
+deploy	Tag and push	2026-09-29T11:59:28.5470277Z 183f52b560d7: Preparing
+deploy	Tag and push	2026-09-29T11:59:28.5470621Z 35b77fa30456: Preparing
+deploy	Tag and push	2026-09-29T11:59:28.5471163Z dacd9a04841d: Preparing
+deploy	Tag and push	2026-09-29T11:59:28.5471656Z 2e7ba933010d: Preparing
+deploy	Tag and push	2026-09-29T11:59:28.5472145Z 678205e98017: Preparing
+deploy	Tag and push	2026-09-29T11:59:28.5472556Z d190d09d7bd9: Preparing
+deploy	Tag and push	2026-09-29T11:59:28.5472941Z 4a01ba3ac604: Preparing
+deploy	Tag and push	2026-09-29T11:59:28.5473337Z a5c84380b365: Preparing
+deploy	Tag and push	2026-09-29T11:59:28.5473645Z a6dc765193a5: Preparing
+deploy	Tag and push	2026-09-29T11:59:28.5473958Z 678205e98017: Waiting
+deploy	Tag and push	2026-09-29T11:59:28.5474309Z d190d09d7bd9: Waiting
+deploy	Tag and push	2026-09-29T11:59:28.5474695Z 4a01ba3ac604: Waiting
+deploy	Tag and push	2026-09-29T11:59:28.5475154Z a5c84380b365: Waiting
+deploy	Tag and push	2026-09-29T11:59:28.5475504Z a6dc765193a5: Waiting
+deploy	Tag and push	2026-09-29T11:59:30.3238542Z a1211dc4d6d6: Pushed
+deploy	Tag and push	2026-09-29T11:59:30.3255899Z dacd9a04841d: Pushed
+deploy	Tag and push	2026-09-29T11:59:30.3874249Z 183f52b560d7: Pushed
+deploy	Tag and push	2026-09-29T11:59:30.4884713Z 2e7ba933010d: Pushed
+deploy	Tag and push	2026-09-29T11:59:30.5708530Z 35b77fa30456: Pushed
+deploy	Tag and push	2026-09-29T11:59:31.5496991Z d190d09d7bd9: Pushed
+deploy	Tag and push	2026-09-29T11:59:31.6230507Z a5c84380b365: Pushed
+deploy	Tag and push	2026-09-29T11:59:31.8713604Z 678205e98017: Pushed
+deploy	Tag and push	2026-09-29T11:59:33.3566787Z 4a01ba3ac604: Pushed
+deploy	Tag and push	2026-09-29T11:59:35.1813841Z a6dc765193a5: Pushed
+deploy	Tag and push	2026-09-29T11:59:37.4026637Z 3c4ee7a4d6bb2a62bb4abe88d643bcb87dbc3690: digest: sha256:0a8d320d7c58529fd87a6ecdaae2d956afbe55432e68cd013b2748de6c8d575f size: 2409
+deploy	Tag and push	2026-09-29T11:59:37.4475329Z The push refers to repository [ghcr.io/venkatvellapalem/devsecops]
+deploy	Tag and push	2026-09-29T11:59:37.5397976Z a1211dc4d6d6: Preparing
+deploy	Tag and push	2026-09-29T11:59:37.5398722Z 183f52b560d7: Preparing
+deploy	Tag and push	2026-09-29T11:59:37.5399686Z 35b77fa30456: Preparing
+deploy	Tag and push	2026-09-29T11:59:37.5402485Z dacd9a04841d: Preparing
+deploy	Tag and push	2026-09-29T11:59:37.5402964Z 2e7ba933010d: Preparing
+deploy	Tag and push	2026-09-29T11:59:37.5403433Z 678205e98017: Preparing
+deploy	Tag and push	2026-09-29T11:59:37.5403752Z d190d09d7bd9: Preparing
+deploy	Tag and push	2026-09-29T11:59:37.5404074Z 4a01ba3ac604: Preparing
+deploy	Tag and push	2026-09-29T11:59:37.5404404Z a5c84380b365: Preparing
+deploy	Tag and push	2026-09-29T11:59:37.5404769Z a6dc765193a5: Preparing
+deploy	Tag and push	2026-09-29T11:59:37.5405080Z d190d09d7bd9: Waiting
+deploy	Tag and push	2026-09-29T11:59:37.5405383Z 678205e98017: Waiting
+deploy	Tag and push	2026-09-29T11:59:37.5405689Z 4a01ba3ac604: Waiting
+deploy	Tag and push	2026-09-29T11:59:37.5406033Z a5c84380b365: Waiting
+deploy	Tag and push	2026-09-29T11:59:37.5406353Z a6dc765193a5: Waiting
+deploy	Tag and push	2026-09-29T11:59:37.7932603Z 2e7ba933010d: Layer already exists
+deploy	Tag and push	2026-09-29T11:59:37.7944842Z 35b77fa30456: Layer already exists
+deploy	Tag and push	2026-09-29T11:59:37.7945842Z 183f52b560d7: Layer already exists
+deploy	Tag and push	2026-09-29T11:59:37.7971332Z a1211dc4d6d6: Layer already exists
+deploy	Tag and push	2026-09-29T11:59:37.8044307Z dacd9a04841d: Layer already exists
+deploy	Tag and push	2026-09-29T11:59:37.8873637Z a5c84380b365: Layer already exists
+deploy	Tag and push	2026-09-29T11:59:37.8995362Z d190d09d7bd9: Layer already exists
+deploy	Tag and push	2026-09-29T11:59:37.9008350Z 678205e98017: Layer already exists
+deploy	Tag and push	2026-09-29T11:59:37.9054364Z 4a01ba3ac604: Layer already exists
+deploy	Tag and push	2026-09-29T11:59:37.9079864Z a6dc765193a5: Layer already exists
+deploy	Tag and push	2026-09-29T11:59:38.4181339Z latest: digest: sha256:0a8d320d7c58529fd87a6ecdaae2d956afbe55432e68cd013b2748de6c8d575f size: 2409
+deploy	Complete job	﻿2026-09-29T11:59:38.4322693Z Cleaning up orphan processes
+deploy	Complete job	2026-09-29T11:59:38.4597553Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/download-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

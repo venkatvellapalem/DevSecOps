@@ -1,0 +1,350 @@
+image-scan	Set up job	﻿2026-09-29T11:58:30.0550636Z Current runner version: '2.337.0'
+image-scan	Set up job	2026-09-29T11:58:30.0570976Z ##[group]Runner Image Provisioner
+image-scan	Set up job	2026-09-29T11:58:30.0571842Z Hosted Compute Agent
+image-scan	Set up job	2026-09-29T11:58:30.0572359Z Version: 20260828.587
+image-scan	Set up job	2026-09-29T11:58:30.0572934Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+image-scan	Set up job	2026-09-29T11:58:30.0573549Z Build Date: 2026-08-28T16:44:25Z
+image-scan	Set up job	2026-09-29T11:58:30.0574173Z Worker ID: {acd7011a-3d82-4d64-ac95-fb7ac66096b9}
+image-scan	Set up job	2026-09-29T11:58:30.0574782Z Azure Region: westus3
+image-scan	Set up job	2026-09-29T11:58:30.0575245Z ##[endgroup]
+image-scan	Set up job	2026-09-29T11:58:30.0576719Z ##[group]Operating System
+image-scan	Set up job	2026-09-29T11:58:30.0577287Z Ubuntu
+image-scan	Set up job	2026-09-29T11:58:30.0577733Z 24.04.5
+image-scan	Set up job	2026-09-29T11:58:30.0578191Z LTS
+image-scan	Set up job	2026-09-29T11:58:30.0578615Z ##[endgroup]
+image-scan	Set up job	2026-09-29T11:58:30.0579085Z ##[group]Runner Image
+image-scan	Set up job	2026-09-29T11:58:30.0579613Z Image: ubuntu-24.04
+image-scan	Set up job	2026-09-29T11:58:30.0580076Z Version: 20260920.314.1
+image-scan	Set up job	2026-09-29T11:58:30.0580966Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+image-scan	Set up job	2026-09-29T11:58:30.0582365Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+image-scan	Set up job	2026-09-29T11:58:30.0583180Z ##[endgroup]
+image-scan	Set up job	2026-09-29T11:58:30.0584422Z ##[group]GITHUB_TOKEN Permissions
+image-scan	Set up job	2026-09-29T11:58:30.0586328Z Contents: read
+image-scan	Set up job	2026-09-29T11:58:30.0587241Z Metadata: read
+image-scan	Set up job	2026-09-29T11:58:30.0587735Z ##[endgroup]
+image-scan	Set up job	2026-09-29T11:58:30.0589426Z Secret source: Actions
+image-scan	Set up job	2026-09-29T11:58:30.0590267Z Cache mode: write
+image-scan	Set up job	2026-09-29T11:58:30.0590825Z Prepare workflow directory
+image-scan	Set up job	2026-09-29T11:58:30.0899662Z Prepare all required actions
+image-scan	Set up job	2026-09-29T11:58:30.0956820Z Getting action download info
+image-scan	Set up job	2026-09-29T11:58:30.4604381Z Download action repository 'actions/download-artifact@v4' (SHA:d3f86a106a0bac45b974a628896c90dbdf5c8093)
+image-scan	Set up job	2026-09-29T11:58:31.6592956Z Download action repository 'aquasecurity/trivy-action@v0.36.0' (SHA:ed142fd0673e97e23eac54620cfb913e5ce36c25)
+image-scan	Set up job	2026-09-29T11:58:32.3127929Z Getting action download info
+image-scan	Set up job	2026-09-29T11:58:32.4494587Z Download action repository 'aquasecurity/setup-trivy@3fb12ec12f41e471780db15c232d5dd185dcb514' (SHA:3fb12ec12f41e471780db15c232d5dd185dcb514)
+image-scan	Set up job	2026-09-29T11:58:32.6712347Z Download action repository 'actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae' (SHA:27d5ce7f107fe9357f9df03efb73ab90386fccae)
+image-scan	Set up job	2026-09-29T11:58:32.8428684Z Getting action download info
+image-scan	Set up job	2026-09-29T11:58:32.9700086Z Download action repository 'actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb' (SHA:9255dc7a253b0ccc959486e2bca901246202afeb)
+image-scan	Set up job	2026-09-29T11:58:33.2052607Z Download action repository 'actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8' (SHA:8e8c483db84b4bee98b60c0593521ed34d9990e8)
+image-scan	Set up job	2026-09-29T11:58:33.3183548Z Complete job name: image-scan
+image-scan	Run actions/download-artifact@v4	﻿2026-09-29T11:58:33.3671116Z ##[group]Run actions/download-artifact@v4
+image-scan	Run actions/download-artifact@v4	2026-09-29T11:58:33.3671705Z with:
+image-scan	Run actions/download-artifact@v4	2026-09-29T11:58:33.3672015Z   name: image
+image-scan	Run actions/download-artifact@v4	2026-09-29T11:58:33.3672286Z   path: /tmp
+image-scan	Run actions/download-artifact@v4	2026-09-29T11:58:33.3672568Z   merge-multiple: false
+image-scan	Run actions/download-artifact@v4	2026-09-29T11:58:33.3672877Z   repository: venkatvellapalem/DevSecOps
+image-scan	Run actions/download-artifact@v4	2026-09-29T11:58:33.3673269Z   run-id: 36565013983
+image-scan	Run actions/download-artifact@v4	2026-09-29T11:58:33.3673662Z env:
+image-scan	Run actions/download-artifact@v4	2026-09-29T11:58:33.3673928Z   IMAGE_NAME: bcssl-demo-app
+image-scan	Run actions/download-artifact@v4	2026-09-29T11:58:33.3674234Z ##[endgroup]
+image-scan	Run actions/download-artifact@v4	2026-09-29T11:58:33.5065249Z Downloading single artifact
+image-scan	Run actions/download-artifact@v4	2026-09-29T11:58:33.5191033Z (node:1924) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+image-scan	Run actions/download-artifact@v4	2026-09-29T11:58:33.5192127Z (Use `node --trace-deprecation ...` to show where the warning was created)
+image-scan	Run actions/download-artifact@v4	2026-09-29T11:58:33.7898370Z Preparing to download the following artifacts:
+image-scan	Run actions/download-artifact@v4	2026-09-29T11:58:33.7899536Z - image (ID: 11030998536, Size: 49304697, Expected Digest: sha256:b88b28476453e3195b4ffa3dae4ef69bd93eb5c2f1e8c1d493ce1cdd5ce530cb)
+image-scan	Run actions/download-artifact@v4	2026-09-29T11:58:33.9912947Z Redirecting to blob download url: https://productionresultssa8.blob.core.windows.net/actions-results/9045492c-22af-443c-99b9-f2806fc4949b/workflow-job-run-6d8b5262-1ad9-57b6-8ec2-dc710f6a9780/artifacts/6105d6cc76af400325e94d588ce511be5bfdbb73b437dc51eca43917d7a43e3d.zip
+image-scan	Run actions/download-artifact@v4	2026-09-29T11:58:33.9915342Z Starting download of artifact to: /tmp
+image-scan	Run actions/download-artifact@v4	2026-09-29T11:58:34.2874569Z (node:1924) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+image-scan	Run actions/download-artifact@v4	2026-09-29T11:58:36.1770317Z SHA256 digest of downloaded artifact is b88b28476453e3195b4ffa3dae4ef69bd93eb5c2f1e8c1d493ce1cdd5ce530cb
+image-scan	Run actions/download-artifact@v4	2026-09-29T11:58:36.1771059Z Artifact download completed successfully.
+image-scan	Run actions/download-artifact@v4	2026-09-29T11:58:36.1771635Z Total of 1 artifact(s) downloaded
+image-scan	Run actions/download-artifact@v4	2026-09-29T11:58:36.1778656Z Download artifact has finished successfully
+image-scan	Load image	﻿2026-09-29T11:58:36.1947955Z ##[group]Run docker load --input /tmp/image.tgz
+image-scan	Load image	2026-09-29T11:58:36.1948453Z ^[[36;1mdocker load --input /tmp/image.tgz^[[0m
+image-scan	Load image	2026-09-29T11:58:36.2166127Z shell: /usr/bin/bash -e {0}
+image-scan	Load image	2026-09-29T11:58:36.2166970Z env:
+image-scan	Load image	2026-09-29T11:58:36.2167258Z   IMAGE_NAME: bcssl-demo-app
+image-scan	Load image	2026-09-29T11:58:36.2167571Z ##[endgroup]
+image-scan	Load image	2026-09-29T11:58:45.1313855Z Loaded image: bcssl-demo-app:3c4ee7a4d6bb2a62bb4abe88d643bcb87dbc3690
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	﻿2026-09-29T11:58:45.1673317Z ##[group]Run aquasecurity/trivy-action@v0.36.0
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1673722Z with:
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1674078Z   image-ref: bcssl-demo-app:3c4ee7a4d6bb2a62bb4abe88d643bcb87dbc3690
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1674495Z   severity: CRITICAL,HIGH
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1674839Z   ignore-unfixed: true
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1675122Z   format: table
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1675394Z   exit-code: 1
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1675684Z   scan-type: image
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1675965Z   scan-ref: .
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1676239Z   vuln-type: os,library
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1676785Z   cache-dir: /home/runner/work/DevSecOps/DevSecOps/.cache/trivy
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1677222Z   list-all-pkgs: false
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1677498Z   version: v0.70.0
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1677781Z   cache: true
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1678055Z   skip-setup-trivy: false
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1680142Z   token-setup-trivy: ***
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1680445Z env:
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1680738Z   IMAGE_NAME: bcssl-demo-app
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1681077Z ##[endgroup]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1740535Z ##[start-action display=Install Trivy;id=__aquasecurity_trivy-action.__aquasecurity_setup-trivy]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1828696Z ##[group]Run aquasecurity/setup-trivy@3fb12ec12f41e471780db15c232d5dd185dcb514
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1829150Z with:
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1829452Z   version: v0.70.0
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1829760Z   cache: true
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1831758Z   token: ***
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1832034Z   path: $HOME/.local/bin
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1832355Z   github-server-url: https://github.com
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1832680Z env:
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1832954Z   IMAGE_NAME: bcssl-demo-app
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1833293Z ##[endgroup]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1841061Z ##[start-action display=Binary dir;id=__aquasecurity_trivy-action.__aquasecurity_setup-trivy.binary-dir]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1857397Z ##[group]Run echo "dir=$HOME/.local/bin/trivy-bin" >> $GITHUB_OUTPUT
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1858010Z ^[[36;1mecho "dir=$HOME/.local/bin/trivy-bin" >> $GITHUB_OUTPUT^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1894835Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1895301Z env:
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1895909Z   IMAGE_NAME: bcssl-demo-app
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1896347Z ##[endgroup]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1972737Z ##[end-action id=__aquasecurity_trivy-action.__aquasecurity_setup-trivy.binary-dir;outcome=success;conclusion=success;duration_ms=13]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1977578Z ##[start-action display=Check the version for caching;id=__aquasecurity_trivy-action.__aquasecurity_setup-trivy.__run]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1984567Z ##[end-action id=__aquasecurity_trivy-action.__aquasecurity_setup-trivy.__run;outcome=skipped;conclusion=skipped;duration_ms=0]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.1987019Z ##[start-action display=Restore Trivy binary from cache;id=__aquasecurity_trivy-action.__aquasecurity_setup-trivy.cache]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.2025354Z ##[group]Run actions/cache/restore@9255dc7a253b0ccc959486e2bca901246202afeb
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.2025769Z with:
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.2026037Z   path: /home/runner/.local/bin/trivy-bin
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.2026762Z   key: trivy-binary-v0.70.0-Linux-X64
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.2027195Z   enableCrossOsArchive: false
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.2027519Z   fail-on-cache-miss: false
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.2027818Z   lookup-only: false
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.2028119Z env:
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.2028384Z   IMAGE_NAME: bcssl-demo-app
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.2028694Z ##[endgroup]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:45.5336141Z Cache hit for: trivy-binary-v0.70.0-Linux-X64
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.7240858Z Received 43751169 of 43751169 (100.0%), 43.5 MBs/sec
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.7241474Z Cache Size: ~42 MB (43751169 B)
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.7266937Z [command]/usr/bin/tar -xf /home/runner/work/_temp/97be9022-f9af-4848-bae3-f147976f60f7/cache.tzst -P -C /home/runner/work/DevSecOps/DevSecOps --use-compress-program unzstd
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9123226Z Cache restored successfully
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9207872Z Cache restored from key: trivy-binary-v0.70.0-Linux-X64
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9264571Z ##[end-action id=__aquasecurity_trivy-action.__aquasecurity_setup-trivy.cache;outcome=success;conclusion=success;duration_ms=1727]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9270125Z ##[start-action display=Checkout install script;id=__aquasecurity_trivy-action.__aquasecurity_setup-trivy.__actions_checkout]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9281121Z ##[end-action id=__aquasecurity_trivy-action.__aquasecurity_setup-trivy.__actions_checkout;outcome=skipped;conclusion=skipped;duration_ms=0]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9285148Z ##[start-action display=Install Trivy;id=__aquasecurity_trivy-action.__aquasecurity_setup-trivy.__run_2]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9295678Z ##[end-action id=__aquasecurity_trivy-action.__aquasecurity_setup-trivy.__run_2;outcome=skipped;conclusion=skipped;duration_ms=0]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9299513Z ##[start-action display=Add Trivy binary to $GITHUB_PATH;id=__aquasecurity_trivy-action.__aquasecurity_setup-trivy.__run_3]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9323211Z ##[group]Run echo /home/runner/.local/bin/trivy-bin >> $GITHUB_PATH
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9323762Z ^[[36;1mecho /home/runner/.local/bin/trivy-bin >> $GITHUB_PATH^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9358747Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9359232Z env:
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9359514Z   IMAGE_NAME: bcssl-demo-app
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9359820Z ##[endgroup]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9416897Z ##[end-action id=__aquasecurity_trivy-action.__aquasecurity_setup-trivy.__run_3;outcome=success;conclusion=success;duration_ms=11]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9419573Z ##[start-action display=Save Trivy binary to cache;id=__aquasecurity_trivy-action.__aquasecurity_setup-trivy.__actions_cache]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9429155Z ##[end-action id=__aquasecurity_trivy-action.__aquasecurity_setup-trivy.__actions_cache;outcome=skipped;conclusion=skipped;duration_ms=0]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9440153Z ##[end-action id=__aquasecurity_trivy-action.__aquasecurity_setup-trivy;outcome=success;conclusion=success;duration_ms=1769]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9442570Z ##[start-action display=Get current date;id=__aquasecurity_trivy-action.date]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9459184Z ##[group]Run echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9459685Z ^[[36;1mecho "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9489751Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9490191Z env:
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9490461Z   IMAGE_NAME: bcssl-demo-app
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9490802Z ##[endgroup]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9553581Z ##[end-action id=__aquasecurity_trivy-action.date;outcome=success;conclusion=success;duration_ms=11]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9555875Z ##[start-action display=Restore DB from cache;id=__aquasecurity_trivy-action.__actions_cache]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9595859Z ##[group]Run actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9596484Z with:
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9597172Z   path: /home/runner/work/DevSecOps/DevSecOps/.cache/trivy
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9597686Z   key: cache-trivy-2026-09-29
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9598040Z   restore-keys: cache-trivy-
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9598398Z   enableCrossOsArchive: false
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9599006Z   fail-on-cache-miss: false
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9599352Z   lookup-only: false
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9599713Z   save-always: false
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9599999Z env:
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9600336Z   IMAGE_NAME: bcssl-demo-app
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:46.9600715Z ##[endgroup]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.2781561Z Cache not found for input keys: cache-trivy-2026-09-29, cache-trivy-
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.2825694Z ##[end-action id=__aquasecurity_trivy-action.__actions_cache;outcome=success;conclusion=success;duration_ms=326]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.2830395Z ##[start-action display=Set GitHub Path;id=__aquasecurity_trivy-action.__run]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.2848955Z ##[group]Run echo "$GITHUB_ACTION_PATH" >> $GITHUB_PATH
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.2849449Z ^[[36;1mecho "$GITHUB_ACTION_PATH" >> $GITHUB_PATH^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.2884631Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.2885056Z env:
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.2885358Z   IMAGE_NAME: bcssl-demo-app
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.2885889Z   GITHUB_ACTION_PATH: /home/runner/work/_actions/aquasecurity/trivy-action/v0.36.0
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.2886660Z ##[endgroup]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.2947365Z ##[end-action id=__aquasecurity_trivy-action.__run;outcome=success;conclusion=success;duration_ms=11]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.2949897Z ##[start-action display=Clear Trivy Envs file;id=__aquasecurity_trivy-action.__run_2]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.2966694Z ##[group]Run rm -f trivy_envs.txt
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.2967079Z ^[[36;1mrm -f trivy_envs.txt^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.2967414Z ^[[36;1mtouch trivy_envs.txt^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.2994284Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.2994755Z env:
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.2995062Z   IMAGE_NAME: bcssl-demo-app
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.2995739Z ##[endgroup]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3062695Z ##[end-action id=__aquasecurity_trivy-action.__run_2;outcome=success;conclusion=success;duration_ms=11]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3068444Z ##[start-action display=Set Trivy environment variables;id=__aquasecurity_trivy-action.__run_3]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3085038Z ##[group]Run # Note: There is currently no way to distinguish between undefined variables and empty strings in GitHub Actions.
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3085971Z ^[[36;1m# Note: There is currently no way to distinguish between undefined variables and empty strings in GitHub Actions.^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3086777Z ^[[36;1m# This limitation affects how we handle default values and empty inputs.^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3087363Z ^[[36;1m# For more information, see: https://github.com/actions/runner/issues/924^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3087770Z ^[[36;1m^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3088214Z ^[[36;1m# The following logic implements the configuration priority described in the README:^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3088695Z ^[[36;1m#^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3088982Z ^[[36;1m# Inputs^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3089301Z ^[[36;1m# Environment Variables^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3089624Z ^[[36;1m# Config File^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3089949Z ^[[36;1m# Defaults^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3090233Z ^[[36;1m#^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3090668Z ^[[36;1m# As noted above defaults are awkward to handle as GitHub Actions will inject those values as the input^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3091349Z ^[[36;1m# if the caller doesn't provide them, thus if the input matches the default we don't set it as we^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3091967Z ^[[36;1m# can't tell the difference.  Plus if we did set it when it was the default value then it could potentially^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3092715Z ^[[36;1m# override an external environment variable, or something in the callers configuration file, which then wouldn't^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3093269Z ^[[36;1m# match the configuration priority that is documented.^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3093691Z ^[[36;1mset_env_var_if_provided() {^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3094011Z ^[[36;1m  local var_name="$1"^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3094402Z ^[[36;1m  local input_value="$2"^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3094753Z ^[[36;1m  local default_value="$3"^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3095052Z ^[[36;1m^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3095438Z ^[[36;1m  if [ -n "$input_value" ] && [ "$input_value" != "$default_value" ]; then^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3096045Z ^[[36;1m    # If action was provided with explicit input by the caller set that^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3096790Z ^[[36;1m    # Use printf %q to safely escape special characters and prevent command injection^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3097425Z ^[[36;1m    printf 'export %s=%q\n' "$var_name" "$input_value" >> trivy_envs.txt^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3097851Z ^[[36;1m  fi^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3098118Z ^[[36;1m}^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3098371Z ^[[36;1m^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3098786Z ^[[36;1m# Set environment variables, handling those with default values^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3099347Z ^[[36;1m# cf. https://aquasecurity.github.io/trivy/latest/docs/configuration/#environment-variables^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3099970Z ^[[36;1mset_env_var_if_provided "TRIVY_INPUT" "$INPUT_INPUT" ""^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3100415Z ^[[36;1mset_env_var_if_provided "TRIVY_EXIT_CODE" "$INPUT_EXIT_CODE" ""^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3100890Z ^[[36;1mset_env_var_if_provided "TRIVY_IGNORE_UNFIXED" "$INPUT_IGNORE_UNFIXED" "false"^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3101573Z ^[[36;1mset_env_var_if_provided "TRIVY_PKG_TYPES" "$INPUT_VULN_TYPE" "os,library"^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3102137Z ^[[36;1mset_env_var_if_provided "TRIVY_SEVERITY" "$INPUT_SEVERITY" "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL"^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3102686Z ^[[36;1mset_env_var_if_provided "TRIVY_FORMAT" "$INPUT_FORMAT" "table"^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3103114Z ^[[36;1mset_env_var_if_provided "TRIVY_TEMPLATE" "$INPUT_TEMPLATE" ""^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3103602Z ^[[36;1mset_env_var_if_provided "TRIVY_OUTPUT" "$INPUT_OUTPUT" ""^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3104027Z ^[[36;1mset_env_var_if_provided "TRIVY_SKIP_DIRS" "$INPUT_SKIP_DIRS" ""^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3104511Z ^[[36;1mset_env_var_if_provided "TRIVY_SKIP_FILES" "$INPUT_SKIP_FILES" ""^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3104959Z ^[[36;1mset_env_var_if_provided "TRIVY_TIMEOUT" "$INPUT_TIMEOUT" ""^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3105428Z ^[[36;1mset_env_var_if_provided "TRIVY_IGNORE_POLICY" "$INPUT_IGNORE_POLICY" ""^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3105930Z ^[[36;1mset_env_var_if_provided "TRIVY_QUIET" "$INPUT_HIDE_PROGRESS" ""^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3106813Z ^[[36;1mset_env_var_if_provided "TRIVY_LIST_ALL_PKGS" "$INPUT_LIST_ALL_PKGS" "false"^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3107318Z ^[[36;1mset_env_var_if_provided "TRIVY_SCANNERS" "$INPUT_SCANNERS" ""^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3107750Z ^[[36;1mset_env_var_if_provided "TRIVY_CONFIG" "$INPUT_TRIVY_CONFIG" ""^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3108230Z ^[[36;1mset_env_var_if_provided "TRIVY_TF_VARS" "$INPUT_TF_VARS" ""^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3108677Z ^[[36;1mset_env_var_if_provided "TRIVY_DOCKER_HOST" "$INPUT_DOCKER_HOST" ""^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3134859Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3135257Z env:
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3135701Z   IMAGE_NAME: bcssl-demo-app
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3136029Z   INPUT_INPUT: 
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3136452Z   INPUT_EXIT_CODE: 1
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3136812Z   INPUT_IGNORE_UNFIXED: true
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3137099Z   INPUT_VULN_TYPE: os,library
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3137480Z   INPUT_SEVERITY: CRITICAL,HIGH
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3137815Z   INPUT_FORMAT: table
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3138135Z   INPUT_TEMPLATE: 
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3138409Z   INPUT_OUTPUT: 
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3138677Z   INPUT_SKIP_DIRS: 
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3139007Z   INPUT_SKIP_FILES: 
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3139263Z   INPUT_TIMEOUT: 
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3139580Z   INPUT_IGNORE_POLICY: 
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3139865Z   INPUT_HIDE_PROGRESS: 
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3140163Z   INPUT_LIST_ALL_PKGS: false
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3140508Z   INPUT_SCANNERS: 
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3140773Z   INPUT_TRIVY_CONFIG: 
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3141057Z   INPUT_TF_VARS: 
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3141341Z   INPUT_DOCKER_HOST: 
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3141634Z ##[endgroup]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3197043Z ##[end-action id=__aquasecurity_trivy-action.__run_3;outcome=success;conclusion=success;duration_ms=12]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3201271Z ##[start-action display=Run Trivy;id=__aquasecurity_trivy-action.__run_4]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3218366Z ##[group]Run entrypoint.sh
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3218738Z ^[[36;1mentrypoint.sh^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3246558Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3247089Z env:
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3247391Z   IMAGE_NAME: bcssl-demo-app
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3247746Z   INPUT_SCAN_TYPE: image
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3248253Z   INPUT_IMAGE_REF: bcssl-demo-app:3c4ee7a4d6bb2a62bb4abe88d643bcb87dbc3690
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3248684Z   INPUT_SCAN_REF: .
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3249055Z   INPUT_TRIVYIGNORES: 
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3249372Z   INPUT_GITHUB_PAT: 
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3249731Z   INPUT_LIMIT_SEVERITIES_FOR_SARIF: 
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3250196Z   TRIVY_CACHE_DIR: /home/runner/work/DevSecOps/DevSecOps/.cache/trivy
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3250607Z ##[endgroup]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3318223Z Running Trivy with options: trivy image bcssl-demo-app:3c4ee7a4d6bb2a62bb4abe88d643bcb87dbc3690
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3784959Z 2026-09-29T11:58:47Z	INFO	[vulndb] Need to update DB
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3785594Z 2026-09-29T11:58:47Z	INFO	[vulndb] Downloading vulnerability DB...
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:47.3787048Z 2026-09-29T11:58:47Z	INFO	[vulndb] Downloading artifact...	repo="mirror.gcr.io/aquasec/trivy-db:2"
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:52.2462848Z 22.86 MiB / 118.00 MiB [----------->________________________________________________] 19.37% ? p/s ?79.37 MiB / 118.00 MiB [---------------------------------------->___________________] 67.26% ? p/s ?118.00 MiB / 118.00 MiB [--------------------------------------------------------->] 100.00% ? p/s ?118.00 MiB / 118.00 MiB [------------------------------------------->] 100.00% 158.49 MiB p/s ETA 0s118.00 MiB / 118.00 MiB [------------------------------------------->] 100.00% 158.49 MiB p/s ETA 0s118.00 MiB / 118.00 MiB [------------------------------------------->] 100.00% 158.49 MiB p/s ETA 0s118.00 MiB / 118.00 MiB [------------------------------------------->] 100.00% 148.26 MiB p/s ETA 0s118.00 MiB / 118.00 MiB [------------------------------------------->] 100.00% 148.26 MiB p/s ETA 0s118.00 MiB / 118.00 MiB [------------------------------------------->] 100.00% 148.26 MiB p/s ETA 0s118.00 MiB / 118.00 MiB [------------------------------------------->] 100.00% 138.70 MiB p/s ETA 0s118.00 MiB / 118.00 MiB [------------------------------------------->] 100.00% 138.70 MiB p/s ETA 0s118.00 MiB / 118.00 MiB [------------------------------------------->] 100.00% 138.70 MiB p/s ETA 0s118.00 MiB / 118.00 MiB [------------------------------------------->] 100.00% 129.75 MiB p/s ETA 0s118.00 MiB / 118.00 MiB [------------------------------------------->] 100.00% 129.75 MiB p/s ETA 0s118.00 MiB / 118.00 MiB [------------------------------------------->] 100.00% 129.75 MiB p/s ETA 0s118.00 MiB / 118.00 MiB [------------------------------------------->] 100.00% 121.38 MiB p/s ETA 0s118.00 MiB / 118.00 MiB [-----------------------------------------------] 100.00% 38.07 MiB p/s 3.3s2026-09-29T11:58:52Z	INFO	[vulndb] Artifact successfully downloaded	repo="mirror.gcr.io/aquasec/trivy-db:2"
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:52.3646699Z 2026-09-29T11:58:52Z	INFO	[vuln] Vulnerability scanning is enabled
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:52.3653724Z 2026-09-29T11:58:52Z	INFO	[secret] Secret scanning is enabled
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:52.3654576Z 2026-09-29T11:58:52Z	INFO	[secret] If your scanning is slow, please try '--scanners vuln' to disable secret scanning
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:58:52.3655647Z 2026-09-29T11:58:52Z	INFO	[secret] Please see https://trivy.dev/docs/v0.70/guide/scanner/secret#recommendation for faster secret detection
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.8417128Z 2026-09-29T11:59:00Z	INFO	[python] Licenses acquired from one or more METADATA files may be subject to additional terms. Use `--debug` flag to see all affected packages.
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9009240Z 2026-09-29T11:59:00Z	INFO	Detected OS	family="debian" version="13.7"
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9010005Z 2026-09-29T11:59:00Z	INFO	[debian] Detecting vulnerabilities...	os_version="13" pkg_num=87
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9078176Z 2026-09-29T11:59:00Z	INFO	Number of language-specific files	num=1
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9079493Z 2026-09-29T11:59:00Z	INFO	[python-pkg] Detecting vulnerabilities...
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9091022Z 2026-09-29T11:59:00Z	WARN	Using severities from other vendors for some vulnerabilities. Read https://trivy.dev/docs/v0.70/guide/scanner/vulnerability#severity-selection for details.
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9250448Z 
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9251227Z 📣 ^[[34mNotices:^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9251860Z   - Version 0.74.0 of Trivy is now available, current version is 0.70.0
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9252214Z 
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9252482Z To suppress version checks, run Trivy scans with the --skip-version-check flag
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9252756Z 
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9252825Z 
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9253092Z Report Summary
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9253337Z 
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9253935Z ┌──────────────────────────────────────────────────────────────────────────────────┬────────────┬─────────────────┬─────────┐
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9256025Z │                                      Target                                      │    Type    │ Vulnerabilities │ Secrets │
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9257307Z ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9258640Z │ bcssl-demo-app:3c4ee7a4d6bb2a62bb4abe88d643bcb87dbc3690 (debian 13.7)            │   debian   │        0        │    -    │
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9259447Z ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9260304Z │ usr/local/lib/python3.11/site-packages/blinker-1.9.0.dist-info/METADATA          │ python-pkg │        0        │    -    │
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9261112Z ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9261867Z │ usr/local/lib/python3.11/site-packages/certifi-2026.7.22.dist-info/METADATA      │ python-pkg │        0        │    -    │
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9262658Z ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9263387Z │ usr/local/lib/python3.11/site-packages/charset_normalizer-3.5.1.dist-info/METAD- │ python-pkg │        0        │    -    │
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9264100Z │ ATA                                                                              │            │                 │         │
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9264782Z ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9265527Z │ usr/local/lib/python3.11/site-packages/click-8.5.0.dist-info/METADATA            │ python-pkg │        0        │    -    │
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9266298Z ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9267116Z │ usr/local/lib/python3.11/site-packages/flask-3.1.3.dist-info/METADATA            │ python-pkg │        0        │    -    │
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9268073Z ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9268751Z │ usr/local/lib/python3.11/site-packages/idna-3.20.dist-info/METADATA              │ python-pkg │        0        │    -    │
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9269621Z ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9270333Z │ usr/local/lib/python3.11/site-packages/itsdangerous-2.2.0.dist-info/METADATA     │ python-pkg │        0        │    -    │
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9271133Z ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9271855Z │ usr/local/lib/python3.11/site-packages/jinja2-3.1.6.dist-info/METADATA           │ python-pkg │        0        │    -    │
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9272698Z ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9273582Z │ usr/local/lib/python3.11/site-packages/markupsafe-3.0.3.dist-info/METADATA       │ python-pkg │        0        │    -    │
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9274392Z ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9275246Z │ usr/local/lib/python3.11/site-packages/packaging-26.3.dist-info/METADATA         │ python-pkg │        0        │    -    │
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9276063Z ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9277092Z │ usr/local/lib/python3.11/site-packages/requests-2.34.2.dist-info/METADATA        │ python-pkg │        0        │    -    │
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9278299Z ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9279282Z │ usr/local/lib/python3.11/site-packages/urllib3-2.8.0.dist-info/METADATA          │ python-pkg │        0        │    -    │
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9280174Z ├──────────────────────────────────────────────────────────────────────────────────┼────────────┼─────────────────┼─────────┤
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9280977Z │ usr/local/lib/python3.11/site-packages/werkzeug-3.1.9.dist-info/METADATA         │ python-pkg │        0        │    -    │
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9281869Z └──────────────────────────────────────────────────────────────────────────────────┴────────────┴─────────────────┴─────────┘
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9282370Z Legend:
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9282667Z - '-': Not scanned
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9282996Z - '0': Clean (no security findings detected)
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9283254Z 
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9288249Z ##[end-action id=__aquasecurity_trivy-action.__run_4;outcome=success;conclusion=success;duration_ms=13608]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9291295Z ##[start-action display=Remove Trivy Envs file;id=__aquasecurity_trivy-action.__run_5]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9311226Z ##[group]Run rm -f trivy_envs.txt
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9311702Z ^[[36;1mrm -f trivy_envs.txt^[[0m
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9348126Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9348608Z env:
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9348966Z   IMAGE_NAME: bcssl-demo-app
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9349288Z ##[endgroup]
+image-scan	Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9417478Z ##[end-action id=__aquasecurity_trivy-action.__run_5;outcome=success;conclusion=success;duration_ms=12]
+image-scan	Post Trivy — fail on fixable CRITICAL/HIGH	﻿2026-09-29T11:59:00.9582496Z Post job cleanup.
+image-scan	Post Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9587186Z ##[start-action display=Restore DB from cache;id=__96b1dba6-b1da-4f5a-892c-e0606def9b96.__actions_cache]
+image-scan	Post Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:00.9619935Z Post job cleanup.
+image-scan	Post Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:01.0809955Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/DevSecOps/DevSecOps --files-from manifest.txt --use-compress-program zstdmt
+image-scan	Post Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:03.5380980Z Sent 33619968 of 87349442 (38.5%), 32.1 MBs/sec
+image-scan	Post Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:04.5389893Z Sent 87349442 of 87349442 (100.0%), 41.6 MBs/sec
+image-scan	Post Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:04.9851942Z Cache saved with key: cache-trivy-2026-09-29
+image-scan	Post Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:04.9902104Z ##[end-action id=__96b1dba6-b1da-4f5a-892c-e0606def9b96.__actions_cache;outcome=success;conclusion=success;duration_ms=4031]
+image-scan	Post Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:04.9905177Z ##[start-action display=Install Trivy;id=__96b1dba6-b1da-4f5a-892c-e0606def9b96.__aquasecurity_setup-trivy]
+image-scan	Post Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:04.9982498Z Post job cleanup.
+image-scan	Post Trivy — fail on fixable CRITICAL/HIGH	2026-09-29T11:59:04.9987385Z ##[end-action id=__96b1dba6-b1da-4f5a-892c-e0606def9b96.__aquasecurity_setup-trivy;outcome=success;conclusion=success;duration_ms=8]
+image-scan	Complete job	﻿2026-09-29T11:59:05.0042904Z Cleaning up orphan processes
+image-scan	Complete job	2026-09-29T11:59:05.0380971Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/download-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
