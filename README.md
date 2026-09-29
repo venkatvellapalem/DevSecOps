@@ -34,6 +34,9 @@ app/
   app.py              Flask service (~35 lines)
   requirements.txt    pinned dependency closure
   Dockerfile          multi-stage, non-root, no build tooling in the runtime
+deploy/
+  update.sh           pull-based deploy, pinned by digest, with rollback
+  docker-compose.yml  on-prem runtime, hardened
 .github/workflows/
   devsecops.yml       the pipeline
 infra/
@@ -64,17 +67,29 @@ git push                                  # watch sast/sca/image-scan go red, de
 
 ## The runtime target
 
-CI pushes to `ghcr.io/venkatvellapalem/devsecops`. The EC2 box pulls that exact
-digest — it never builds the image it runs:
+Two supported paths. CI pushes to `ghcr.io/venkatvellapalem/devsecops`; the host
+only ever pulls that artifact.
+
+**On-prem (pull-based) — see [`deploy/`](deploy/README.md):**
 
 ```bash
-docker pull ghcr.io/venkatvellapalem/devsecops:latest
-docker run -d --name devsecops -p 5000:5000 \
-  --restart unless-stopped ghcr.io/venkatvellapalem/devsecops:latest
+./deploy/update.sh <git-sha>     # resolves the tag to a digest and pins it
+./deploy/update.sh --rollback    # back to the previous digest
 ```
 
-Provenance is checkable: the digest CI pushed (`sha256:0a8d320d…`) is the digest
-the container reports via `docker image inspect`.
+Do **not** put a self-hosted Actions runner on this repo. It is public, and a
+self-hosted runner executes workflow code from any fork PR.
+
+**EC2 (the lab's build/test box):**
+
+```bash
+docker pull ghcr.io/venkatvellapalem/devsecops@sha256:<digest>
+docker run -d --name devsecops -p 5000:5000 --restart unless-stopped \
+  ghcr.io/venkatvellapalem/devsecops@sha256:<digest>
+```
+
+Deploy by digest, not `latest`. `latest` is mutable, so pinning it loses the
+guarantee that the artifact you run is the artifact Trivy cleared.
 
 ## Host prep
 
