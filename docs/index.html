@@ -3,387 +3,764 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Secure DevOps Pipeline — live status</title>
+<title>Secure DevOps Pipeline — live</title>
 <!--
-  Self-contained. No build step, no framework, no CDN, no server.
-  Data comes from the public GitHub REST API (unauthenticated, so it works for
-  anyone you send the link to). Served by GitHub Pages from /docs.
+  Self-contained: no build step, no framework, no CDN, no server.
+  Data: public GitHub REST API, unauthenticated (works for anyone you send the link to).
 
-  Rate limit note: unauthenticated GitHub allows 60 requests/hour per IP. This
-  page spends 2 on load (run list + latest run's jobs) and caches the rest, so
-  it will not exhaust it. Auto-refresh is off by default for that reason.
+  API budget (anonymous = 60 requests/hour per IP):
+    1 on load for the run list, 1 more for the newest run's jobs,
+    then one per older run hydrated progressively.
+  Everything is cached in memory; the page never re-fetches what it already has.
+  A "Load all" button is opt-in rather than automatic, so opening the link
+  during a demo cannot exhaust the limit.
 -->
 <style>
   :root{
-    --bg:#0f1117; --panel:#161923; --panel2:#1c2030; --line:#262b3a;
-    --fg:#e6e9ef; --muted:#8b93a7; --dim:#5b6379;
-    --ok:#3ddc97; --bad:#ff5f6d; --warn:#ffc857; --skip:#5b6379; --accent:#6ea8fe;
+    --bg:#f5f7fa; --card:#ffffff; --ink:#131722; --ink2:#3d4759;
+    --muted:#6b7688; --dim:#98a1b3; --line:#e3e8ef; --line2:#eef1f6;
+    --ok:#0f9d58; --okbg:#e8f6ee; --okln:#b6e2c8;
+    --bad:#d92d20; --badbg:#fdecea; --badln:#f6c9c4;
+    --warn:#b54708; --warnbg:#fff6e5; --warnln:#f2d9a8;
+    --info:#175cd3; --infobg:#eaf2fe; --infoln:#c3d9f7;
+    --skip:#8b93a3; --skipbg:#f1f3f7;
     --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+    --shadow:0 1px 2px rgba(16,24,40,.05),0 1px 3px rgba(16,24,40,.04);
+    --shadow2:0 4px 14px rgba(16,24,40,.07),0 2px 4px rgba(16,24,40,.04);
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--fg);
-       font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-  a{color:var(--accent);text-decoration:none}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       -webkit-font-smoothing:antialiased}
+  a{color:var(--info);text-decoration:none}
   a:hover{text-decoration:underline}
-  .wrap{max-width:1180px;margin:0 auto;padding:28px 20px 60px}
+  code{font-family:var(--mono);font-size:.87em;background:var(--line2);
+       padding:1px 5px;border-radius:4px;color:var(--ink2)}
+  .wrap{max-width:1320px;margin:0 auto;padding:24px 20px 64px}
 
-  header{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;
-         padding-bottom:18px;border-bottom:1px solid var(--line)}
-  h1{font-size:19px;margin:0;font-weight:650;letter-spacing:-.01em}
-  h1 small{display:block;font-weight:400;color:var(--muted);font-size:13px;margin-top:3px}
-  .ctrls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-  button{background:var(--panel2);color:var(--fg);border:1px solid var(--line);
-         border-radius:7px;padding:7px 13px;font:inherit;font-size:13px;cursor:pointer}
-  button:hover{border-color:var(--accent)}
-  .stamp{color:var(--dim);font-size:12px;font-family:var(--mono)}
+  /* ---------- header ---------- */
+  header{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;
+         background:var(--card);border:1px solid var(--line);border-radius:14px;
+         padding:16px 20px;box-shadow:var(--shadow);position:sticky;top:12px;z-index:40}
+  .brand h1{margin:0;font-size:17px;font-weight:650;letter-spacing:-.01em}
+  .brand .sub{color:var(--muted);font-size:12.5px;margin-top:2px}
+  .controls{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+  button,.btn{background:var(--card);color:var(--ink);border:1px solid var(--line);
+         border-radius:9px;padding:7px 13px;font:inherit;font-size:13px;cursor:pointer;
+         transition:background .12s,border-color .12s,box-shadow .12s}
+  button:hover,.btn:hover{border-color:#c9d2e0;background:#fbfcfe;text-decoration:none}
+  button:focus-visible,input:focus-visible,select:focus-visible,tr[tabindex]:focus-visible{
+    outline:2px solid var(--info);outline-offset:2px}
+  button[aria-pressed="true"]{background:var(--infobg);border-color:var(--infoln);color:var(--info);font-weight:600}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  .mono-sm{font-family:var(--mono);font-size:12px;color:var(--dim)}
 
-  .tab{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;
-       padding:4px 10px;border-radius:20px;border:1px solid}
-  .tab.ok{color:var(--ok);border-color:#1d5c45;background:#0f2a20}
-  .tab.bad{color:var(--bad);border-color:#5c1d24;background:#2a1114}
-  .tab.idle{color:var(--muted);border-color:var(--line);background:var(--panel2)}
-  .dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+  .pill{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;
+        padding:5px 12px;border-radius:20px;border:1px solid}
+  .pill.ok{color:var(--ok);background:var(--okbg);border-color:var(--okln)}
+  .pill.bad{color:var(--bad);background:var(--badbg);border-color:var(--badln)}
+  .pill.idle{color:var(--muted);background:var(--skipbg);border-color:var(--line)}
+  .dot{width:9px;height:9px;border-radius:50%;background:currentColor;flex:none}
+  .pill.ok .dot{animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 
-  h2{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);
-     margin:34px 0 14px;font-weight:600}
+  /* ---------- stat strip ---------- */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:12px;margin-top:18px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;
+        padding:14px 16px;box-shadow:var(--shadow)}
+  .stat .k{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:600}
+  .stat .v{font-size:24px;font-weight:680;margin-top:5px;letter-spacing:-.02em}
+  .stat .n{font-size:12px;color:var(--dim);margin-top:2px}
+  .stat.ok .v{color:var(--ok)} .stat.bad .v{color:var(--bad)} .stat.warn .v{color:var(--warn)}
 
-  /* ---- pipeline graph ---- */
-  .pipe{display:flex;flex-wrap:wrap;align-items:center;gap:10px;
-        background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px}
-  .node{min-width:118px;border:1px solid var(--line);background:var(--panel2);
-        border-radius:9px;padding:11px 13px;position:relative}
-  .node .nm{font-family:var(--mono);font-size:12.5px;font-weight:600}
-  .node .st{font-size:11px;color:var(--muted);margin-top:4px}
-  .node.ok{border-color:#1d5c45;background:#0f2a20}
-  .node.ok .st{color:var(--ok)}
-  .node.bad{border-color:#5c1d24;background:#2a1114}
-  .node.bad .st{color:var(--bad)}
-  .node.skipped{border-color:#3a3f4f;background:#151823;opacity:.72}
-  .node.skipped .st{color:var(--dim)}
-  .arrow{color:var(--dim);font-size:16px;user-select:none}
-  .barrier{display:flex;align-items:center;gap:8px;color:var(--warn);
-           font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;
-           border-left:2px dashed #4a4433;padding-left:12px;margin-left:2px}
-  .verdict{flex-basis:100%;margin-top:6px;padding-top:14px;border-top:1px solid var(--line);
-           font-size:13.5px;color:var(--muted)}
-  .verdict b{color:var(--fg)}
+  /* ---------- section ---------- */
+  h2{font-size:11.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);
+     margin:30px 0 12px;font-weight:700;display:flex;align-items:center;gap:9px}
+  h2 .hint{font-weight:400;letter-spacing:0;text-transform:none;color:var(--dim);font-size:12px}
 
-  /* ---- tables ---- */
+  /* ---------- pipeline ---------- */
+  .pipe{background:var(--card);border:1px solid var(--line);border-radius:14px;
+        padding:20px;box-shadow:var(--shadow)}
+  .flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+  .node{min-width:126px;border:1.5px solid var(--line);background:#fff;border-radius:11px;
+        padding:11px 13px;cursor:pointer;text-align:left;font:inherit;position:relative;
+        transition:box-shadow .14s,transform .14s,border-color .14s}
+  .node:hover{box-shadow:var(--shadow2);transform:translateY(-1px)}
+  .node .nm{font-family:var(--mono);font-size:12.5px;font-weight:650;color:var(--ink)}
+  .node .st{font-size:11.5px;color:var(--muted);margin-top:3px;display:flex;align-items:center;gap:5px}
+  .node .dur{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--dim)}
+  .node .hd{display:flex;align-items:center;gap:6px}
+  .node .ic{font-size:13px;line-height:1;flex:none}
+  .node.ok{border-color:var(--okln);background:linear-gradient(180deg,#f6fdf9,#fff)}
+  .node.ok .ic{color:var(--ok)} .node.ok .st{color:var(--ok)}
+  .node.bad{border-color:var(--badln);background:linear-gradient(180deg,#fff7f6,#fff)}
+  .node.bad .ic{color:var(--bad)} .node.bad .st{color:var(--bad);font-weight:600}
+  .node.skipped{border-color:var(--line);background:#fafbfd;opacity:.8}
+  .node.skipped .ic{color:var(--skip)}
+  .node[aria-pressed="true"]{box-shadow:0 0 0 3px var(--infobg);border-color:var(--info)}
+  .arrow{color:#c4ccd9;font-size:15px;user-select:none;flex:none}
+  .barrier{flex:none;text-align:center;color:var(--warn);font-size:10px;font-weight:700;
+           text-transform:uppercase;letter-spacing:.05em;line-height:1.25;
+           border-left:2px dashed var(--warnln);padding:4px 0 4px 12px}
+  .verdict{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);font-size:14px;color:var(--ink2)}
+  .verdict b{color:var(--ink)}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+
+  /* ---------- layout ---------- */
+  .cols{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px;align-items:start;margin-top:10px}
+  @media(max-width:1080px){.cols{grid-template-columns:1fr}}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;
+         box-shadow:var(--shadow);overflow:hidden}
+  .panel .ph{padding:13px 16px;border-bottom:1px solid var(--line);display:flex;
+             align-items:center;gap:10px;flex-wrap:wrap;background:#fcfdfe}
+  .panel .ph .t{font-weight:650;font-size:13.5px}
+  .panel .pb{padding:0}
+  .side{position:sticky;top:96px}
+
+  /* ---------- filters ---------- */
+  .filters{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:12px 16px;
+           border-bottom:1px solid var(--line);background:#fcfdfe}
+  .filters input[type=search]{font:inherit;font-size:13px;padding:7px 11px;border:1px solid var(--line);
+           border-radius:9px;min-width:190px;background:#fff;color:var(--ink)}
+  .filters .sep{width:1px;height:22px;background:var(--line);margin:0 3px}
+
+  /* ---------- table ---------- */
   table{width:100%;border-collapse:collapse;font-size:13.5px}
-  th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line)}
-  th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-weight:600}
-  tbody tr:hover{background:var(--panel)}
-  td.mono,th.mono{font-family:var(--mono);font-size:12.5px}
-  .pill{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:5px;
-        font-family:var(--mono)}
-  .pill.ok{background:#0f2a20;color:var(--ok)}
-  .pill.bad{background:#2a1114;color:var(--bad)}
-  .pill.skipped{background:#1c2030;color:var(--dim)}
-  .pill.none{background:#1c2030;color:var(--muted)}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line2);vertical-align:middle}
+  th{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;
+     font-weight:700;background:#fcfdfe;position:sticky;top:0;z-index:5}
+  tbody tr.row{cursor:pointer;transition:background .1s}
+  tbody tr.row:hover{background:#fafbfe}
+  tbody tr.row.open{background:var(--infobg)}
+  tbody tr.row td:first-child{border-left:3px solid transparent}
+  tbody tr.row.open td:first-child{border-left-color:var(--info)}
+  .msg{max-width:330px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink2)}
+  .sha{font-family:var(--mono);font-size:12px;color:var(--ink2)}
+  .badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:22px;
+         border-radius:6px;font-size:12px;font-weight:700;font-family:var(--mono)}
+  .badge.ok{background:var(--okbg);color:var(--ok)}
+  .badge.bad{background:var(--badbg);color:var(--bad)}
+  .badge.skipped{background:var(--skipbg);color:var(--skip)}
+  .badge.none{background:#f7f8fb;color:#c9d0dc}
+  .badge.load{background:var(--line2);color:var(--dim);animation:pulse 1.2s ease-in-out infinite}
+  .trdetail{background:#f8fafd}
+  .trdetail td{padding:0;border-bottom:2px solid var(--line)}
+  .joblist{padding:12px 16px 16px;display:grid;gap:8px}
+  .job{display:grid;grid-template-columns:22px 116px 1fr auto;gap:12px;align-items:center;
+       padding:9px 12px;background:#fff;border:1px solid var(--line);border-radius:9px;font-size:13px}
+  .job .jn{font-family:var(--mono);font-weight:600;font-size:12.5px}
+  .job .jd{color:var(--muted);font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .job .jd b{color:var(--bad);font-weight:600}
+  .job .jt{color:var(--dim);font-family:var(--mono);font-size:11.5px}
+  .job .jl a{font-size:12px}
+  .job.bad{border-color:var(--badln);background:#fffbfa}
+  .job.skipped{opacity:.72}
 
-  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:14px}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:16px}
-  .card h3{margin:0 0 6px;font-size:14px;font-family:var(--mono)}
-  .card p{margin:0;color:var(--muted);font-size:13px}
-  .card .cat{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);
-             font-weight:600;margin-bottom:8px}
+  /* ---------- side panel ---------- */
+  .side .pb{padding:16px}
+  .side .big{font-size:15px;font-weight:650;display:flex;align-items:center;gap:8px}
+  .side .role{font-size:12px;color:var(--muted);margin-top:2px}
+  .side dl{margin:14px 0 0;display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:13px}
+  .side dt{color:var(--muted);white-space:nowrap}
+  .side dd{margin:0;color:var(--ink2)}
+  .side .box{background:#f8fafd;border:1px solid var(--line);border-radius:9px;
+             padding:11px 13px;margin-top:12px;font-size:13px;color:var(--ink2)}
+  .side .box h4{margin:0 0 5px;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+  .side pre{margin:6px 0 0;font-family:var(--mono);font-size:11.5px;white-space:pre-wrap;
+            word-break:break-word;color:var(--ink2)}
+  .empty{color:var(--dim);font-size:13.5px;text-align:center;padding:26px 10px}
 
+  /* ---------- gate cards ---------- */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(238px,1fr));gap:13px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:15px;
+        box-shadow:var(--shadow);cursor:pointer;text-align:left;font:inherit;
+        transition:box-shadow .14s,transform .14s,border-color .14s}
+  .card:hover{box-shadow:var(--shadow2);transform:translateY(-2px)}
+  .card[aria-pressed="true"]{border-color:var(--info);box-shadow:0 0 0 3px var(--infobg)}
+  .card h3{margin:0 0 3px;font-size:13.5px;font-family:var(--mono)}
+  .card .cat{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--info);
+             font-weight:700;margin-bottom:8px}
+  .card p{margin:0;color:var(--muted);font-size:12.5px}
+  .card .hit{margin-top:10px;padding-top:9px;border-top:1px solid var(--line2);
+             font-size:11.5px;color:var(--dim);display:flex;justify-content:space-between;gap:8px}
+
+  /* ---------- evidence ---------- */
   .shots{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .shot{background:var(--panel);border:1px solid var(--line);border-radius:11px;overflow:hidden}
-  .shot img{width:100%;display:block;border-bottom:1px solid var(--line)}
-  .shot .cap{padding:11px 14px;font-size:13px;color:var(--muted)}
-  .shot .cap b{color:var(--fg);display:block;margin-bottom:3px;font-size:13px}
   @media(max-width:760px){.shots{grid-template-columns:1fr}}
+  .shot{background:var(--card);border:1px solid var(--line);border-radius:13px;
+        overflow:hidden;box-shadow:var(--shadow)}
+  .shot img{width:100%;display:block;border-bottom:1px solid var(--line);cursor:zoom-in}
+  .shot .cap{padding:12px 15px;font-size:13px;color:var(--muted)}
+  .shot .cap b{color:var(--ink);display:block;margin-bottom:3px;font-size:13.5px}
 
-  .note{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--warn);
-        border-radius:8px;padding:14px 16px;font-size:13.5px;color:var(--muted)}
-  .note b{color:var(--fg)}
-  footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);
-         color:var(--dim);font-size:12.5px}
-  .err{background:#2a1114;border:1px solid #5c1d24;color:#ffb3b9;border-radius:8px;
-       padding:14px 16px;font-size:13.5px}
-  .hidden{display:none}
+  .banner{border-radius:12px;padding:14px 17px;font-size:13.5px;display:flex;gap:11px;
+          align-items:flex-start;margin-top:16px}
+  .banner.info{background:var(--infobg);border:1px solid var(--infoln);color:#153a70}
+  .banner.warn{background:var(--warnbg);border:1px solid var(--warnln);color:#7a3d05}
+  .banner.err{background:var(--badbg);border:1px solid var(--badln);color:#8a1c14}
+  .banner b{font-weight:650}
+  .hidden{display:none !important}
+
+  /* ---------- lightbox ---------- */
+  #lb{position:fixed;inset:0;background:rgba(15,20,30,.82);display:none;align-items:center;
+      justify-content:center;z-index:100;padding:24px;cursor:zoom-out}
+  #lb img{max-width:100%;max-height:100%;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  footer{margin-top:36px;padding-top:18px;border-top:1px solid var(--line);
+         color:var(--dim);font-size:12.5px;display:flex;flex-wrap:wrap;gap:14px;
+         justify-content:space-between;align-items:center}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
 </style>
 </head>
 <body>
 <div class="wrap">
 
   <header>
-    <h1>Secure DevOps Pipeline
-      <small id="repo">venkatvellapalem/DevSecOps</small>
-    </h1>
-    <div class="ctrls">
-      <span id="status" class="tab idle"><span class="dot"></span>loading…</span>
+    <div class="brand">
+      <h1>Secure DevOps Pipeline</h1>
+      <div class="sub" id="repo">venkatvellapalem/DevSecOps</div>
+    </div>
+    <div class="controls">
+      <span class="pill idle" id="status"><span class="dot"></span>loading</span>
       <button id="refresh">Refresh</button>
-      <label class="stamp"><input type="checkbox" id="auto"> auto 5m</label>
-      <span class="stamp" id="stamp"></span>
+      <button id="auto" aria-pressed="false" title="Re-fetch every 5 minutes">Auto</button>
+      <button id="loadall" title="Fetch gate results for every run shown">Load all runs</button>
+      <span class="mono-sm" id="stamp"></span>
+      <span class="mono-sm" id="rate" title="Anonymous GitHub API allowance"></span>
     </div>
   </header>
 
-  <div id="error" class="err hidden" style="margin-top:18px"></div>
+  <div id="error" class="banner err hidden" role="alert"></div>
 
-  <h2>The pipeline — and where it can stop</h2>
-  <div class="pipe" id="pipe">
-    <span style="color:var(--dim)">loading…</span>
-  </div>
+  <div class="stats" id="stats"></div>
 
-  <div id="verdictBox" class="note" style="margin-top:16px"></div>
-
-  <h2>Gate reference — what each one exists to catch</h2>
-  <div class="cards">
-    <div class="card">
-      <h3>hadolint</h3>
-      <div class="cat">1 · the Dockerfile itself</div>
-      <p>Container as root (<code>DL3002</code>), unpinned base image (<code>DL3007</code>),
-         unpinned apt packages (<code>DL3008</code>). Runs in parallel with the build, so a bad
-         Dockerfile fails in seconds instead of after a two-minute image build.</p>
-    </div>
-    <div class="card">
-      <h3>sast — Bandit</h3>
-      <div class="cat">2 · code you wrote</div>
-      <p>Insecure patterns in your own source: <code>shell=True</code>, <code>eval</code>,
-         unsafe deserialisation. A library scanner cannot see these — the flaw is in a line
-         you typed. Caught <code>B602</code> (command injection) in this repo.</p>
-    </div>
-    <div class="card">
-      <h3>sca — pip-audit</h3>
-      <div class="cat">3 · dependencies you consume</div>
-      <p>Known CVEs in third-party packages. Your code can be flawless and this still fires.
-         Caught <strong>74 vulnerabilities across 8 packages</strong> from
-         <code>requests==2.19.1</code> / <code>flask==2.0.1</code>.</p>
-    </div>
-    <div class="card">
-      <h3>gitleaks</h3>
-      <div class="cat">4 · secrets you committed</div>
-      <p>API keys, tokens and passwords in the tree. <strong>Nothing else here covers this</strong> —
-         SAST reads code patterns, SCA reads versions, Trivy reads packages, and a committed
-         AWS key passes all three. Demonstrably blocked a release; see the evidence below.</p>
-    </div>
-    <div class="card">
-      <h3>image-scan — Trivy</h3>
-      <div class="cat">5 · the artifact you ship</div>
-      <p>OS packages, language packages and base-image tooling — the layer the other two
-         cannot see. Failure is limited to <em>fixable</em> findings
-         (<code>ignore-unfixed</code>), so the gate stays meaningful instead of permanently red.</p>
-    </div>
-    <div class="card">
-      <h3>deploy</h3>
-      <div class="cat">not a gate — the thing being gated</div>
-      <p>Publishes to GHCR, and declares all five gates in <code>needs:</code>. GitHub will not
-         start it if any of them failed. <strong>The security control is the job graph itself</strong>,
-         not a report anyone reads afterwards.</p>
+  <h2>Pipeline <span class="hint">click any stage to inspect it</span></h2>
+  <div class="pipe">
+    <div class="flow" id="flow"><span style="color:var(--dim);font-size:13px">loading…</span></div>
+    <div class="verdict" id="verdict"></div>
+    <div class="legend">
+      <span><span class="dot" style="color:var(--ok)"></span> passed</span>
+      <span><span class="dot" style="color:var(--bad)"></span> failed — release blocked</span>
+      <span><span class="dot" style="color:var(--skip)"></span> skipped</span>
+      <span style="color:var(--dim)">the dashed barrier is <code>needs:</code> — GitHub will not start
+        <code>deploy</code> unless every stage left of it passed</span>
     </div>
   </div>
 
-  <h2>Run history</h2>
-  <table>
-    <thead>
-      <tr>
-        <th class="mono">commit</th><th>when</th>
-        <th>hadolint</th><th>sast</th><th>sca</th><th>gitleaks</th><th>trivy</th><th>deploy</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody id="runs">
-      <tr><td colspan="9" style="color:var(--dim)">loading…</td></tr>
-    </tbody>
-  </table>
+  <div class="cols">
+    <div>
+      <h2 style="margin-top:26px">Run history <span class="hint">click a row to expand every gate</span></h2>
+      <div class="panel">
+        <div class="filters">
+          <input type="search" id="q" placeholder="filter by commit message or sha…" aria-label="Filter runs">
+          <span class="sep"></span>
+          <button class="fbtn" data-f="all" aria-pressed="true">All</button>
+          <button class="fbtn" data-f="failed" aria-pressed="false">Failed gates</button>
+          <button class="fbtn" data-f="passed" aria-pressed="false">Fully passed</button>
+          <button class="fbtn" data-f="blocked" aria-pressed="false">Release blocked</button>
+          <span class="sep"></span>
+          <button id="clearfilter" class="hidden">Clear gate filter ✕</button>
+          <span class="mono-sm" id="count"></span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th style="min-width:74px">commit</th>
+              <th>when</th>
+              <th>message</th>
+              <th style="text-align:center" title="hadolint">lint</th>
+              <th style="text-align:center" title="sast / Bandit">sast</th>
+              <th style="text-align:center" title="sca / pip-audit">sca</th>
+              <th style="text-align:center" title="secrets">secr</th>
+              <th style="text-align:center" title="image-scan / Trivy">trivy</th>
+              <th style="text-align:center" title="deploy to GHCR">ship</th>
+              <th style="min-width:52px"></th>
+            </tr>
+          </thead>
+          <tbody id="runs"><tr><td colspan="10" class="empty">loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
 
-  <h2>Evidence — the two runs that matter</h2>
+    <aside class="side">
+      <div class="panel" id="inspector">
+        <div class="ph"><span class="t" id="insTitle">Inspector</span></div>
+        <div class="pb" id="insBody">
+          <div class="empty">Click a pipeline stage above, a gate card below, or a run row
+            to see details here.</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <h2 style="margin-top:30px">What each gate exists to catch
+    <span class="hint">click a card to filter the run history to that gate</span></h2>
+  <div class="cards" id="cards"></div>
+
+  <h2>Evidence <span class="hint">the runs that prove the gate works</span></h2>
   <div class="shots">
     <div class="shot">
-      <img id="shot1" alt="Failing pipeline run">
-      <div class="cap"><b>Before — three gates red, deploy never ran</b>
-        Build succeeded, the app was scannable, and the release still did not happen.</div>
+      <img id="shot1" alt="Failing run: three gates red, deploy skipped">
+      <div class="cap"><b>Before — blocked</b>
+        <span id="cap1">Three gates failed. <code>deploy</code> never ran, so the image was never published.</span></div>
     </div>
     <div class="shot">
-      <img id="shot2" alt="Passing pipeline run">
-      <div class="cap"><b>After — every gate green, image published</b>
-        The run summary shows <code>Pushed ghcr.io/…</code> at a specific digest.</div>
+      <img id="shot2" alt="Passing run: all gates green, image published">
+      <div class="cap"><b>After — released</b>
+        <span id="cap2">All gates green. The run summary shows <code>Pushed ghcr.io/…</code> at a specific digest.</span></div>
     </div>
   </div>
 
-  <div class="note" style="margin-top:16px">
-    <b>Why this is not just "three scanners in a row":</b> run 2 in the history had
-    <code>sca</code> green while <code>image-scan</code> stayed red on the same commit — the gates
-    catch <em>disjoint</em> failure classes. One gate would have missed what the other found.
+  <div class="banner info">
+    <span style="font-size:16px;line-height:1.2">i</span>
+    <div><b>Why not just run one scanner?</b> In run <code>4f5b136</code> in the history above,
+      <code>sca</code> passed while <code>trivy</code> failed on the same commit — Trivy found
+      vulnerabilities in the base image that appear nowhere in <code>requirements.txt</code>.
+      The dependency scanner structurally cannot see them. Click that row to see it.</div>
   </div>
 
   <footer>
-    <a id="linkRepo">repository</a> ·
-    <a id="linkActions">all runs</a> ·
-    <a id="linkWriteup">write-up</a> ·
-    <a id="linkArch">architecture</a> ·
-    <a id="linkDeploy">on-prem deploy</a>
-    <div style="margin-top:8px">Data: GitHub REST API, unauthenticated. Refresh is manual by
-      default because anonymous requests are capped at 60/hour.</div>
+    <div>
+      <a id="lRepo">repository</a> ·
+      <a id="lAct">all runs</a> ·
+      <a id="lHand">handoff guide</a> ·
+      <a id="lWrite">write-up</a> ·
+      <a id="lArch">architecture</a>
+    </div>
+    <div class="mono-sm" id="spend"></div>
   </footer>
 </div>
 
+<div id="lb" role="dialog" aria-label="Image viewer"><img id="lbImg" alt=""></div>
+
 <script>
 "use strict";
-const OWNER = "venkatvellapalem";
-const REPO  = "DevSecOps";
-const API   = `https://api.github.com/repos/${OWNER}/${REPO}`;
-const RAW   = `https://raw.githubusercontent.com/${OWNER}/${REPO}/main`;
-const WEB   = `https://github.com/${OWNER}/${REPO}`;
+const OWNER = "venkatvellapalem", REPO = "DevSecOps";
+const API = `https://api.github.com/repos/${OWNER}/${REPO}`;
+const RAW = `https://raw.githubusercontent.com/${OWNER}/${REPO}/main`;
+const WEB = `https://github.com/${OWNER}/${REPO}`;
 
-// The six jobs that gate the release, in the order they matter.
-const GATES = ["hadolint","sast","sca","gitleaks","image-scan"];
+// Order matters: it is the order shown in the pipeline and the table.
+const GATES = [
+  { key:"build",       label:"build",        short:"build", role:"Compile & package",
+    cat:"the artifact", checks:"Builds the container image from <code>app/Dockerfile</code>.",
+    why:"Nothing downstream can run without bytes to scan. Multi-stage, so compilers never ship." },
+  { key:"hadolint",    label:"hadolint",     short:"lint",  role:"Lint the Dockerfile",
+    cat:"the container recipe", checks:"Container as root (<code>DL3002</code>), unpinned base image (<code>DL3007</code>), unpinned apt packages (<code>DL3008</code>).",
+    why:"Runs in parallel with the build, so a bad Dockerfile fails in seconds rather than after a two-minute image build.",
+    cmd:"docker run --rm -i hadolint/hadolint:2.12.0 --failure-threshold warning - < app/Dockerfile" },
+  { key:"sast",        label:"sast",         short:"sast",  role:"Bandit — your source",
+    cat:"code you wrote", checks:"Insecure patterns in your own source: <code>shell=True</code>, <code>eval</code>, unsafe deserialisation.",
+    why:"A library scanner cannot see these — the flaw is in a line you typed. Caught B602, a command injection.",
+    cmd:"pip install bandit && bandit -r app -lll" },
+  { key:"sca",         label:"sca",          short:"sca",   role:"pip-audit — your deps",
+    cat:"libraries you consume", checks:"Known CVEs in third-party packages, resolved from <code>requirements.txt</code>.",
+    why:"Your code can be flawless and this still fires. Caught 74 vulnerabilities across 8 packages.",
+    cmd:"pip install pip-audit && pip-audit -r app/requirements.txt" },
+  { key:"gitleaks",    label:"gitleaks",     short:"secr",  role:"Gitleaks — secrets",
+    cat:"values you committed", checks:"API keys, tokens and passwords committed to the tree.",
+    why:"Nothing else here reads <em>values</em>. SAST reads patterns, SCA reads versions, Trivy reads packages — a committed AWS key passes all three silently.",
+    cmd:"docker run --rm -v \"$PWD:/repo\" ghcr.io/gitleaks/gitleaks:v8.28.0 detect --source=/repo --no-git --redact -v" },
+  { key:"image-scan",  label:"image-scan",   short:"trivy", role:"Trivy — the artifact",
+    cat:"the thing you ship", checks:"OS packages, language packages and base-image tooling. Limited to <em>fixable</em> findings.",
+    why:"The only gate that sees the finished object. In run 4f5b136 it failed while sca passed — it found CVEs in the base image that requirements.txt never mentions.",
+    cmd:"trivy image --severity CRITICAL,HIGH --ignore-unfixed <image>" },
+  { key:"deploy",      label:"deploy",       short:"ship",  role:"Publish to GHCR",
+    cat:"not a gate — the thing being gated", checks:"Pushes the image, tagged with the commit SHA and a digest.",
+    why:"Declares every gate in <code>needs:</code>. GitHub will not start it if any failed. That dependency graph <b>is</b> the security control." }
+];
+const GATE_BY_KEY = Object.fromEntries(GATES.map(g => [g.key, g]));
 
 const $ = (id) => document.getElementById(id);
-const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g,
-  (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const dur = (a,b) => { if(!a||!b) return "—"; const s = Math.round((new Date(b)-new Date(a))/1000);
+  return s < 60 ? s+"s" : Math.floor(s/60)+"m"+(s%60 ? " "+(s%60)+"s" : ""); };
+function ago(iso){ const s = Math.floor((Date.now()-new Date(iso))/1000);
+  if (s < 60) return s+"s ago"; if (s < 3600) return Math.floor(s/60)+"m ago";
+  if (s < 86400) return Math.floor(s/3600)+"h ago"; return Math.floor(s/86400)+"d ago"; }
 
-function ago(iso){
-  const s = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
-  if (s < 60) return s + "s ago";
-  if (s < 3600) return Math.floor(s/60) + "m ago";
-  if (s < 86400) return Math.floor(s/3600) + "h ago";
-  return Math.floor(s/86400) + "d ago";
-}
-
-function pill(v){
-  const k = !v ? "none" : v === "success" ? "ok" : v === "skipped" ? "skipped" : "bad";
-  const label = v === "success" ? "pass"
-              : v === "skipped" ? "skip"
-              : v ? "FAIL" : "–";
-  return `<span class="pill ${k}">${label}</span>`;
-}
-
-function node(name, v){
-  const cls = v === "success" ? "ok" : v === "skipped" ? "skipped" : v ? "bad" : "";
-  const txt = v === "success" ? "passed" : v === "skipped" ? "skipped" : v ? "FAILED" : "—";
-  return `<div class="node ${cls}"><div class="nm">${esc(name)}</div><div class="st">${txt}</div></div>`;
-}
+const state = {
+  runs: [], jobs: {}, openRun: null, gateFilter: null, statusFilter: "all",
+  query: "", rate: null, loadingAll: false, busy: new Set()
+};
 
 async function get(path){
-  const r = await fetch(path, { headers: { Accept: "application/vnd.github+json" } });
-  if (r.status === 403) throw new Error("GitHub rate limit reached (60/hour anonymous). Try again later.");
-  if (!r.ok) throw new Error("GitHub API " + r.status + " for " + path);
+  const r = await fetch(path, { headers:{ Accept:"application/vnd.github+json" } });
+  const rem = r.headers.get("x-ratelimit-remaining");
+  if (rem != null){ state.rate = +rem; paintRate(); }
+  if (r.status === 403) throw new Error("GitHub anonymous rate limit reached (60/hour). Wait a little, or sign in and raise it.");
+  if (!r.ok) throw new Error(`GitHub API ${r.status} for ${path}`);
   return r.json();
 }
+function paintRate(){ $("rate").textContent = state.rate == null ? "" : `${state.rate}/60 req`; }
 
-function renderPipeline(run, jobs){
-  if (!run){ $("pipe").innerHTML = '<span style="color:var(--dim)">no runs yet</span>'; return; }
-  const byName = {};
-  for (const j of jobs) byName[j.name] = j.conclusion;
+function resultOf(run, key){
+  const j = state.jobs[run.id];
+  if (!j) return undefined;                     // not fetched yet
+  return j[key] === undefined ? null : j[key];  // fetched, job absent from this run
+}
 
-  let html = node("build", byName.build || (run.status !== "completed" ? null : "skipped"));
-  html += '<span class="arrow">→</span>';
-  // hadolint runs in parallel with build, so it is shown alongside rather than after.
-  html += node("hadolint", byName.hadolint);
-  html += '<span class="arrow">→</span>';
-  html += node("sast", byName.sast);
-  html += '<span class="arrow">→</span>';
-  html += node("sca", byName.sca);
-  html += '<span class="arrow">→</span>';
-  html += node("gitleaks", byName.gitleaks);
-  html += '<span class="arrow">→</span>';
-  html += node("image-scan", byName["image-scan"]);
-  html += '<span class="barrier">all five must pass</span>';
-  html += '<span class="arrow">→</span>';
-  html += node("deploy", byName.deploy);
+/* ---------------- summary ---------------- */
+function renderStats(){
+  const done = state.runs.filter(r => r.status === "completed");
+  const hydrated = done.filter(r => state.jobs[r.id]);
+  const latest = done[0];
+  const latestLoaded = latest && state.jobs[latest.id];
+  const gates = latestLoaded ? GATES.filter(g => g.key !== "deploy").map(g => resultOf(latest, g.key)) : [];
+  const allOk = gates.length && gates.every(v => v === "success");
+  const pending = latest && !latestLoaded;
 
-  const failed = GATES.filter(g => byName[g] && byName[g] !== "success");
-  const blocked = failed.length > 0;
-  const isMain = run.head_branch === "main";
-
-  html += `<div class="verdict">`;
-  if (blocked){
-    html += `<b>Release blocked.</b> ${failed.map(esc).join(", ")} did not pass, so the image was
-             never published to GHCR. Commit <code>${esc(run.head_sha.slice(0,7))}</code>.`;
-  } else if (byName.deploy === "success"){
-    html += `<b>Released.</b> All five gates passed and the image was published at commit
-             <code>${esc(run.head_sha.slice(0,7))}</code>.`;
-  } else if (!isMain){
-    html += `<b>Gates passed, nothing published</b> — this is a pull request, and <code>deploy</code>
-             only runs on <code>main</code>.`;
-  } else {
-    html += `Run in progress.`;
+  let passed = 0;
+  for (const r of hydrated){
+    const gs = GATES.filter(g => g.key !== "deploy").map(g => resultOf(r, g.key));
+    if (gs.every(v => v === "success")) passed++;
   }
-  html += `</div>`;
-  $("pipe").innerHTML = html;
+  const pct = hydrated.length ? Math.round(passed / hydrated.length * 100) : null;
+  const blocked = hydrated.filter(r => GATES.some(g => { const v = resultOf(r, g.key);
+    return g.key !== "deploy" && v && v !== "success"; })).length;
 
-  const v = $("verdictBox");
-  v.innerHTML = blocked
-    ? `<b>What just happened:</b> a machine said no. Nobody had to review a report, remember a
-       checklist, or be asked twice — the release was impossible because a job it depends on
-       did not succeed.`
-    : `<b>What just happened:</b> five independent checks all passed, so the exact bytes they
-       checked were published. The container you run is provably the container that was
-       scanned.`;
+  $("stats").innerHTML = `
+    <div class="stat ${allOk ? "ok" : pending ? "" : "bad"}">
+      <div class="k">Right now</div><div class="v">${pending ? "Loading" : allOk ? "Passing" : "Failing"}</div>
+      <div class="n">${latest ? "commit " + esc(latest.head_sha.slice(0,7)) : "no runs"}</div></div>
+    <div class="stat"><div class="k">Gates</div><div class="v">${GATES.length - 1}</div>
+      <div class="n">+ deploy behind a <code>needs:</code> barrier</div></div>
+    <div class="stat ${blocked ? "warn" : ""}"><div class="k">Releases blocked</div>
+      <div class="v">${blocked}</div><div class="n">of ${hydrated.length} runs inspected</div></div>
+    <div class="stat ${pct === 100 ? "ok" : pct === 0 ? "bad" : ""}">
+      <div class="k">Fully green</div><div class="v">${pct == null ? "—" : pct + "%"}</div>
+      <div class="n">${passed}/${hydrated.length} runs passed every gate</div></div>
+    <div class="stat"><div class="k">Runs loaded</div><div class="v">${state.runs.length}</div>
+      <div class="n">${Object.keys(state.jobs).length} expanded</div></div>`;
 }
 
-function renderRuns(runs, jobCache){
-  const rows = runs.slice(0, 12).map(r => {
-    const j = jobCache[r.id] || {};
-    const sha = `<a class="mono" href="${WEB}/commit/${r.head_sha}">${esc(r.head_sha.slice(0,7))}</a>`;
-    const link = `<a href="${r.html_url}">run ↗</a>`;
-    return `<tr>
-      <td class="mono">${sha}</td>
-      <td style="color:var(--muted);font-size:12.5px">${ago(r.created_at)}${r.head_branch !== "main"
-        ? ` <span class="pill none">${esc(r.head_branch)}</span>` : ""}</td>
-      <td>${pill(j.hadolint)}</td>
-      <td>${pill(j.sast)}</td>
-      <td>${pill(j.sca)}</td>
-      <td>${pill(j.gitleaks)}</td>
-      <td>${pill(j["image-scan"])}</td>
-      <td>${pill(j.deploy)}</td>
-      <td>${link}</td>
+/* ---------------- pipeline ---------------- */
+function renderFlow(){
+  const run = state.runs.find(r => r.status === "completed");
+  if (!run){ $("flow").innerHTML = '<span style="color:var(--dim);font-size:13px">no completed runs</span>'; return; }
+  const j = state.jobs[run.id];
+  let html = "";
+  GATES.forEach((g, i) => {
+    const v = j ? j[g.key] : undefined;
+    const cls = v === "success" ? "ok" : v && v !== "success" ? "bad" : v === null ? "skipped" : "";
+    const icon = v === "success" ? "✓" : v && v !== "success" ? "✕" : v === null ? "–" : "·";
+    const txt  = v === "success" ? "passed" : v && v !== "success" ? "FAILED" : v === null ? "skipped" : "…";
+    const jb = j && j["__dur__"] && j["__dur__"][g.key];
+    html += `<button class="node ${cls}" data-gate="${g.key}" aria-pressed="${state.gateFilter === g.key}"
+               title="${esc(g.role)}">
+        <div class="hd"><span class="ic">${icon}</span><span class="nm">${esc(g.label)}</span></div>
+        <div class="st">${txt}${jb ? `<span class="dur">${jb}</span>` : ""}</div>
+      </button>`;
+    if (g.key === "image-scan"){
+      html += `<span class="barrier">all five<br>must pass</span>`;
+    } else if (i < GATES.length - 1){
+      html += `<span class="arrow">→</span>`;
+    }
+  });
+  $("flow").innerHTML = html;
+
+  const failed = GATES.filter(g => { const v = resultOf(run, g.key);
+    return g.key !== "deploy" && v && v !== "success"; }).map(g => g.label);
+  const dep = resultOf(run, "deploy");
+  const isMain = run.head_branch === "main";
+  let v = "";
+  if (failed.length){
+    v = `<b>Release blocked.</b> ${failed.map(esc).join(", ")} did not pass, so the image was never
+         published. Commit <code>${esc(run.head_sha.slice(0,7))}</code>
+         <span style="color:var(--dim)">— ${ago(run.created_at)}</span>.`;
+  } else if (dep === "success"){
+    v = `<b>Released.</b> Every gate passed and the image was published at
+         commit <code>${esc(run.head_sha.slice(0,7))}</code>.`;
+  } else if (!isMain){
+    v = `<b>Gates passed, nothing published</b> — this is a pull request, and <code>deploy</code>
+         only runs on <code>main</code>.`;
+  } else {
+    v = `Run in progress.`;
+  }
+  $("verdict").innerHTML = v;
+}
+
+/* ---------------- runs table ---------------- */
+function visibleRuns(){
+  let rs = state.runs;
+  if (state.statusFilter === "failed")
+    rs = rs.filter(r => GATES.some(g => { const v = resultOf(r,g.key); return g.key!=="deploy" && v && v!=="success"; }));
+  if (state.statusFilter === "passed")
+    rs = rs.filter(r => state.jobs[r.id] && GATES.filter(g=>g.key!=="deploy").every(g => resultOf(r,g.key)==="success"));
+  if (state.statusFilter === "blocked")
+    rs = rs.filter(r => !state.jobs[r.id] || resultOf(r,"deploy") !== "success");
+  if (state.gateFilter)
+    rs = rs.filter(r => { const v = resultOf(r, state.gateFilter); return v && v !== "success"; });
+  if (state.query){
+    const q = state.query.toLowerCase();
+    rs = rs.filter(r => (r.head_sha||"").includes(q) ||
+      ((r.head_commit && r.head_commit.message) || "").toLowerCase().includes(q) ||
+      (r.head_branch||"").toLowerCase().includes(q));
+  }
+  return rs;
+}
+
+function badgeFor(run, key){
+  const j = state.jobs[run.id];
+  if (!j) return `<span class="badge load" title="click the row to load">·</span>`;
+  const v = j[key];
+  if (v === undefined) return `<span class="badge none">–</span>`;
+  if (v === "success") return `<span class="badge ok" title="success">✓</span>`;
+  if (v === "skipped") return `<span class="badge skipped" title="skipped">–</span>`;
+  return `<span class="badge bad" title="${esc(v)}">✕</span>`;
+}
+
+function renderRuns(){
+  const rs = visibleRuns();
+  $("count").textContent = `${rs.length} of ${state.runs.length} runs`;
+  if (!rs.length){ $("runs").innerHTML = `<tr><td colspan="10" class="empty">no runs match</td></tr>`; return; }
+
+  $("runs").innerHTML = rs.map(r => {
+    const msg = (r.head_commit && r.head_commit.message || "").split("\n")[0];
+    const jobs = state.jobs[r.id];
+    const isOpen = state.openRun === r.id;
+    const branches = r.head_branch && r.head_branch !== "main"
+      ? ` <span class="badge skipped" style="width:auto;padding:0 6px">${esc(r.head_branch)}</span>` : "";
+    let row = `<tr class="row ${isOpen?"open":""}" data-run="${r.id}" tabindex="0"
+                  role="button" aria-expanded="${isOpen}">
+      <td><span class="sha"><a href="${WEB}/commit/${r.head_sha}" onclick="event.stopPropagation()">${esc(r.head_sha.slice(0,7))}</a></span></td>
+      <td style="color:var(--muted);font-size:12.5px;white-space:nowrap">${ago(r.created_at)}</td>
+      <td><div class="msg" title="${esc(msg)}">${esc(msg)}${branches}</div></td>
+      <td style="text-align:center">${badgeFor(r,"hadolint")}</td>
+      <td style="text-align:center">${badgeFor(r,"sast")}</td>
+      <td style="text-align:center">${badgeFor(r,"sca")}</td>
+      <td style="text-align:center">${badgeFor(r,"gitleaks")}</td>
+      <td style="text-align:center">${badgeFor(r,"image-scan")}</td>
+      <td style="text-align:center">${badgeFor(r,"deploy")}</td>
+      <td><a href="${r.html_url}" onclick="event.stopPropagation()" style="font-size:12px">open ↗</a></td>
     </tr>`;
+
+    if (isOpen){
+      row += `<tr class="trdetail"><td colspan="10">${
+        jobs ? jobList(r, jobs) : `<div class="empty">loading gate results…</div>`}</td></tr>`;
+    }
+    return row;
   }).join("");
-  $("runs").innerHTML = rows || '<tr><td colspan="9" style="color:var(--dim)">no runs</td></tr>';
 }
 
-let jobCache = {};
+function jobList(run, jobs){
+  const rows = GATES.map(g => {
+    const jl = jobs.__jobs__ ? jobs.__jobs__.find(j => j.name === g.key) : null;
+    const v = jobs[g.key];
+    if (v === undefined) return "";
+    const st = v === "success" ? "ok" : v === "skipped" ? "skipped" : "bad";
+    const ic = v === "success" ? "✓" : v === "skipped" ? "–" : "✕";
+    const t  = jl ? dur(jl.started_at, jl.completed_at) : "—";
+    const bad = jl ? (jl.steps || []).find(s => s.conclusion === "failure") : null;
+    const why = bad ? `<b>step failed: ${esc(bad.name)}</b>` :
+                (v === "skipped" ? "not started — an upstream gate failed" : esc(g.role));
+    const link = jl && jl.html_url ? `<a href="${jl.html_url}">log ↗</a>` : "";
+    return `<div class="job ${st}">
+      <span class="badge ${v==="success"?"ok":v==="skipped"?"skipped":"bad"}">${ic}</span>
+      <span class="jn">${esc(g.label)}</span>
+      <span class="jd">${why}</span>
+      <span class="jt">${t} &nbsp;${link}</span>
+    </div>`;
+  }).join("");
+  const totals = jobs.__jobs__ ? dur(jobs.__jobs__[0]?.started_at,
+    jobs.__jobs__.reduce((m,j)=> j.completed_at && (!m || j.completed_at > m) ? j.completed_at : m, null)) : "";
+  return `<div class="joblist">${rows}
+    <div class="mono-sm" style="padding-top:2px">
+      run wall-clock: ${totals} &nbsp;·&nbsp; trigger: ${esc(run.event)} &nbsp;·&nbsp;
+      by ${esc(run.actor ? run.actor.login : "—")} &nbsp;·&nbsp;
+      <a href="${run.html_url}">full run ${run.run_number} ↗</a></div></div>`;
+}
+
+/* ---------------- inspector ---------------- */
+function inspect(gateKey){
+  state.gateFilter = state.gateFilter === gateKey ? null : gateKey;
+  renderFlow(); renderRuns();
+  if (!state.gateFilter){ inspectDefault(); return; }
+
+  const g = GATE_BY_KEY[gateKey];
+  const seen = state.runs.filter(r => state.jobs[r.id]);
+  const fails = seen.filter(r => { const v = resultOf(r, gateKey); return v && v !== "success"; });
+  const pass  = seen.filter(r => resultOf(r, gateKey) === "success");
+  const last  = state.runs.find(r => resultOf(r, gateKey));
+
+  $("insTitle").textContent = g.label;
+  $("insBody").innerHTML = `
+    <div class="big">${esc(g.label)}</div>
+    <div class="role">${esc(g.role)}</div>
+    <dl>
+      <dt>Category</dt><dd>${esc(g.cat)}</dd>
+      <dt>Status now</dt><dd>${last ? (resultOf(last, gateKey) === "success"
+          ? '<span class="pill ok" style="padding:2px 9px;font-size:11.5px"><span class="dot"></span>passing</span>'
+          : '<span class="pill bad" style="padding:2px 9px;font-size:11.5px"><span class="dot"></span>failing</span>') : "—"}</dd>
+      <dt>Inspected</dt><dd>${seen.length} run${seen.length===1?"":"s"}</dd>
+      <dt>Blocked</dt><dd>${fails.length}</dd>
+      <dt>Passed</dt><dd>${pass.length}</dd>
+    </dl>
+    <div class="box"><h4>What it checks</h4>${g.checks}</div>
+    <div class="box"><h4>Why it earns its place</h4>${g.why}</div>
+    ${g.cmd ? `<div class="box"><h4>Run it yourself</h4><pre>${esc(g.cmd)}</pre></div>` : ""}
+    <div style="margin-top:14px"><button id="clearf">Clear filter</button></div>`;
+  const c = $("clearf"); if (c) c.addEventListener("click", () => { state.gateFilter = null; renderFlow(); renderRuns(); inspectDefault(); });
+  $("clearfilter").classList.remove("hidden");
+}
+
+function inspectRun(runId){
+  const r = state.runs.find(x => x.id === runId); if (!r) return;
+  const j = state.jobs[r.id];
+  $("insTitle").textContent = "commit " + r.head_sha.slice(0,7);
+  const msg = (r.head_commit && r.head_commit.message || "").split("\n")[0];
+  const gates = GATES.filter(g => g.key !== "deploy");
+  const blocked = j && gates.some(g => { const v = j[g.key]; return v && v !== "success"; });
+  $("insBody").innerHTML = `
+    <div class="big">${r.head_sha.slice(0,7)}</div>
+    <div class="role">${esc(msg)}</div>
+    <dl>
+      <dt>When</dt><dd>${ago(r.created_at)}</dd>
+      <dt>Branch</dt><dd>${esc(r.head_branch || "—")}</dd>
+      <dt>Trigger</dt><dd>${esc(r.event)}</dd>
+      <dt>By</dt><dd>${esc(r.actor ? r.actor.login : "—")}</dd>
+      <dt>Outcome</dt><dd>${!j ? "loading…" : blocked
+        ? '<b style="color:var(--bad)">release blocked</b>'
+        : j.deploy === "success" ? '<b style="color:var(--ok)">released</b>' : "gates passed, not published"}</dd>
+    </dl>
+    <div class="box"><h4>Ships</h4>${
+      j && j.deploy === "success"
+        ? `<code>ghcr.io/${OWNER.toLowerCase()}/devsecops:${esc(r.head_sha)}</code>`
+        : `<span style="color:var(--muted)">nothing — this commit was never published</span>`}</div>
+    <div style="margin-top:14px"><a class="btn" href="${r.html_url}">Open this run on GitHub ↗</a></div>`;
+}
+
+function inspectDefault(){
+  const run = state.runs.find(r => state.jobs[r.id]);
+  if (run){ inspectRun(run.id); }
+  else $("insBody").innerHTML = '<div class="empty">Loading…</div>';
+}
+
+/* ---------------- gate cards ---------------- */
+function renderCards(){
+  $("cards").innerHTML = GATES.filter(g => g.key !== "build" && g.key !== "deploy").map(g => {
+    const seen = state.runs.filter(r => state.jobs[r.id]);
+    const fails = seen.filter(r => { const v = resultOf(r, g.key); return v && v !== "success"; }).length;
+    return `<button class="card" data-gate="${g.key}" aria-pressed="${state.gateFilter===g.key}">
+      <h3>${esc(g.label)}</h3>
+      <div class="cat">${esc(g.cat)}</div>
+      <p>${g.checks}</p>
+      <div class="hit"><span>${g.role}</span>
+        <span>${fails ? `${fails} block${fails===1?"":"s"}` : "no blocks"}</span></div>
+    </button>`;
+  }).join("");
+}
+
+/* ---------------- data ---------------- */
+async function hydrate(runId, silent){
+  if (state.jobs[runId] || state.busy.has(runId)) return;
+  state.busy.add(runId);
+  if (!silent) renderRuns();
+  try{
+    const data = await get(`${API}/actions/runs/${runId}/jobs`);
+    const jobs = data.jobs || [];
+    const map = { __jobs__: jobs, __dur__: {} };
+    for (const j of jobs){
+      map[j.name] = j.conclusion;
+      map.__dur__[j.name] = dur(j.started_at, j.completed_at);
+    }
+    state.jobs[runId] = map;
+  } catch(e){
+    state.jobs[runId] = { __jobs__: [], __err__: e.message };
+  } finally {
+    state.busy.delete(runId);
+    renderStats(); renderFlow(); renderRuns(); renderCards();
+  }
+}
+
+async function loadAll(){
+  if (state.loadingAll) return;
+  state.loadingAll = true;
+  const btn = $("loadall"); btn.disabled = true;
+  const todo = state.runs.filter(r => !state.jobs[r.id]);
+  for (let i = 0; i < todo.length; i++){
+    btn.textContent = `Loading ${i+1}/${todo.length}…`;
+    await hydrate(todo[i].id, true);
+    await new Promise(r => setTimeout(r, 120));   // stay well inside the rate limit
+  }
+  btn.textContent = "Load all runs"; btn.disabled = false;
+  state.loadingAll = false;
+}
 
 async function load(){
   $("error").classList.add("hidden");
   try{
-    const runs = (await get(`${API}/actions/runs?per_page=12`)).workflow_runs || [];
-    if (!runs.length){ $("runs").innerHTML = '<tr><td colspan="9">no runs</td></tr>'; return; }
-
-    // Spend one extra request on the latest run's jobs so the graph is accurate.
-    // Older runs are shown from cache if we already have them.
-    const latest = runs[0];
-    if (!jobCache[latest.id]){
-      const jobs = (await get(`${API}/actions/runs/${latest.id}/jobs`)).jobs || [];
-      jobCache[latest.id] = Object.fromEntries(jobs.map(j => [j.name, j.conclusion]));
-    }
-    renderPipeline(latest, Object.entries(jobCache[latest.id]).map(([name, conclusion]) => ({name, conclusion})));
-    renderRuns(runs, jobCache);
-
-    const gates = GATES.map(g => jobCache[latest.id][g]);
-    const allOk = gates.every(v => v === "success");
+    const runs = (await get(`${API}/actions/runs?per_page=20`)).workflow_runs || [];
+    state.runs = runs;
+    renderStats(); renderRuns(); renderCards();
+    if (runs.length) await hydrate(runs[0].id, true);
+    renderFlow(); renderStats(); renderRuns(); renderCards(); inspectDefault();
+    $("stamp").textContent = "updated " + new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+    const hydrated = state.runs.filter(r => state.jobs[r.id]);
+    const allOk = hydrated.length && GATES.filter(g=>g.key!=="deploy")
+      .map(g => resultOf(hydrated[0], g.key)).every(v => v === "success");
     const st = $("status");
-    st.className = "tab " + (allOk ? "ok" : "bad");
+    st.className = "pill " + (allOk ? "ok" : "bad");
     st.innerHTML = `<span class="dot"></span>${allOk ? "all gates passing" : "a gate is failing"}`;
-    $("stamp").textContent = "updated " + new Date().toLocaleTimeString();
   } catch(e){
     $("error").textContent = e.message;
     $("error").classList.remove("hidden");
-    $("status").className = "tab idle";
+    $("status").className = "pill idle";
     $("status").innerHTML = '<span class="dot"></span>unavailable';
   }
 }
 
-// Assets that live in the repo rather than in /docs.
-$("shot1").src = `${RAW}/evidence/run1-fail/pipeline-failed.png`;
-$("shot2").src = `${RAW}/evidence/run3-pass/pipeline-passed.png`;
-$("linkRepo").href = WEB;
-$("linkActions").href = `${WEB}/actions`;
-$("linkWriteup").href = `${WEB}/blob/main/docs/WRITEUP.md`;
-$("linkArch").href = `${WEB}/blob/main/ARCHITECTURE.md`;
-$("linkDeploy").href = `${WEB}/blob/main/deploy/README.md`;
-$("repo").textContent = `${OWNER}/${REPO}`;
-
-$("refresh").addEventListener("click", load);
-let timer = null;
-$("auto").addEventListener("change", (e) => {
-  if (timer) clearInterval(timer), timer = null;
-  if (e.target.checked) timer = setInterval(load, 5 * 60 * 1000);
+/* ---------------- wiring ---------------- */
+document.addEventListener("click", (e) => {
+  const node = e.target.closest(".node"), card = e.target.closest(".card"), row = e.target.closest("tr.row");
+  if (node){ inspect(node.dataset.gate); return; }
+  if (card){ inspect(card.dataset.gate);
+    document.querySelector(".cols").scrollIntoView({block:"start"}); return; }
+  if (row){
+    const id = +row.dataset.run;
+    state.openRun = state.openRun === id ? null : id;
+    if (state.openRun && !state.jobs[id]) hydrate(id);
+    renderRuns();
+    if (state.openRun) inspectRun(id);
+    return;
+  }
 });
+document.addEventListener("keydown", (e) => {
+  const row = e.target.closest && e.target.closest("tr.row");
+  if (row && (e.key === "Enter" || e.key === " ")){ e.preventDefault(); row.click(); }
+  if (e.key === "Escape"){ $("lb").style.display = "none"; }
+});
+$("q").addEventListener("input", (e) => { state.query = e.target.value.trim(); renderRuns(); });
+document.querySelectorAll(".fbtn").forEach(b => b.addEventListener("click", () => {
+  state.statusFilter = b.dataset.f;
+  document.querySelectorAll(".fbtn").forEach(x => x.setAttribute("aria-pressed", x === b));
+  renderRuns();
+}));
+$("clearfilter").addEventListener("click", () => {
+  state.gateFilter = null; renderFlow(); renderRuns(); renderCards();
+  $("clearfilter").classList.add("hidden"); inspectDefault();
+});
+$("refresh").addEventListener("click", load);
+$("loadall").addEventListener("click", loadAll);
+let timer = null, autoOn = false;
+$("auto").addEventListener("click", () => {
+  autoOn = !autoOn; $("auto").setAttribute("aria-pressed", autoOn);
+  $("auto").textContent = autoOn ? "Auto ●" : "Auto";
+  if (timer) clearInterval(timer), timer = null;
+  if (autoOn) timer = setInterval(load, 5*60*1000);
+});
+[["shot1","run1-fail/pipeline-failed.png"],["shot2","run3-pass/pipeline-passed.png"]].forEach(([id,p]) => {
+  const el = $(id); el.src = `${RAW}/evidence/${p}`;
+  el.addEventListener("click", () => { $("lbImg").src = el.src; $("lb").style.display = "flex"; });
+});
+$("lb").addEventListener("click", () => $("lb").style.display = "none");
+$("lRepo").href = WEB; $("lAct").href = `${WEB}/actions`;
+$("lHand").href = `${WEB}/blob/main/docs/HANDOFF.md`;
+$("lWrite").href = `${WEB}/blob/main/docs/WRITEUP.md`;
+$("lArch").href = `${WEB}/blob/main/ARCHITECTURE.md`;
+$("repo").textContent = `${OWNER}/${REPO}`;
+$("spend").textContent = "2 requests on load, then one per run you expand";
 load();
 </script>
 </body>
