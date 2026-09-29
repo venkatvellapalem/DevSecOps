@@ -1,0 +1,15 @@
+# This repo is authored on Windows and runs on Linux. Git's default CRLF
+# translation would put \r at the end of every shebang line and turn
+# infra/*.sh into "bad interpreter: /usr/bin/env: No such file or directory".
+# Force LF everywhere; there is nothing Windows-native in here.
+* text=auto eol=lf
+
+*.sh       text eol=lf
+Dockerfile text eol=lf
+*.yml      text eol=lf
+*.yaml     text eol=lf
+*.py       text eol=lf
+
+*.png binary
+*.jpg binary
+*.pem binary
