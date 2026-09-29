@@ -398,20 +398,29 @@ async function get(path){
 }
 function paintRate(){ $("rate").textContent = state.rate == null ? "" : `${state.rate}/60 req`; }
 
+// Three distinct states that were previously conflated into one null:
+//   NOT_LOADED  - we have not asked GitHub about this run yet
+//   undefined   - the run has no such job (it predates the gate being added)
+//   null        - the job exists and is queued or running
+// Collapsing these made older runs look like they were permanently "running",
+// so a run could be neither "blocked" nor "green" and the summary contradicted
+// itself (60% green, 0 released blocked).
+const NOT_LOADED = Symbol("notLoaded");
 function resultOf(run, key){
   const j = state.jobs[run.id];
-  if (!j) return undefined;                     // not fetched yet
-  return j[key] === undefined ? null : j[key];  // fetched, job absent from this run
+  if (!j) return NOT_LOADED;
+  return j[key];
 }
 
 // GitHub reports a queued or in-flight job's conclusion as null. Treating that
 // as failure made a running pipeline look broken, which is the opposite of what
 // this page is for.
 function jobState(v){
-  if (v === undefined) return "none";     // job does not exist in this run
-  if (v === null)      return "pending";  // queued or running
-  if (v === "success") return "ok";
-  if (v === "skipped") return "skipped";
+  if (v === NOT_LOADED) return "loading";
+  if (v === undefined)  return "none";     // gate did not exist in this run
+  if (v === null)       return "pending";  // queued or running
+  if (v === "success")  return "ok";
+  if (v === "skipped")  return "skipped";
   return "bad";
 }
 const STYLE = {
@@ -419,9 +428,10 @@ const STYLE = {
   bad:     { ic:"✕", txt:"FAILED",   badge:"bad",     cls:"bad" },
   skipped: { ic:"–", txt:"skipped",  badge:"skipped", cls:"skipped" },
   pending: { ic:"…", txt:"running",  badge:"pending", cls:"pending" },
-  none:    { ic:"·", txt:"…",        badge:"none",    cls:"" }
+  loading: { ic:"·", txt:"…",        badge:"load",    cls:"" },
+  none:    { ic:"—", txt:"n/a",      badge:"none",    cls:"" }
 };
-const isBlocked = (v) => v !== undefined && v !== null && v !== "success";
+const isBlocked = (v) => v !== undefined && v !== null && v !== NOT_LOADED && v !== "success";
 
 /* ---------------- summary ---------------- */
 function renderStats(){
@@ -436,10 +446,15 @@ function renderStats(){
   const notReady = !latestLoaded;
   const verdict = notReady ? "Loading" : anyPending ? "Running" : allOk ? "Passing" : "Failing";
 
-  let passed = 0;
+  let passed = 0, partial = 0;
   for (const r of hydrated){
-    const gs = GATES.filter(g => g.key !== "deploy").map(g => resultOf(r, g.key));
-    if (gs.every(v => v === "success")) passed++;
+    const j = state.jobs[r.id];
+    // Judge each run against the gates that existed when it ran. Runs from
+    // before hadolint/gitleaks were added simply have no such job, and scoring
+    // them as failures (or as perpetually "running") would be wrong.
+    const present = GATES.filter(g => g.key !== "deploy" && j[g.key] !== undefined);
+    if (present.length && present.every(g => j[g.key] === "success")) passed++;
+    if (present.length < GATES.length - 1) partial++;
   }
   const pct = hydrated.length ? Math.round(passed / hydrated.length * 100) : null;
   const blocked = hydrated.filter(r => GATES.some(g => g.key !== "deploy" && isBlocked(resultOf(r, g.key)))).length;
@@ -455,7 +470,8 @@ function renderStats(){
       <div class="v">${blocked}</div><div class="n">of ${hydrated.length} runs inspected</div></div>
     <div class="stat ${pct === 100 ? "ok" : pct === 0 ? "bad" : ""}">
       <div class="k">Fully green</div><div class="v">${pct == null ? "—" : pct + "%"}</div>
-      <div class="n">${passed}/${hydrated.length} runs passed every gate</div></div>
+      <div class="n">${passed}/${hydrated.length} runs passed every gate${
+        partial ? ` · ${partial} predate a gate` : ""}</div></div>
     <div class="stat"><div class="k">Runs loaded</div><div class="v">${state.runs.length}</div>
       <div class="n">${Object.keys(state.jobs).length} expanded</div></div>`;
 }
@@ -514,7 +530,9 @@ function visibleRuns(){
   if (state.statusFilter === "failed")
     rs = rs.filter(r => GATES.some(g => g.key !== "deploy" && isBlocked(resultOf(r, g.key))));
   if (state.statusFilter === "passed")
-    rs = rs.filter(r => state.jobs[r.id] && GATES.filter(g=>g.key!=="deploy").every(g => jobState(resultOf(r,g.key)) === "ok"));
+    rs = rs.filter(r => { const j = state.jobs[r.id]; if (!j) return false;
+      const present = GATES.filter(g => g.key !== "deploy" && j[g.key] !== undefined);
+      return present.length && present.every(g => j[g.key] === "success"); });
   if (state.statusFilter === "blocked")
     rs = rs.filter(r => !state.jobs[r.id] || resultOf(r,"deploy") !== "success");
   if (state.gateFilter)
@@ -532,7 +550,8 @@ function badgeFor(run, key){
   const j = state.jobs[run.id];
   if (!j) return `<span class="badge load" title="click the row to load">·</span>`;
   const s = jobState(j[key]);
-  const t = { ok:"passed", bad:"failed", skipped:"skipped", pending:"running or queued", none:"not in this run" }[s];
+  const t = { ok:"passed", bad:"failed", skipped:"skipped", pending:"running or queued",
+              none:"this gate did not exist in this run", loading:"loading" }[s];
   return `<span class="badge ${STYLE[s].badge}" title="${t}">${STYLE[s].ic}</span>`;
 }
 
