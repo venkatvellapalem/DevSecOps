@@ -23,7 +23,13 @@ Run 2 is the one worth reading: `sca` went green while `image-scan` stayed red.
 The gates are not redundant — Trivy saw packages `pip-audit` cannot, because
 they ship in the base image and never appear in `requirements.txt`.
 
-Raw scanner output for all three runs is in [`evidence/`](evidence/).
+Raw scanner output for all three runs is in [`evidence/`](evidence/), along with the
+pipeline screenshots the brief asks for:
+
+| file | shows |
+|---|---|
+| `evidence/run1-fail/pipeline-failed.png` | run 1 — `sast`, `sca`, `image-scan` all red, `deploy` skipped |
+| `evidence/run3-pass/pipeline-passed.png` | run 3 — all jobs green, `Pushed ghcr.io/…` in the run summary |
 Design rationale: [`ARCHITECTURE.md`](ARCHITECTURE.md).
 The shift-left write-up: [`docs/WRITEUP.md`](docs/WRITEUP.md).
 
