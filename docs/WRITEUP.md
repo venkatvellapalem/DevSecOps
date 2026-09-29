@@ -67,6 +67,26 @@ This is why `ignore-unfixed` is in the config, and why the 44 unfixable Debian
 findings are filtered rather than left to scream — a gate that is always red is
 a gate people learn to skip.
 
+## Two more gates, added after the brief
+
+The brief calls these extension ideas. There was nothing blocking them, and both
+close a real hole.
+
+**Gitleaks — secrets we committed.** The three gates above read code patterns,
+dependency versions, and packages. None of them reads *values*. An AWS key
+sitting in a config file passes all three silently. Demonstrated: two planted
+high-entropy strings made gitleaks fail with `leaks found: 2`, and `deploy` was
+skipped. (Note that Gitleaks deliberately allowlists AWS's own documentation
+key, `AKIAIOSFODNN7EXAMPLE` — a useful reminder that a scanner that never fires
+is usually misconfigured, not proof you are clean.)
+
+**Hadolint — the Dockerfile itself.** Catches `DL3002` (the last `USER` is
+root) and `DL3007` (unpinned base image) before the image is even built, so it
+fails in seconds rather than after a two-minute build.
+
+With these, the pipeline covers five distinct classes: container definition,
+your code, your dependencies, your secrets, and your artifact.
+
 ## What the three gates still do not cover
 
 Worth stating plainly, because a green pipeline is not a secure application:

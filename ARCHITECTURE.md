@@ -9,11 +9,13 @@ report someone reads later — it is the job dependency graph.
 ```
 git push  →  GitHub Actions
                ├─ build       docker build, save the image as an artifact
+               ├─ hadolint    Hadolint      → the Dockerfile   (parallel with build)
                ├─ sast        Bandit        → your own source
                ├─ sca         pip-audit     → your dependencies
+               ├─ gitleaks    Gitleaks      → committed secrets
                ├─ image-scan  Trivy         → the built artifact
-               └─ deploy      needs: [build, sast, sca, image-scan]
-                              GHCR push, only on main
+               ├─ deploy      needs: all six, GHCR push, only on main
+               └─ notify      if: failure() → per-gate summary + optional Slack
 
 GHCR  →  EC2 pulls the scanned digest and runs it
 ```

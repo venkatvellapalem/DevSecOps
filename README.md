@@ -1,12 +1,16 @@
 # Secure DevOps Pipeline
 
-A CI/CD pipeline that builds a container image, runs three independent security
-gates against it, and publishes it **only if all three pass**. Built as
-Project #15 of the BCSSL Cybersecurity Lab Series.
+A CI/CD pipeline that builds a container image, runs six security gates against
+it, and publishes it **only if all six pass**. Built as Project #15 of the BCSSL
+Cybersecurity Lab Series.
+
+**[Live dashboard](https://venkatvellapalem.github.io/DevSecOps/)** ·
+[New here? Start with the handoff](docs/HANDOFF.md) ·
+[All runs](https://github.com/venkatvellapalem/DevSecOps/actions)
 
 ```
-git push → build → sast → sca → image-scan → deploy
-                                                └─ only on main, only if all four passed
+git push → build → hadolint → sast → sca → gitleaks → image-scan → deploy
+                                                                    └─ only on main, only if all six passed
 ```
 
 ## Results
@@ -22,6 +26,10 @@ git push → build → sast → sca → image-scan → deploy
 Run 2 is the one worth reading: `sca` went green while `image-scan` stayed red.
 The gates are not redundant — Trivy saw packages `pip-audit` cannot, because
 they ship in the base image and never appear in `requirements.txt`.
+
+A fifth run proves the secret-scanning gate blocks a release:
+`evidence/run5-gitleaks-blocks/` — gitleaks failed on two planted credentials,
+deploy was skipped, and `notify` fired for the first time.
 
 Raw scanner output for all three runs is in [`evidence/`](evidence/), along with the
 pipeline screenshots the brief asks for:
@@ -48,17 +56,31 @@ deploy/
 infra/
   ec2-bootstrap.sh    host prep: swap, Docker Engine, checksum-verified Trivy
   ssh-ec2.sh          keeps the security group in sync with a flapping egress IP
-docs/WRITEUP.md       gates mapped to vulnerability classes
-evidence/             scanner logs, per run
+docs/
+  index.html          live status dashboard (served by GitHub Pages)
+  HANDOFF.md          start here: concepts, demo script, glossary
+  WRITEUP.md          gates mapped to vulnerability classes
+evidence/             scanner logs and screenshots, per run
 ```
 
-## The three gates
+## The six gates
 
 | gate | tool | inspects | fails on |
 |---|---|---|---|
-| sast | Bandit | source we wrote | High severity, e.g. B602 |
+| hadolint | Hadolint | the Dockerfile | DL3002 (root user), DL3007 (unpinned base), warning+ |
+| sast | Bandit | source we wrote | High severity, e.g. B602 command injection |
 | sca | pip-audit | dependencies we consume | any known CVE |
+| gitleaks | Gitleaks | secrets we committed | any detected credential |
 | image-scan | Trivy | the built artifact | fixable CRITICAL/HIGH |
+| *(deploy)* | — | — | *not a gate: the thing being gated* |
+
+`deploy` declares all five gates in `needs:`, so GitHub will not start it if any
+of them failed. **That dependency graph is the security control** — not a report
+anyone reads afterwards.
+
+`notify` is the inverse of `deploy`: `if: failure()`, so it runs only when a
+gate blocked a release. It writes a per-gate summary and posts to Slack only if
+a `SLACK_WEBHOOK_URL` secret exists.
 
 ## Reproducing the run-1 failure
 
