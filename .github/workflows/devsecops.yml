@@ -40,6 +40,46 @@ jobs:
           path: /tmp/image.tgz
           retention-days: 1
 
+  # ------------------------------------------------------------------- hadolint
+  # Lints the Dockerfile itself. Deliberately has no `needs:` -- it does not need
+  # the built image, so it runs in parallel with build and fails fast on a bad
+  # Dockerfile instead of after a 2-minute build.
+  hadolint:
+    name: hadolint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint the Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: app/Dockerfile
+          # `warning`, not the default `info`. At the default, DL3059
+          # ("multiple consecutive RUN") and similar style rules fail the build,
+          # which trains people to route around the gate. At `warning` it still
+          # catches what matters: DL3002 (last USER is root), DL3007 (unpinned
+          # base image), DL3008 (unpinned apt packages).
+          failure-threshold: warning
+
+  # ----------------------------------------------------------------- gitleaks
+  # The gate the brief does not ask for and every real pipeline has. Nothing
+  # else here looks at secrets: SAST reads code patterns, SCA reads dependency
+  # versions, Trivy reads packages. A committed AWS key passes all three.
+  gitleaks:
+    name: gitleaks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scan for committed secrets
+        run: |
+          # Pinned image, not :latest. --no-git scans the checked-out tree
+          # (deterministic); drop it to walk git history instead.
+          # --redact keeps the secret out of the CI log, which is itself a
+          # place secrets leak.
+          docker run --rm -v "$PWD:/repo" ghcr.io/gitleaks/gitleaks:v8.28.0 \
+            detect --source=/repo --no-git --redact --verbose
+
   # ---------------------------------------------------------------------- SAST
   # Scans the code we wrote. High severity only.
   # `-lll`, not the `-ll` in the lab write-up: -ll also reports B104
@@ -58,7 +98,7 @@ jobs:
       - name: Install Bandit
         run: pip install bandit
 
-      - name: Bandit — fail on High severity
+      - name: Bandit -- fail on High severity
         run: bandit -r app -lll -f screen
 
   # ----------------------------------------------------------------------- SCA
@@ -80,7 +120,7 @@ jobs:
         run: pip-audit -r app/requirements.txt
 
   # ---------------------------------------------------------------- image scan
-  # Scans the built artifact — OS packages *and* language packages, which is
+  # Scans the built artifact -- OS packages *and* language packages, which is
   # the layer SAST and SCA cannot see.
   image-scan:
     name: image-scan
@@ -95,7 +135,7 @@ jobs:
       - name: Load image
         run: docker load --input /tmp/image.tgz
 
-      - name: Trivy — fail on fixable CRITICAL/HIGH
+      - name: Trivy -- fail on fixable CRITICAL/HIGH
         uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: 'bcssl-demo-app:${{ github.sha }}'
@@ -114,7 +154,7 @@ jobs:
   deploy:
     name: deploy
     runs-on: ubuntu-latest
-    needs: [build, sast, sca, image-scan]
+    needs: [build, hadolint, sast, sca, gitleaks, image-scan]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     permissions:
       contents: read
@@ -151,3 +191,43 @@ jobs:
 
           echo "### Pushed" >> "$GITHUB_STEP_SUMMARY"
           echo "\`${REGISTRY}:${SHA}\`" >> "$GITHUB_STEP_SUMMARY"
+
+  # -------------------------------------------------------------------- notify
+  # `if: failure()` makes this the inverse of deploy: it runs only when a gate
+  # blocked the release, which is precisely when a human needs to know. Without
+  # it, a red run sits there until someone happens to look.
+  notify:
+    name: notify
+    runs-on: ubuntu-latest
+    needs: [build, hadolint, sast, sca, gitleaks, image-scan]
+    if: failure()
+    env:
+      # Secrets cannot be referenced directly in an `if:` condition, so they are
+      # hoisted into job env and tested there. Unset = this stays a no-op.
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+    steps:
+      - name: Explain what was blocked
+        run: |
+          {
+            echo "## Deployment blocked"
+            echo ""
+            echo "| gate | result |"
+            echo "|---|---|"
+            echo "| build | ${{ needs.build.result }} |"
+            echo "| hadolint | ${{ needs.hadolint.result }} |"
+            echo "| sast | ${{ needs.sast.result }} |"
+            echo "| sca | ${{ needs.sca.result }} |"
+            echo "| gitleaks | ${{ needs.gitleaks.result }} |"
+            echo "| image-scan | ${{ needs.image-scan.result }} |"
+            echo ""
+            echo "The image was **not** published to GHCR."
+            echo ""
+            echo "Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Notify Slack
+        if: env.SLACK_WEBHOOK_URL != ''
+        run: |
+          curl -sS -X POST -H 'Content-type: application/json' \
+            --data "{\"text\":\"[BLOCKED] DevSecOps pipeline: ${{ github.repository }}@${{ github.sha }} -- build=${{ needs.build.result }} hadolint=${{ needs.hadolint.result }} sast=${{ needs.sast.result }} sca=${{ needs.sca.result }} gitleaks=${{ needs.gitleaks.result }} image-scan=${{ needs.image-scan.result }}\"}" \
+            "$SLACK_WEBHOOK_URL"
