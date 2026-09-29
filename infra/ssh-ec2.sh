@@ -19,6 +19,9 @@ SG=${EC2_SG:-sg-0fe662149c0d4079a}
 INSTANCE_IP=${EC2_HOST:-16.113.100.208}
 KEY=${EC2_KEY:-$(cd "$(dirname "$0")" && pwd)/../devsecops.pem}
 SSH_USER=${EC2_USER:-ubuntu}
+# Ports kept in sync with this workstation's egress IPs. 22 for shell access,
+# 5000 so the running container is reachable from a browser.
+PORTS=${EC2_PORTS:-22 5000}
 
 # Ask several echo services; this box answers with different IPs depending on
 # which uplink the request happens to leave by.
@@ -33,24 +36,24 @@ discover_ips() {
 CURRENT=$(discover_ips)
 [[ -n $CURRENT ]] || { echo "could not determine egress IP" >&2; exit 1; }
 
-ALLOWED=$(aws ec2 describe-security-groups --region "$REGION" --group-ids "$SG" \
-  --query 'SecurityGroups[0].IpPermissions[?FromPort==`22`].IpRanges[].CidrIp' --output text | tr '\t' '\n' | sed 's|/32$||')
+for port in $PORTS; do
+  ALLOWED=$(aws ec2 describe-security-groups --region "$REGION" --group-ids "$SG" \
+    --query "SecurityGroups[0].IpPermissions[?FromPort==\`$port\`].IpRanges[].CidrIp" \
+    --output text | tr '\t' '\n' | sed 's|/32$||')
 
-for ip in $CURRENT; do
-  if ! grep -qx "$ip" <<<"$ALLOWED"; then
-    echo "+ allowing $ip"
-    aws ec2 authorize-security-group-ingress --region "$REGION" --group-id "$SG" \
-      --protocol tcp --port 22 --cidr "$ip/32" >/dev/null
-  fi
-done
+  for ip in $CURRENT; do
+    if ! grep -qx "$ip" <<<"$ALLOWED"; then
+      echo "+ $port <- $ip"
+      aws ec2 authorize-security-group-ingress --region "$REGION" --group-id "$SG" \
+        --protocol tcp --port "$port" --cidr "$ip/32" >/dev/null
+    fi
+  done
 
-# Prune stale rules so the group doesn't accumulate every IP this ISP has ever handed out.
-for ip in $ALLOWED; do
-  if ! grep -qx "$ip" <<<"$CURRENT"; then
-    echo "- revoking stale $ip"
-    aws ec2 revoke-security-group-ingress --region "$REGION" --group-id "$SG" \
-      --protocol tcp --port 22 --cidr "$ip/32" >/dev/null
-  fi
+  # No pruning on purpose. This workstation has two uplinks and the echo
+  # services do not reliably report both, so "not seen this second" does not
+  # mean "not needed" — pruning here revokes a rule that is needed moments
+  # later. Rules are cheap; a locked-out shell is not. Prune by hand if the
+  # group ever grows. (The durable fix is SSM and no inbound 22 at all.)
 done
 
 exec ssh -i "$KEY" \
