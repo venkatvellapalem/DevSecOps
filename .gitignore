@@ -1,0 +1,26 @@
+# --- never commit ---
+*.pem
+*.ppk
+*.key
+*.pub
+.env
+.env.*
+Lab15_Secure_DevOps_Pipeline.docx
+
+# secrets / scan output that may echo creds
+*.sarif
+trivy-*.json
+bandit-*.json
+pip-audit-*.json
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# editor / os
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

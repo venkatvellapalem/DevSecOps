@@ -1,0 +1,24 @@
+# RUN 1 — deliberately vulnerable pins. This is the "before" state.
+#
+# flask==2.0.1 and requests==2.19.1 both carry known CVEs, which is the point:
+# the SCA gate must go red on this file.
+#
+# The transitive pins below exist so the image still *runs*. Unpinned, pip
+# resolves Werkzeug to 3.x, and Flask 2.0.1 dies at import with
+# "cannot import name 'url_quote' from 'werkzeug.urls'". A "before" image that
+# crashes on startup would make the run-1/run-2 comparison dishonest.
+flask==2.0.1
+Werkzeug==2.0.3
+Jinja2==3.0.3
+itsdangerous==2.0.1
+click==8.0.4
+MarkupSafe==2.0.1
+
+# requests 2.19.1 itself pins urllib3<1.24, >=1.21.1 — pinning anything newer
+# makes the whole file fail to resolve, which looks like a broken lab rather
+# than a vulnerable one.
+requests==2.19.1
+urllib3==1.23
+chardet==3.0.4
+idna==2.6
+certifi==2018.4.16
