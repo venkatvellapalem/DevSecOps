@@ -145,6 +145,9 @@
   .badge.skipped{background:var(--skipbg);color:var(--skip)}
   .badge.none{background:#f7f8fb;color:#c9d0dc}
   .badge.load{background:var(--line2);color:var(--dim);animation:pulse 1.2s ease-in-out infinite}
+  .badge.pending{background:var(--warnbg);color:var(--warn)}
+  .node.pending{border-color:var(--warnln);background:linear-gradient(180deg,#fffdf7,#fff)}
+  .node.pending .ic{color:var(--warn)}
   .trdetail{background:#f8fafd}
   .trdetail td{padding:0;border-bottom:2px solid var(--line)}
   .joblist{padding:12px 16px 16px;display:grid;gap:8px}
@@ -401,15 +404,37 @@ function resultOf(run, key){
   return j[key] === undefined ? null : j[key];  // fetched, job absent from this run
 }
 
+// GitHub reports a queued or in-flight job's conclusion as null. Treating that
+// as failure made a running pipeline look broken, which is the opposite of what
+// this page is for.
+function jobState(v){
+  if (v === undefined) return "none";     // job does not exist in this run
+  if (v === null)      return "pending";  // queued or running
+  if (v === "success") return "ok";
+  if (v === "skipped") return "skipped";
+  return "bad";
+}
+const STYLE = {
+  ok:      { ic:"✓", txt:"passed",   badge:"ok",      cls:"ok" },
+  bad:     { ic:"✕", txt:"FAILED",   badge:"bad",     cls:"bad" },
+  skipped: { ic:"–", txt:"skipped",  badge:"skipped", cls:"skipped" },
+  pending: { ic:"…", txt:"running",  badge:"pending", cls:"pending" },
+  none:    { ic:"·", txt:"…",        badge:"none",    cls:"" }
+};
+const isBlocked = (v) => v !== undefined && v !== null && v !== "success";
+
 /* ---------------- summary ---------------- */
 function renderStats(){
   const done = state.runs.filter(r => r.status === "completed");
   const hydrated = done.filter(r => state.jobs[r.id]);
   const latest = done[0];
+  const latestRunning = state.runs[0] && state.runs[0].status !== "completed";
   const latestLoaded = latest && state.jobs[latest.id];
   const gates = latestLoaded ? GATES.filter(g => g.key !== "deploy").map(g => resultOf(latest, g.key)) : [];
-  const allOk = gates.length && gates.every(v => v === "success");
-  const pending = latest && !latestLoaded;
+  const anyPending = gates.some(v => jobState(v) === "pending");
+  const allOk = gates.length > 0 && gates.every(v => jobState(v) === "ok");
+  const notReady = !latestLoaded;
+  const verdict = notReady ? "Loading" : anyPending ? "Running" : allOk ? "Passing" : "Failing";
 
   let passed = 0;
   for (const r of hydrated){
@@ -417,13 +442,13 @@ function renderStats(){
     if (gs.every(v => v === "success")) passed++;
   }
   const pct = hydrated.length ? Math.round(passed / hydrated.length * 100) : null;
-  const blocked = hydrated.filter(r => GATES.some(g => { const v = resultOf(r, g.key);
-    return g.key !== "deploy" && v && v !== "success"; })).length;
+  const blocked = hydrated.filter(r => GATES.some(g => g.key !== "deploy" && isBlocked(resultOf(r, g.key)))).length;
 
   $("stats").innerHTML = `
-    <div class="stat ${allOk ? "ok" : pending ? "" : "bad"}">
-      <div class="k">Right now</div><div class="v">${pending ? "Loading" : allOk ? "Passing" : "Failing"}</div>
-      <div class="n">${latest ? "commit " + esc(latest.head_sha.slice(0,7)) : "no runs"}</div></div>
+    <div class="stat ${allOk ? "ok" : anyPending || notReady ? "" : "bad"}">
+      <div class="k">Right now</div><div class="v">${verdict}</div>
+      <div class="n">${latest ? "commit " + esc(latest.head_sha.slice(0,7)) : "no runs"}${
+        latestRunning ? " · newer run in flight" : ""}</div></div>
     <div class="stat"><div class="k">Gates</div><div class="v">${GATES.length - 1}</div>
       <div class="n">+ deploy behind a <code>needs:</code> barrier</div></div>
     <div class="stat ${blocked ? "warn" : ""}"><div class="k">Releases blocked</div>
@@ -443,14 +468,13 @@ function renderFlow(){
   let html = "";
   GATES.forEach((g, i) => {
     const v = j ? j[g.key] : undefined;
-    const cls = v === "success" ? "ok" : v && v !== "success" ? "bad" : v === null ? "skipped" : "";
-    const icon = v === "success" ? "✓" : v && v !== "success" ? "✕" : v === null ? "–" : "·";
-    const txt  = v === "success" ? "passed" : v && v !== "success" ? "FAILED" : v === null ? "skipped" : "…";
+    const s = jobState(v);
+    const cls = j ? STYLE[s].cls : "";
     const jb = j && j["__dur__"] && j["__dur__"][g.key];
     html += `<button class="node ${cls}" data-gate="${g.key}" aria-pressed="${state.gateFilter === g.key}"
                title="${esc(g.role)}">
-        <div class="hd"><span class="ic">${icon}</span><span class="nm">${esc(g.label)}</span></div>
-        <div class="st">${txt}${jb ? `<span class="dur">${jb}</span>` : ""}</div>
+        <div class="hd"><span class="ic">${j ? STYLE[s].ic : "·"}</span><span class="nm">${esc(g.label)}</span></div>
+        <div class="st">${j ? STYLE[s].txt : "…"}${jb ? `<span class="dur">${jb}</span>` : ""}</div>
       </button>`;
     if (g.key === "image-scan"){
       html += `<span class="barrier">all five<br>must pass</span>`;
@@ -460,12 +484,15 @@ function renderFlow(){
   });
   $("flow").innerHTML = html;
 
-  const failed = GATES.filter(g => { const v = resultOf(run, g.key);
-    return g.key !== "deploy" && v && v !== "success"; }).map(g => g.label);
+  const failed = GATES.filter(g => g.key !== "deploy" && isBlocked(resultOf(run, g.key))).map(g => g.label);
+  const running = GATES.some(g => jobState(resultOf(run, g.key)) === "pending");
   const dep = resultOf(run, "deploy");
   const isMain = run.head_branch === "main";
   let v = "";
-  if (failed.length){
+  if (running){
+    v = `<b>Run in progress.</b> <code>${esc(run.head_sha.slice(0,7))}</code> is mid-flight — stages
+         still queued show as <span style="color:var(--warn);font-weight:600">running</span>, not as failures.`;
+  } else if (failed.length){
     v = `<b>Release blocked.</b> ${failed.map(esc).join(", ")} did not pass, so the image was never
          published. Commit <code>${esc(run.head_sha.slice(0,7))}</code>
          <span style="color:var(--dim)">— ${ago(run.created_at)}</span>.`;
@@ -485,13 +512,13 @@ function renderFlow(){
 function visibleRuns(){
   let rs = state.runs;
   if (state.statusFilter === "failed")
-    rs = rs.filter(r => GATES.some(g => { const v = resultOf(r,g.key); return g.key!=="deploy" && v && v!=="success"; }));
+    rs = rs.filter(r => GATES.some(g => g.key !== "deploy" && isBlocked(resultOf(r, g.key))));
   if (state.statusFilter === "passed")
-    rs = rs.filter(r => state.jobs[r.id] && GATES.filter(g=>g.key!=="deploy").every(g => resultOf(r,g.key)==="success"));
+    rs = rs.filter(r => state.jobs[r.id] && GATES.filter(g=>g.key!=="deploy").every(g => jobState(resultOf(r,g.key)) === "ok"));
   if (state.statusFilter === "blocked")
     rs = rs.filter(r => !state.jobs[r.id] || resultOf(r,"deploy") !== "success");
   if (state.gateFilter)
-    rs = rs.filter(r => { const v = resultOf(r, state.gateFilter); return v && v !== "success"; });
+    rs = rs.filter(r => isBlocked(resultOf(r, state.gateFilter)));
   if (state.query){
     const q = state.query.toLowerCase();
     rs = rs.filter(r => (r.head_sha||"").includes(q) ||
@@ -504,11 +531,9 @@ function visibleRuns(){
 function badgeFor(run, key){
   const j = state.jobs[run.id];
   if (!j) return `<span class="badge load" title="click the row to load">·</span>`;
-  const v = j[key];
-  if (v === undefined) return `<span class="badge none">–</span>`;
-  if (v === "success") return `<span class="badge ok" title="success">✓</span>`;
-  if (v === "skipped") return `<span class="badge skipped" title="skipped">–</span>`;
-  return `<span class="badge bad" title="${esc(v)}">✕</span>`;
+  const s = jobState(j[key]);
+  const t = { ok:"passed", bad:"failed", skipped:"skipped", pending:"running or queued", none:"not in this run" }[s];
+  return `<span class="badge ${STYLE[s].badge}" title="${t}">${STYLE[s].ic}</span>`;
 }
 
 function renderRuns(){
@@ -549,15 +574,16 @@ function jobList(run, jobs){
     const jl = jobs.__jobs__ ? jobs.__jobs__.find(j => j.name === g.key) : null;
     const v = jobs[g.key];
     if (v === undefined) return "";
-    const st = v === "success" ? "ok" : v === "skipped" ? "skipped" : "bad";
-    const ic = v === "success" ? "✓" : v === "skipped" ? "–" : "✕";
+    const s  = jobState(v);
     const t  = jl ? dur(jl.started_at, jl.completed_at) : "—";
-    const bad = jl ? (jl.steps || []).find(s => s.conclusion === "failure") : null;
-    const why = bad ? `<b>step failed: ${esc(bad.name)}</b>` :
-                (v === "skipped" ? "not started — an upstream gate failed" : esc(g.role));
+    const bad = jl ? (jl.steps || []).find(x => x.conclusion === "failure") : null;
+    const why = bad ? `<b>step failed: ${esc(bad.name)}</b>`
+              : s === "skipped" ? "not started — an upstream gate failed"
+              : s === "pending" ? "queued or running"
+              : esc(g.role);
     const link = jl && jl.html_url ? `<a href="${jl.html_url}">log ↗</a>` : "";
-    return `<div class="job ${st}">
-      <span class="badge ${v==="success"?"ok":v==="skipped"?"skipped":"bad"}">${ic}</span>
+    return `<div class="job ${STYLE[s].cls}">
+      <span class="badge ${STYLE[s].badge}">${STYLE[s].ic}</span>
       <span class="jn">${esc(g.label)}</span>
       <span class="jd">${why}</span>
       <span class="jt">${t} &nbsp;${link}</span>
@@ -580,9 +606,9 @@ function inspect(gateKey){
 
   const g = GATE_BY_KEY[gateKey];
   const seen = state.runs.filter(r => state.jobs[r.id]);
-  const fails = seen.filter(r => { const v = resultOf(r, gateKey); return v && v !== "success"; });
-  const pass  = seen.filter(r => resultOf(r, gateKey) === "success");
-  const last  = state.runs.find(r => resultOf(r, gateKey));
+  const fails = seen.filter(r => isBlocked(resultOf(r, gateKey)));
+  const pass  = seen.filter(r => jobState(resultOf(r, gateKey)) === "ok");
+  const last  = state.runs.find(r => state.jobs[r.id] && resultOf(r, gateKey) !== undefined);
 
   $("insTitle").textContent = g.label;
   $("insBody").innerHTML = `
@@ -590,8 +616,10 @@ function inspect(gateKey){
     <div class="role">${esc(g.role)}</div>
     <dl>
       <dt>Category</dt><dd>${esc(g.cat)}</dd>
-      <dt>Status now</dt><dd>${last ? (resultOf(last, gateKey) === "success"
+      <dt>Status now</dt><dd>${last ? (jobState(resultOf(last, gateKey)) === "ok"
           ? '<span class="pill ok" style="padding:2px 9px;font-size:11.5px"><span class="dot"></span>passing</span>'
+          : jobState(resultOf(last, gateKey)) === "pending"
+          ? '<span class="pill idle" style="padding:2px 9px;font-size:11.5px"><span class="dot"></span>running</span>'
           : '<span class="pill bad" style="padding:2px 9px;font-size:11.5px"><span class="dot"></span>failing</span>') : "—"}</dd>
       <dt>Inspected</dt><dd>${seen.length} run${seen.length===1?"":"s"}</dd>
       <dt>Blocked</dt><dd>${fails.length}</dd>
@@ -611,7 +639,8 @@ function inspectRun(runId){
   $("insTitle").textContent = "commit " + r.head_sha.slice(0,7);
   const msg = (r.head_commit && r.head_commit.message || "").split("\n")[0];
   const gates = GATES.filter(g => g.key !== "deploy");
-  const blocked = j && gates.some(g => { const v = j[g.key]; return v && v !== "success"; });
+  const blocked = j && gates.some(g => isBlocked(j[g.key]));
+  const running = j && gates.some(g => jobState(j[g.key]) === "pending");
   $("insBody").innerHTML = `
     <div class="big">${r.head_sha.slice(0,7)}</div>
     <div class="role">${esc(msg)}</div>
@@ -620,7 +649,8 @@ function inspectRun(runId){
       <dt>Branch</dt><dd>${esc(r.head_branch || "—")}</dd>
       <dt>Trigger</dt><dd>${esc(r.event)}</dd>
       <dt>By</dt><dd>${esc(r.actor ? r.actor.login : "—")}</dd>
-      <dt>Outcome</dt><dd>${!j ? "loading…" : blocked
+      <dt>Outcome</dt><dd>${!j ? "loading…" : running ? '<b style="color:var(--warn)">in progress</b>'
+        : blocked
         ? '<b style="color:var(--bad)">release blocked</b>'
         : j.deploy === "success" ? '<b style="color:var(--ok)">released</b>' : "gates passed, not published"}</dd>
     </dl>
@@ -641,7 +671,7 @@ function inspectDefault(){
 function renderCards(){
   $("cards").innerHTML = GATES.filter(g => g.key !== "build" && g.key !== "deploy").map(g => {
     const seen = state.runs.filter(r => state.jobs[r.id]);
-    const fails = seen.filter(r => { const v = resultOf(r, g.key); return v && v !== "success"; }).length;
+    const fails = seen.filter(r => isBlocked(resultOf(r, g.key))).length;
     return `<button class="card" data-gate="${g.key}" aria-pressed="${state.gateFilter===g.key}">
       <h3>${esc(g.label)}</h3>
       <div class="cat">${esc(g.cat)}</div>
