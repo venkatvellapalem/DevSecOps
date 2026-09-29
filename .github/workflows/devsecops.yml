@@ -1,0 +1,153 @@
+name: Secure CI/CD Pipeline
+
+# Shift-left: every gate below exits non-zero on failure, and deploy declares
+# all of them in `needs`, so a failing gate means the image never reaches the
+# registry. The gate is the dependency graph, not a report someone reads later.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# Read-only by default. Only the deploy job widens this, and only for itself.
+permissions:
+  contents: read
+
+env:
+  IMAGE_NAME: bcssl-demo-app
+
+jobs:
+  # --------------------------------------------------------------------- build
+  # Builds exactly once. Every downstream job consumes these same bytes, so the
+  # image Trivy clears is the image deploy publishes. Rebuilding per job would
+  # scan artifact A and publish artifact B.
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build --tag "${IMAGE_NAME}:${{ github.sha }}" ./app
+
+      - name: Save image
+        run: docker save "${IMAGE_NAME}:${{ github.sha }}" | gzip > /tmp/image.tgz
+
+      - name: Upload image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: image
+          path: /tmp/image.tgz
+          retention-days: 1
+
+  # ---------------------------------------------------------------------- SAST
+  # Scans the code we wrote. High severity only.
+  # `-lll`, not the `-ll` in the lab write-up: -ll also reports B104
+  # (host="0.0.0.0"), which this app always has, so the gate would be
+  # permanently red and would teach you to ignore it.
+  sast:
+    name: sast
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Bandit
+        run: pip install bandit
+
+      - name: Bandit — fail on High severity
+        run: bandit -r app -lll -f screen
+
+  # ----------------------------------------------------------------------- SCA
+  # Scans the dependencies we consume. pip-audit exits 1 on any known CVE.
+  sca:
+    name: sca
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install pip-audit
+        run: pip install pip-audit
+
+      - name: Audit dependencies against requirements.txt
+        run: pip-audit -r app/requirements.txt
+
+  # ---------------------------------------------------------------- image scan
+  # Scans the built artifact — OS packages *and* language packages, which is
+  # the layer SAST and SCA cannot see.
+  image-scan:
+    name: image-scan
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: image
+          path: /tmp
+
+      - name: Load image
+        run: docker load --input /tmp/image.tgz
+
+      - name: Trivy — fail on fixable CRITICAL/HIGH
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: 'bcssl-demo-app:${{ github.sha }}'
+          severity: 'CRITICAL,HIGH'
+          # Without ignore-unfixed this gate can never pass. Measured on the
+          # run-1 image: 44 unfixed (all Debian 13 OS packages, no upstream fix
+          # exists) against 12 fixable (all our app deps). Fail on what you can
+          # actually fix; the rest is noise that trains people to bypass gates.
+          ignore-unfixed: true
+          format: table
+          exit-code: '1'
+
+  # -------------------------------------------------------------------- deploy
+  # The security gate itself: `needs` lists every check above, and GitHub will
+  # not start this job if any of them failed. Nothing here re-checks anything.
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    needs: [build, sast, sca, image-scan]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    permissions:
+      contents: read
+      # Required for the GHCR push. Without it the GITHUB_TOKEN cannot write
+      # packages and `docker push` dies with "denied: permission_denied".
+      packages: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: image
+          path: /tmp
+
+      - name: Load the image that passed every gate
+        run: docker load --input /tmp/image.tgz
+
+      - name: Log in to GitHub Container Registry
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" \
+            | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - name: Tag and push
+        run: |
+          # GHCR paths must be lowercase. github.repository preserves the case
+          # of the repo name (DevSecOps), and docker rejects it outright with
+          # "repository name must be lowercase".
+          REGISTRY="ghcr.io/${GITHUB_REPOSITORY,,}"
+          SHA="${GITHUB_SHA}"
+
+          docker tag "${IMAGE_NAME}:${SHA}" "${REGISTRY}:${SHA}"
+          docker tag "${IMAGE_NAME}:${SHA}" "${REGISTRY}:latest"
+
+          docker push "${REGISTRY}:${SHA}"
+          docker push "${REGISTRY}:latest"
+
+          echo "### Pushed" >> "$GITHUB_STEP_SUMMARY"
+          echo "\`${REGISTRY}:${SHA}\`" >> "$GITHUB_STEP_SUMMARY"
