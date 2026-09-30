@@ -19,6 +19,24 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
+# Apply Debian security updates before anything else.
+#
+# The python:3.11-slim tag lags the Debian security archive, so OS packages in
+# the base image can be a patch release behind. That is not cosmetic: it shows up
+# as a fixable HIGH finding, and because a fix EXISTS, `ignore-unfixed` correctly
+# refuses to hide it -- so the image gate blocks the release until you upgrade.
+#
+# Seen for real: openssl 3.5.7-1~deb13u2 carried CVE-2026-75804 (QUIC DoS) and
+# CVE-2026-84782 (information disclosure) once they were disclosed. The commit
+# had not changed; the vulnerability database had. A pipeline that can go red
+# with no code change is working, not broken.
+#
+# Placed before the COPYs so this layer caches and only rebuilds when the base
+# image moves.
+RUN apt-get update \
+    && apt-get upgrade -y \
+    && rm -rf /var/lib/apt/lists/*
+
 # Install from the wheel dir only. --no-index means the build cannot silently
 # reach out to PyPI for a dependency that pip-audit never saw. Whatever this
 # image contains is whatever requirements.txt said, and nothing else.
