@@ -129,7 +129,7 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install bandit
-      - name: Bandit — fail on High severity
+      - name: Bandit -- fail on High severity
         run: bandit -r "${{ inputs.source-path }}" -lll -f screen
 
   # ------------------------------------------------------------------------ SCA
