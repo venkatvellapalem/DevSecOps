@@ -53,6 +53,10 @@ command -v docker >/dev/null 2>&1 || { echo "docker is required" >&2; exit 2; }
 
 skipped() { case ",$SKIP," in *",$1,"*) return 0 ;; *) return 1 ;; esac; }
 
+# Bandit and Trivy emit ANSI colour codes, so grepping their output for a
+# pattern anchored at line start silently counts zero findings.
+strip_ansi() { sed 's/\x1b\[[0-9;]*m//g'; }
+
 HADOLINT_IMG="hadolint/hadolint:2.12.0"
 PY_IMG="python:3.11-slim"
 GITLEAKS_IMG="ghcr.io/gitleaks/gitleaks:v8.28.0"
@@ -79,11 +83,15 @@ elif [ ! -f "$DOCKERFILE" ]; then
   record "hadolint" "SKIP" "no $DOCKERFILE"
 else
   echo ">> hadolint — linting $DOCKERFILE"
-  if out=$(docker run --rm -i "$HADOLINT_IMG" --failure-threshold warning - < "$DOCKERFILE" 2>&1); then
+  # The hadolint image ships no ENTRYPOINT, only a default CMD of `hadolint -`.
+  # Passing flags alone therefore *replaces* that command and docker tries to
+  # exec "--failure-threshold" as a binary. The word `hadolint` has to be given
+  # explicitly.
+  if out=$(docker run --rm -i "$HADOLINT_IMG" hadolint --failure-threshold warning - < "$DOCKERFILE" 2>&1); then
     record "hadolint" "PASS" "no warnings"
   else
     printf '%s\n' "$out" | sed 's/^/     /'
-    record "hadolint" "FAIL" "$(printf '%s\n' "$out" | grep -c ':' ) finding(s)"
+    record "hadolint" "FAIL" "$(printf '%s\n' "$out" | grep -c '^-:' ) finding(s) at warning or above"
   fi
 fi
 
@@ -96,8 +104,9 @@ else
       "pip install -q bandit 2>/dev/null && bandit -r '$SOURCE' -lll -f screen" 2>&1); then
     record "sast" "PASS" "no High severity findings"
   else
-    printf '%s\n' "$out" | grep -E '^>> Issue|Severity:|Location:' | head -20 | sed 's/^/     /'
-    record "sast" "FAIL" "$(printf '%s\n' "$out" | grep -c '^>> Issue') High finding(s)"
+    clean=$(printf '%s\n' "$out" | strip_ansi)
+    printf '%s\n' "$clean" | grep -E '^>> Issue|Severity:|Location:' | head -20 | sed 's/^/     /'
+    record "sast" "FAIL" "$(printf '%s\n' "$clean" | grep -c '^>> Issue') High finding(s)"
   fi
 fi
 
@@ -144,8 +153,9 @@ else
         image --severity "$SEVERITY" --ignore-unfixed="$IGNORE_UNFIXED" --no-progress "$IMAGE" 2>&1); then
       record "image-scan" "PASS" "no fixable $SEVERITY findings"
     else
-      printf '%s\n' "$out" | grep -aE 'CVE-|Total:' | head -14 | sed 's/^/     /'
-      record "image-scan" "FAIL" "$(printf '%s\n' "$out" | grep -aoE 'Total: [0-9]+ \(.*\)' | tail -1)"
+      clean=$(printf '%s\n' "$out" | strip_ansi)
+      printf '%s\n' "$clean" | grep -aE 'CVE-|Total:' | head -14 | sed 's/^/     /'
+      record "image-scan" "FAIL" "$(printf '%s\n' "$clean" | grep -aoE 'Total: [0-9]+ \(.*\)' | tail -1)"
     fi
   else
     tail -12 /tmp/devsecops-build.log | sed 's/^/     /'
