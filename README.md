@@ -5,8 +5,9 @@ it, and publishes it **only if all six pass**. Built as Project #15 of the BCSSL
 Cybersecurity Lab Series.
 
 **[Live dashboard](https://venkatvellapalem.github.io/DevSecOps/)** ·
+[Architecture Handoff](docs/ARCHITECTURE_HANDOFF.md) ·
 [Run it on your repo](docs/USE-IT-ON-YOUR-REPO.md) ·
-[New here? Start with the handoff](docs/HANDOFF.md) ·
+[Handoff & Demo](docs/HANDOFF.md) ·
 [All runs](https://github.com/venkatvellapalem/DevSecOps/actions)
 
 ```
@@ -60,9 +61,10 @@ infra/
   ssh-ec2.sh          OPTIONAL, EC2-only convenience helper. Needs EC2_SG,
                       EC2_HOST and EC2_KEY set; nothing here depends on it.
 docs/
-  index.html          live status dashboard (served by GitHub Pages)
-  HANDOFF.md          start here: concepts, demo script, glossary
-  WRITEUP.md          gates mapped to vulnerability classes
+  index.html              live status dashboard (served by GitHub Pages)
+  ARCHITECTURE_HANDOFF.md complete architecture reference & planes
+  HANDOFF.md              start here: concepts, demo script, glossary
+  WRITEUP.md              gates mapped to vulnerability classes
   USE-IT-ON-YOUR-REPO.md  how another repository adopts these gates
 bin/
   devsecops-scan      run the same gates locally, before you push

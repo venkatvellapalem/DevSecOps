@@ -1,15 +1,14 @@
-# Shift-Left Security: Three Gates, Three Failure Classes
+# Shift-Left Security: Five Security Gates, Five Failure Classes
 
 The premise of DevSecOps is that security checks belong *in* the pipeline, as
 automated steps that can stop a release, rather than in a review that happens
 after the build exists. The mechanism here is deliberately boring: every gate
-exits non-zero on failure, and the deploy job declares all of them in `needs`.
+exits non-zero on failure, and the deploy job declares all upstream jobs in `needs`.
 GitHub will not start a job whose dependencies failed. So a vulnerable build
 cannot reach the registry — not because someone remembered to check, but
 because the graph does not allow it.
 
-The reason there are three gates rather than one is that they inspect three
-disjoint things, and the evidence shows it. In **run 2**, the `sca` gate was
+The reason there are multiple independent gates rather than one is that they inspect disjoint things, and the evidence shows it. In **run 2**, the `sca` gate was
 green while `image-scan` was still red — on the same commit. `pip-audit` cannot
 see the vulnerable packages that Trivy found, because they are not listed in
 `requirements.txt`; they arrive with the base image. One gate would have missed
@@ -87,16 +86,11 @@ fails in seconds rather than after a two-minute build.
 With these, the pipeline covers five distinct classes: container definition,
 your code, your dependencies, your secrets, and your artifact.
 
-## What the three gates still do not cover
+## What build-time gates still do not cover
 
-Worth stating plainly, because a green pipeline is not a secure application:
+Worth stating plainly, because a green pipeline is not a 100% guarantee against every possible threat:
 
-- **Secrets** — nothing here scans for a committed key. Gitleaks would be the
-  fourth gate.
-- **Runtime** — a clean image at build time can be exploited at run time.
-  Scanning is not WAF, and it is not monitoring.
-- **Config** — the container runs as non-root and the base is stripped, but
-  nothing enforces that. Hadolint would.
-- **Freshness** — the vulnerability database updates continuously. A green run
-  today is not a green run next month; the same commit can fail later with no
-  code change, as run 2 demonstrated.
+- **Runtime attacks** — a clean image at build time can still be exploited at run time (e.g. novel zero-days, memory corruption, DDoS). Build-time scanning is not a WAF (Web Application Firewall), network firewall, or runtime intrusion detection system (EDR/IDS).
+- **Business logic flaws** — scanners see code syntax and patterns, not developer intent. Broken authorization (e.g. User A viewing User B's records via an ID change) looks like valid code to a SAST scanner.
+- **Dynamic Application Security (DAST)** — these gates evaluate static artifacts prior to execution. They do not simulate live active attacks against running endpoints.
+- **Freshness over time** — the vulnerability database updates continuously. A green run today is not a guarantee for next month; newly published CVEs will cause the same commit to fail on future runs (as Run 2 demonstrated).

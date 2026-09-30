@@ -6,6 +6,8 @@ A CI/CD pipeline that builds a container image, runs five automated security
 gates against it, and **only publishes it if all six upstream jobs pass**. The gate is not a
 report someone reads later — it is the job dependency graph.
 
+![DevSecOps Architecture Diagram](docs/architecture.png)
+
 ```
 git push  →  GitHub Actions
                ├─ build       docker build, save the image as an artifact
