@@ -1,165 +1,51 @@
 name: Secure CI/CD Pipeline
 
-# Shift-left: every gate below exits non-zero on failure, and deploy declares
-# all of them in `needs`, so a failing gate means the image never reaches the
-# registry. The gate is the dependency graph, not a report someone reads later.
+# This repository is now a *consumer* of its own reusable workflow. It calls
+# security-gates.yml exactly the way any other repository would -- there is no
+# privileged local copy, so the published interface is the one being dogfooded.
+# If the public interface breaks, it breaks here first.
 on:
   push:
     branches: [main]
   pull_request:
   workflow_dispatch:
 
-# Read-only by default. Only the deploy job widens this, and only for itself.
 permissions:
   contents: read
 
-env:
-  IMAGE_NAME: bcssl-demo-app
-
 jobs:
-  # --------------------------------------------------------------------- build
-  # Builds exactly once. Every downstream job consumes these same bytes, so the
-  # image Trivy clears is the image deploy publishes. Rebuilding per job would
-  # scan artifact A and publish artifact B.
-  build:
-    name: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Build image
-        run: docker build --tag "${IMAGE_NAME}:${{ github.sha }}" ./app
-
-      - name: Save image
-        run: docker save "${IMAGE_NAME}:${{ github.sha }}" | gzip > /tmp/image.tgz
-
-      - name: Upload image artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: image
-          path: /tmp/image.tgz
-          retention-days: 1
-
-  # ------------------------------------------------------------------- hadolint
-  # Lints the Dockerfile itself. Deliberately has no `needs:` -- it does not need
-  # the built image, so it runs in parallel with build and fails fast on a bad
-  # Dockerfile instead of after a 2-minute build.
-  hadolint:
-    name: hadolint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Lint the Dockerfile
-        uses: hadolint/hadolint-action@v3.1.0
-        with:
-          dockerfile: app/Dockerfile
-          # `warning`, not the default `info`. At the default, DL3059
-          # ("multiple consecutive RUN") and similar style rules fail the build,
-          # which trains people to route around the gate. At `warning` it still
-          # catches what matters: DL3002 (last USER is root), DL3007 (unpinned
-          # base image), DL3008 (unpinned apt packages).
-          failure-threshold: warning
-
-  # ----------------------------------------------------------------- gitleaks
-  # The gate the brief does not ask for and every real pipeline has. Nothing
-  # else here looks at secrets: SAST reads code patterns, SCA reads dependency
-  # versions, Trivy reads packages. A committed AWS key passes all three.
-  gitleaks:
-    name: gitleaks
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Scan for committed secrets
-        run: |
-          # Pinned image, not :latest. --no-git scans the checked-out tree
-          # (deterministic); drop it to walk git history instead.
-          # --redact keeps the secret out of the CI log, which is itself a
-          # place secrets leak.
-          docker run --rm -v "$PWD:/repo" ghcr.io/gitleaks/gitleaks:v8.28.0 \
-            detect --source=/repo --no-git --redact --verbose
-
-  # ---------------------------------------------------------------------- SAST
-  # Scans the code we wrote. High severity only.
-  # `-lll`, not the `-ll` in the lab write-up: -ll also reports B104
-  # (host="0.0.0.0"), which this app always has, so the gate would be
-  # permanently red and would teach you to ignore it.
-  sast:
-    name: sast
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install Bandit
-        run: pip install bandit
-
-      - name: Bandit -- fail on High severity
-        run: bandit -r app -lll -f screen
-
-  # ----------------------------------------------------------------------- SCA
-  # Scans the dependencies we consume. pip-audit exits 1 on any known CVE.
-  sca:
-    name: sca
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install pip-audit
-        run: pip install pip-audit
-
-      - name: Audit dependencies against requirements.txt
-        run: pip-audit -r app/requirements.txt
-
-  # ---------------------------------------------------------------- image scan
-  # Scans the built artifact -- OS packages *and* language packages, which is
-  # the layer SAST and SCA cannot see.
-  image-scan:
-    name: image-scan
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: image
-          path: /tmp
-
-      - name: Load image
-        run: docker load --input /tmp/image.tgz
-
-      - name: Trivy -- fail on fixable CRITICAL/HIGH
-        uses: aquasecurity/trivy-action@v0.36.0
-        with:
-          image-ref: 'bcssl-demo-app:${{ github.sha }}'
-          severity: 'CRITICAL,HIGH'
-          # Without ignore-unfixed this gate can never pass. Measured on the
-          # run-1 image: 44 unfixed (all Debian 13 OS packages, no upstream fix
-          # exists) against 12 fixable (all our app deps). Fail on what you can
-          # actually fix; the rest is noise that trains people to bypass gates.
-          ignore-unfixed: true
-          format: table
-          exit-code: '1'
+  # ----------------------------------------------------------------- the gates
+  # Everything portable lives in the reusable workflow: build, hadolint, sast,
+  # sca, gitleaks, image-scan, and the failure notification.
+  gates:
+    name: gates
+    uses: $/.github/workflows/security-gates.yml
+    with:
+      dockerfile: app/Dockerfile
+      context: app
+      source-path: app
+      requirements: app/requirements.txt
+      image-name: bcssl-demo-app
+    secrets:
+      # Optional. Absent = the Slack step is a no-op rather than a failure.
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   # -------------------------------------------------------------------- deploy
-  # The security gate itself: `needs` lists every check above, and GitHub will
-  # not start this job if any of them failed. Nothing here re-checks anything.
+  # Deliberately NOT in the reusable workflow: publishing is repo-specific. The
+  # shared workflow produces a scanned image; only this repository knows where
+  # its own image belongs.
+  #
+  # `needs: gates` is the whole security control. GitHub will not start this job
+  # if the called workflow failed. Nothing here re-checks anything.
   deploy:
     name: deploy
     runs-on: ubuntu-latest
-    needs: [build, hadolint, sast, sca, gitleaks, image-scan]
+    needs: gates
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     permissions:
       contents: read
-      # Required for the GHCR push. Without it the GITHUB_TOKEN cannot write
-      # packages and `docker push` dies with "denied: permission_denied".
+      # This is granted HERE, in the caller. GITHUB_TOKEN permissions are not
+      # inherited by a reusable workflow -- each caller must opt in.
       packages: write
     steps:
       - uses: actions/download-artifact@v4
@@ -177,57 +63,16 @@ jobs:
 
       - name: Tag and push
         run: |
-          # GHCR paths must be lowercase. github.repository preserves the case
-          # of the repo name (DevSecOps), and docker rejects it outright with
-          # "repository name must be lowercase".
+          # GHCR paths must be lowercase; github.repository preserves the repo's
+          # capitalisation and docker rejects it outright otherwise.
           REGISTRY="ghcr.io/${GITHUB_REPOSITORY,,}"
           SHA="${GITHUB_SHA}"
 
-          docker tag "${IMAGE_NAME}:${SHA}" "${REGISTRY}:${SHA}"
-          docker tag "${IMAGE_NAME}:${SHA}" "${REGISTRY}:latest"
+          docker tag "${{ needs.gates.outputs.image-tag }}" "${REGISTRY}:${SHA}"
+          docker tag "${{ needs.gates.outputs.image-tag }}" "${REGISTRY}:latest"
 
           docker push "${REGISTRY}:${SHA}"
           docker push "${REGISTRY}:latest"
 
           echo "### Pushed" >> "$GITHUB_STEP_SUMMARY"
           echo "\`${REGISTRY}:${SHA}\`" >> "$GITHUB_STEP_SUMMARY"
-
-  # -------------------------------------------------------------------- notify
-  # `if: failure()` makes this the inverse of deploy: it runs only when a gate
-  # blocked the release, which is precisely when a human needs to know. Without
-  # it, a red run sits there until someone happens to look.
-  notify:
-    name: notify
-    runs-on: ubuntu-latest
-    needs: [build, hadolint, sast, sca, gitleaks, image-scan]
-    if: failure()
-    env:
-      # Secrets cannot be referenced directly in an `if:` condition, so they are
-      # hoisted into job env and tested there. Unset = this stays a no-op.
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-    steps:
-      - name: Explain what was blocked
-        run: |
-          {
-            echo "## Deployment blocked"
-            echo ""
-            echo "| gate | result |"
-            echo "|---|---|"
-            echo "| build | ${{ needs.build.result }} |"
-            echo "| hadolint | ${{ needs.hadolint.result }} |"
-            echo "| sast | ${{ needs.sast.result }} |"
-            echo "| sca | ${{ needs.sca.result }} |"
-            echo "| gitleaks | ${{ needs.gitleaks.result }} |"
-            echo "| image-scan | ${{ needs.image-scan.result }} |"
-            echo ""
-            echo "The image was **not** published to GHCR."
-            echo ""
-            echo "Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          } >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Notify Slack
-        if: env.SLACK_WEBHOOK_URL != ''
-        run: |
-          curl -sS -X POST -H 'Content-type: application/json' \
-            --data "{\"text\":\"[BLOCKED] DevSecOps pipeline: ${{ github.repository }}@${{ github.sha }} -- build=${{ needs.build.result }} hadolint=${{ needs.hadolint.result }} sast=${{ needs.sast.result }} sca=${{ needs.sca.result }} gitleaks=${{ needs.gitleaks.result }} image-scan=${{ needs.image-scan.result }}\"}" \
-            "$SLACK_WEBHOOK_URL"

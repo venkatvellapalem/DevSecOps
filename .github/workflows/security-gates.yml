@@ -1,0 +1,230 @@
+name: Security gates (reusable)
+
+# A portable, callable security pipeline. Call it from any repository:
+#
+#   jobs:
+#     gates:
+#       uses: venkatvellapalem/DevSecOps/.github/workflows/security-gates.yml@main
+#       with:
+#         dockerfile: Dockerfile
+#         context: .
+#         source-path: src
+#         requirements: requirements.txt
+#
+# Six independent gates; every job exits non-zero on failure so the CALLER's
+# deploy job can gate on `needs:`.
+#
+# Two things about reusable workflows that catch people out:
+#   1. The `github` context comes from the CALLER, so actions/checkout checks out
+#      their code, not this repository's. That is what makes this portable.
+#   2. GITHUB_TOKEN permissions come from the CALLER. This workflow only needs
+#      contents:read, but if the caller also wants to push the image, the caller
+#      must grant packages:write on its own job.
+on:
+  workflow_call:
+    inputs:
+      dockerfile:
+        description: Path to the Dockerfile, relative to the repository root.
+        type: string
+        default: Dockerfile
+      context:
+        description: Docker build context.
+        type: string
+        default: .
+      source-path:
+        description: Directory Bandit and Gitleaks scan.
+        type: string
+        default: .
+      requirements:
+        description: >-
+          Path to a Python requirements file for pip-audit. Leave empty to skip
+          the dependency gate (you will be told loudly in the run summary).
+        type: string
+        default: ""
+      image-name:
+        description: Local image tag to build and scan. Not pushed anywhere.
+        type: string
+        default: scan-target
+      severity:
+        description: Trivy severities that fail the image gate.
+        type: string
+        default: CRITICAL,HIGH
+      ignore-unfixed:
+        description: >-
+          Only fail on findings that have a fix available. Strongly recommended:
+          without it, unfixable base-image CVEs make the gate permanently red.
+        type: boolean
+        default: true
+    secrets:
+      SLACK_WEBHOOK_URL:
+        description: >-
+          Optional. If provided, a failure posts here. If absent this is a no-op,
+          not an error.
+        required: false
+    outputs:
+      image-tag:
+        description: The local tag the scanned image was built with.
+        value: ${{ jobs.build.outputs.tag }}
+      image-artifact:
+        description: Name of the uploaded image artifact.
+        value: image
+
+permissions:
+  contents: read
+
+jobs:
+  # --------------------------------------------------------------------- build
+  # Built once. Every downstream job consumes these same bytes, so the image
+  # Trivy clears is the image the caller publishes.
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: tag
+        run: echo "tag=${{ inputs.image-name }}:${{ github.sha }}" >> "$GITHUB_OUTPUT"
+
+      - name: Build image
+        run: |
+          docker build \
+            --file "${{ inputs.dockerfile }}" \
+            --tag "${{ inputs.image-name }}:${{ github.sha }}" \
+            "${{ inputs.context }}"
+
+      - name: Save image
+        run: docker save "${{ inputs.image-name }}:${{ github.sha }}" | gzip > /tmp/image.tgz
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: image
+          path: /tmp/image.tgz
+          retention-days: 1
+
+  # ------------------------------------------------------------------- hadolint
+  # No `needs`: linting does not require the image, so it runs in parallel and
+  # fails fast on a bad Dockerfile instead of after a two-minute build.
+  hadolint:
+    name: hadolint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: ${{ inputs.dockerfile }}
+          # `warning`, not the default `info`: style rules like DL3059 fail the
+          # build at info, which trains people to route around the gate.
+          failure-threshold: warning
+
+  # ----------------------------------------------------------------------- SAST
+  sast:
+    name: sast
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install bandit
+      - name: Bandit — fail on High severity
+        run: bandit -r "${{ inputs.source-path }}" -lll -f screen
+
+  # ------------------------------------------------------------------------ SCA
+  sca:
+    name: sca
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pip-audit
+      - name: Audit dependencies
+        run: |
+          if [ -z "${{ inputs.requirements }}" ]; then
+            {
+              echo "### Dependency scan SKIPPED"
+              echo ""
+              echo "No \`requirements\` input was passed, so this gate did **not run**."
+              echo "That is a hole in coverage, not a pass. Set the \`requirements\`"
+              echo "input (or swap this job for your ecosystem's tool: npm audit,"
+              echo "osv-scanner, go list -m, cargo audit)."
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          pip-audit -r "${{ inputs.requirements }}"
+
+  # ------------------------------------------------------------------ gitleaks
+  gitleaks:
+    name: gitleaks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan for committed secrets
+        run: |
+          docker run --rm -v "$PWD:/repo" ghcr.io/gitleaks/gitleaks:v8.28.0 \
+            detect --source=/repo --no-git --redact --verbose
+
+  # ---------------------------------------------------------------- image scan
+  image-scan:
+    name: image-scan
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: image
+          path: /tmp
+      - run: docker load --input /tmp/image.tgz
+      - name: Trivy
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: '${{ inputs.image-name }}:${{ github.sha }}'
+          severity: ${{ inputs.severity }}
+          ignore-unfixed: ${{ inputs.ignore-unfixed }}
+          format: table
+          exit-code: '1'
+
+  # -------------------------------------------------------------------- notify
+  # Lives inside the reusable workflow so every repository that calls this gets
+  # the same failure alerting without writing anything. `if: failure()` makes it
+  # the inverse of a deploy job: it runs only when a gate blocked something.
+  notify:
+    name: notify
+    runs-on: ubuntu-latest
+    needs: [build, hadolint, sast, sca, gitleaks, image-scan]
+    if: failure()
+    env:
+      # Secrets cannot be referenced directly in an `if:` condition. Hoisting it
+      # into job env lets the step below test it. Unset = stays a no-op.
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+    steps:
+      - name: Explain what was blocked
+        run: |
+          {
+            echo "## Deployment blocked"
+            echo ""
+            echo "| gate | result |"
+            echo "|---|---|"
+            echo "| build | ${{ needs.build.result }} |"
+            echo "| hadolint | ${{ needs.hadolint.result }} |"
+            echo "| sast | ${{ needs.sast.result }} |"
+            echo "| sca | ${{ needs.sca.result }} |"
+            echo "| gitleaks | ${{ needs.gitleaks.result }} |"
+            echo "| image-scan | ${{ needs.image-scan.result }} |"
+            echo ""
+            echo "This build was **not** published. Fix the failing gate and push again."
+            echo ""
+            echo "Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Notify Slack
+        if: env.SLACK_WEBHOOK_URL != ''
+        run: |
+          curl -sS -X POST -H 'Content-type: application/json' \
+            --data "{\"text\":\"[BLOCKED] ${{ github.repository }}@${{ github.sha }} -- build=${{ needs.build.result }} hadolint=${{ needs.hadolint.result }} sast=${{ needs.sast.result }} sca=${{ needs.sca.result }} gitleaks=${{ needs.gitleaks.result }} image-scan=${{ needs.image-scan.result }}\"}" \
+            "$SLACK_WEBHOOK_URL"
