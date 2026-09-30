@@ -2,8 +2,8 @@
 
 ## What this builds
 
-A CI/CD pipeline that builds a container image, runs three independent security
-gates against it, and **only publishes it if all three pass**. The gate is not a
+A CI/CD pipeline that builds a container image, runs five automated security
+gates against it, and **only publishes it if all six upstream jobs pass**. The gate is not a
 report someone reads later — it is the job dependency graph.
 
 ```
@@ -17,7 +17,7 @@ git push  →  GitHub Actions
                ├─ deploy      needs: all six, GHCR push, only on main
                └─ notify      if: failure() → per-gate summary + optional Slack
 
-GHCR  →  EC2 pulls the scanned digest and runs it
+GHCR  →  Any container host (Local / On-prem / Cloud) pulls the scanned digest and runs it
 ```
 
 ## The three planes
@@ -26,16 +26,16 @@ GHCR  →  EC2 pulls the scanned digest and runs it
 |---|---|---|
 | Development | Windows workstation | author, commit, push. No Docker installed. |
 | CI | GitHub-hosted runners | build, scan, gate, publish. Docker is preinstalled. |
-| Runtime | EC2 `t3.small` | dev/test box **and** the target that pulls the approved image |
+| Runtime | Any Docker Host (Local / On-prem / Any VM) | pulls the approved image digest and runs it. No EC2 dependency. |
 
 ## Decisions and why
 
-### CI builds the deployed image; EC2 never does
+### CI builds the deployed image; the runtime host never does
 
-If EC2 built the image that got deployed, CI would scan build A and the box
+If the runtime host built the image that got deployed, CI would scan build A and the box
 would run build B. The scan would be theatre. So: build exactly once, pass the
 image between jobs as an artifact, and publish only those bytes. Provenance is
-checkable — the digest CI pushed (`sha256:0a8d320d…`) is the digest the box
+checkable — the digest CI pushed (`sha256:0a8d320d…`) is the digest the host
 runs.
 
 ### `--no-index` in the runtime stage
@@ -69,33 +69,33 @@ third-party action executes with the workflow token.
 fixable HIGH CVEs. A running container never executes pip, setuptools or wheel.
 Removing them beats upgrading them: no new downloads, smaller surface.
 
-### EC2 sizing
+### Target host requirements (No cloud VM required)
 
-`t3.small` (2 GB, x86_64) was the requirement. AMD64 not Graviton so CI's
-`amd64` image runs without `docker buildx --platform`. Volume grew 8 → 20 GB:
-Trivy's vulnerability DB alone unpacks to **1.4 GB**.
+The project has zero mandatory dependency on AWS or EC2. The container runtime requires only standard Docker on an x86_64 Linux machine (or local Docker Desktop/WSL2):
+- **Memory:** ~2 GB RAM (with 2 GB swap recommended for local Trivy scans, as automated in `infra/host-bootstrap.sh`).
+- **Disk:** ~5 GB free space (Trivy's vulnerability DB alone unpacks to ~1.4 GB when running local image scans).
+- **Architecture:** `amd64` (matches CI's `ubuntu-latest` runner build target).
 
-### Access: SSM, not port 22
+### Optional cloud sandbox host (EC2)
 
-The workstation is multi-homed and its egress IP flaps between two WAN paths.
-Allowlisting a `/32` breaks without warning. SSM Session Manager needs no
-inbound port and is immune to it. `infra/ssh-ec2.sh` keeps the security group
-synchronised for interactive SSH and the browser-facing port, and it
-deliberately **never prunes** — an IP that isn't visible this second is still
-needed a second later.
+While an EC2 `t3.small` instance was initially used as an external sandbox to test remote deployments without installing Docker on Windows, it is completely optional. The architecture is 100% cloud-agnostic and functions identically whether deployed to on-premise hardware, a local container engine, or any cloud environment.
 
 ## Verified results
 
-| job | run 1 | run 2 | run 3 |
-|---|---|---|---|
-| build | success | success | success |
-| sast | **failure** | **failure** | success |
-| sca | **failure** | success | success |
-| image-scan | **failure** | **failure** | success |
-| deploy | **skipped** | **skipped** | success |
+| job | run 1 (vulnerable) | run 2 (deps patched) | run 3 (all clean) | run 5 (secret test) |
+|---|---|---|---|---|
+| build | success | success | success | success |
+| hadolint | success | success | success | success |
+| sast | **failure** (B602 shell=True) | **failure** | success | success |
+| sca | **failure** (74 CVEs) | success | success | success |
+| gitleaks | success | success | success | **failure** (leaks found) |
+| image-scan | **failure** (12 fixable) | **failure** (2 base CVEs) | success | success |
+| deploy | **skipped** | **skipped** | **success** → GHCR | **skipped** |
+| notify | success (alerted) | success (alerted) | skipped | **success** (alerted) |
 
-Run 2 is the interesting one: `sca` green while `image-scan` stayed red. The two
+Run 2 is the crucial finding: `sca` green while `image-scan` stayed red. The two
 are not redundant — Trivy caught base-image packages that `pip-audit` cannot
-see, because they are not in `requirements.txt`.
+see, because they are not in `requirements.txt`. Run 5 proves that committed credentials
+are intercepted by Gitleaks and physically block deployment.
 
 Full logs in `evidence/`.

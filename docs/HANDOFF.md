@@ -234,7 +234,7 @@ that matters.
 | Scanner logs, all runs | `evidence/` |
 | Before/after screenshots | `evidence/run1-fail/`, `evidence/run3-pass/` |
 | On-prem deployment | `deploy/` |
-| EC2 host setup | `infra/ec2-bootstrap.sh` |
+| Host setup (any Ubuntu/Debian box) | `infra/host-bootstrap.sh` |
 | The container image | `ghcr.io/venkatvellapalem/devsecops` |
 
 ---

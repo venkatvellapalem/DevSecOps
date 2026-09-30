@@ -24,3 +24,7 @@ venv/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Office lock files, created whenever Word or PowerPoint opens a document
+# (~$name.docx). They are 165-byte stubs and get left behind by COM automation.
+~$*

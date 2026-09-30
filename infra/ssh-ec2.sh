@@ -1,23 +1,32 @@
 #!/usr/bin/env bash
-# infra/ssh-ec2.sh — SSH to the DevSecOps box, keeping the security group in sync.
+# infra/ssh-ec2.sh — Optional helper for remote EC2 test environments only.
 #
-# Why this exists: this workstation is multi-homed and its egress IP flips
-# between WAN paths (observed: 103.211.36.242 and 124.123.14.2). A hand-pinned
-# /32 in the security group goes stale without warning and SSH starts timing
-# out with no useful error. So: discover the current egress IP(s), make sure
-# each is allowed, drop the ones that no longer are, then connect.
+# NOTE: EC2 is NOT mandatory for this project.
+# The DevSecOps pipeline and deployments run locally or on any server with Docker.
+# This script is provided only as a convenience helper if you choose to connect
+# to an optional remote AWS EC2 sandbox without breaking firewall rules.
+#
+# Why this exists: a workstation can be multi-homed, with its egress IP flipping
+# between WAN paths. A hand-pinned /32 in the security group then goes stale
+# without warning and SSH starts timing out with no useful error. So: discover
+# the current egress IP(s) and make sure each is allowed before connecting.
+#
+# It deliberately does NOT prune. Pruning on a flapping connection revokes the
+# rule that is needed a second later, which is how you lock yourself out. The
+# durable alternative is SSM Session Manager, which needs no inbound port at all.
 #
 # Usage:  ./infra/ssh-ec2.sh 'docker ps'
 #         ./infra/ssh-ec2.sh              # interactive shell
-#
-# Durable alternative: SSM Session Manager. No inbound port at all, immune to
-# this whole problem. See README for the three CLI calls that enable it.
 set -euo pipefail
 
+# ------------------------------------------------------------------ settings
+# No defaults for the target, the security group or the key. This is a public
+# repository, so it must not ship one person's instance address, group id or key
+# path. Failing loudly is better than silently connecting to the wrong host.
 REGION=${EC2_REGION:-ap-south-2}
-SG=${EC2_SG:-sg-0fe662149c0d4079a}
-INSTANCE_IP=${EC2_HOST:-16.113.100.208}
-KEY=${EC2_KEY:-$(cd "$(dirname "$0")" && pwd)/../devsecops.pem}
+SG=${EC2_SG:?set EC2_SG to the security group id}
+INSTANCE_IP=${EC2_HOST:?set EC2_HOST to the instance address}
+KEY=${EC2_KEY:?set EC2_KEY to the path of the private key}
 SSH_USER=${EC2_USER:-ubuntu}
 # Ports kept in sync with this workstation's egress IPs. 22 for shell access,
 # 5000 so the running container is reachable from a browser.

@@ -55,19 +55,24 @@ deploy/
 .github/workflows/
   devsecops.yml       the pipeline
 infra/
-  ec2-bootstrap.sh    host prep: swap, Docker Engine, checksum-verified Trivy
-  ssh-ec2.sh          keeps the security group in sync with a flapping egress IP
+  host-bootstrap.sh   host prep for any Ubuntu/Debian box: swap, Docker, Trivy
+  ec2-bootstrap.sh    thin wrapper kept for compatibility; EC2 is not required
+  ssh-ec2.sh          OPTIONAL, EC2-only convenience helper. Needs EC2_SG,
+                      EC2_HOST and EC2_KEY set; nothing here depends on it.
 docs/
   index.html          live status dashboard (served by GitHub Pages)
+  HANDOFF.md          start here: concepts, demo script, glossary
+  WRITEUP.md          gates mapped to vulnerability classes
   USE-IT-ON-YOUR-REPO.md  how another repository adopts these gates
 bin/
   devsecops-scan      run the same gates locally, before you push
-  HANDOFF.md          start here: concepts, demo script, glossary
-  WRITEUP.md          gates mapped to vulnerability classes
 evidence/             scanner logs and screenshots, per run
 ```
 
-## The six gates
+## The five security gates
+
+Plus `build`, which produces the artifact they inspect. Together those six are what
+`deploy` depends on.
 
 | gate | tool | inspects | fails on |
 |---|---|---|---|
@@ -78,7 +83,7 @@ evidence/             scanner logs and screenshots, per run
 | image-scan | Trivy | the built artifact | fixable CRITICAL/HIGH |
 | *(deploy)* | — | — | *not a gate: the thing being gated* |
 
-`deploy` declares all five gates in `needs:`, so GitHub will not start it if any
+`deploy` declares all upstream jobs (`[build, hadolint, sast, sca, gitleaks, image-scan]`) in `needs:`, so GitHub will not start it if any
 of them failed. **That dependency graph is the security control** — not a report
 anyone reads afterwards.
 
@@ -97,44 +102,41 @@ git commit -m "temporarily re-introduce the vulnerable state"
 git push                                  # watch sast/sca/image-scan go red, deploy skip
 ```
 
-## The runtime target
+## Runtime target (No EC2 required)
 
-Two supported paths. CI pushes to `ghcr.io/venkatvellapalem/devsecops`; the host
-only ever pulls that artifact.
+This project has **zero mandatory dependency on EC2, AWS, or any specific cloud provider**. The CI/CD pipeline runs entirely on GitHub-hosted cloud runners, executes all security checks, and publishes the scanned image to GitHub Container Registry (`ghcr.io/venkatvellapalem/devsecops`).
 
-**On-prem (pull-based) — see [`deploy/`](deploy/README.md):**
+You can run the approved container on **any machine with Docker installed** (local development laptop, on-prem Linux server, WSL2, or an optional cloud VM):
+
+### Running locally or on-prem (pull-based) — see [`deploy/`](deploy/README.md):
 
 ```bash
+# Pull and run the exact approved digest with container hardening
 ./deploy/update.sh <git-sha>     # resolves the tag to a digest and pins it
 ./deploy/update.sh --rollback    # back to the previous digest
 ```
 
-Do **not** put a self-hosted Actions runner on this repo. It is public, and a
-self-hosted runner executes workflow code from any fork PR.
-
-**EC2 (the lab's build/test box):**
-
+Or directly with standard Docker:
 ```bash
 docker pull ghcr.io/venkatvellapalem/devsecops@sha256:<digest>
 docker run -d --name devsecops -p 5000:5000 --restart unless-stopped \
   ghcr.io/venkatvellapalem/devsecops@sha256:<digest>
 ```
 
-Deploy by digest, not `latest`. `latest` is mutable, so pinning it loses the
-guarantee that the artifact you run is the artifact Trivy cleared.
+> **Security rule:** Always deploy by digest (`sha256:...`), not `latest`. `latest` is mutable, so pinning the digest guarantees that the artifact you run is identical to the exact bytes Trivy and all five gates cleared.
 
-## Host prep
+> **Public repo safety:** Do **not** attach a self-hosted Actions runner to this public repository. A self-hosted runner on a public repo executes workflow code from any fork's pull request. The pull-based deployment model avoids opening any inbound ports or accepting unvetted remote code.
+
+## Optional host prep
+
+If preparing an Ubuntu/Debian server or local Linux machine for running Docker and local scanning, [`infra/host-bootstrap.sh`](infra/host-bootstrap.sh) configures swap, Docker Engine, and checksum-verified Trivy:
 
 ```bash
-ssh -i devsecops.pem ubuntu@<ip> 'sudo bash -s' < infra/ec2-bootstrap.sh
+sudo bash infra/host-bootstrap.sh
 ```
 
 Pins a Trivy version and verifies its sha256 rather than piping a remote script
 into `sh` — a supply-chain gate is not much use sitting behind an unverified
 `curl | sh`.
 
-## Access
-
-Shell access is via **SSM Session Manager**; no inbound port is required and it
-is immune to the workstation's flapping egress IP. `infra/ssh-ec2.sh` keeps the
-security group synchronised for interactive SSH and the browser-facing port.
+*(Note: `infra/ssh-ec2.sh` and `infra/ec2-bootstrap.sh` are optional legacy helpers provided only if testing on a remote EC2 sandbox; they are not required for project operation).*
