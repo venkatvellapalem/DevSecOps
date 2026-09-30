@@ -160,6 +160,8 @@ def worksheet():
     h3(d, "Task C1 — reproduce the failure (10 marks)")
     numbered(d, "Clone the repository and create a branch.")
     numbered(d, "Restore the vulnerable state (the student guide explains how).")
+    numbered(d, "Faster feedback: run ./bin/devsecops-scan first, and note which gates fail before "
+                "you push anything. It runs the same gates in the same versions CI uses.")
     numbered(d, "Push the branch and open a pull request.")
     numbered(d, "Watch the pipeline run and record the result for every gate below.")
 
@@ -231,6 +233,26 @@ def worksheet():
     q(d, 23, "The gates currently block the deploy, but a reviewer can still merge code that fails "
              "them. Describe how you would close that gap, and discuss one downside of doing so.", 4)
     answer_lines(d, 5)
+
+    para(d, "", after=14)
+    p = d.add_paragraph()
+    r = p.add_run("Bonus question")
+    r.font.size = Pt(12)
+    r.font.bold = True
+    r.font.color.rgb = AMBER
+    r.font.name = "Segoe UI"
+    p2 = d.add_paragraph()
+    p2.paragraph_format.space_after = Pt(8)
+    r = p2.add_run("5 marks. Not counted toward the total of 100.")
+    r.font.size = Pt(9)
+    r.font.italic = True
+    r.font.color.rgb = MUTED
+
+    q(d, "B1", "The pipeline is split into a reusable workflow (security-gates.yml) and a thin "
+            "caller (devsecops.yml). Explain what problem this solves, what a calling repository "
+            "must grant for its deploy job to be able to push an image, and why the original "
+            "repository calls its own shared workflow rather than keeping a private local copy.", 5)
+    answer_lines(d, 6)
 
     para(d, "", after=10)
     p = d.add_paragraph()
@@ -496,6 +518,22 @@ def solutions():
               "audited bypass for administrators, keeping ignore-unfixed so there is little "
               "spurious redness, and making sure someone is notified the moment a gate goes red so "
               "it is fixed quickly rather than blocking everyone for a day.", {"size": 10.5})], after=8)
+
+    rich(d, [("B1  ", {"bold": True, "color": AMBER, "size": 10.5}),
+             ("It solves duplication and drift. Without it, every repository that wants these gates "
+              "copies the YAML, and a security fix then has to be applied as many times as there are "
+              "copies. Inevitably they diverge, and one of them is silently running an older, weaker "
+              "check. With a shared workflow the fix ships once and every caller inherits it on their "
+              "next run.\n\n"
+              "The caller must grant packages: write on its own deploy job. GITHUB_TOKEN permissions "
+              "are not inherited by a called workflow, so a shared workflow cannot elevate itself. "
+              "This is the most common surprise when adopting a reusable workflow, and it presents "
+              "as a mysterious permission-denied on push.\n\n"
+              "The original repository calls its own shared workflow so that the published interface "
+              "is the one being exercised. If it kept a private local copy, that copy could work "
+              "while the thing strangers actually pull was broken, and nobody would find out until "
+              "someone else tried to adopt it.",
+              {"size": 10.5})], after=8)
 
     para(d, "", after=12)
     p = d.add_paragraph()

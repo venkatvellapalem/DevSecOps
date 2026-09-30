@@ -49,8 +49,9 @@ def build_guide():
             ("6", "Phase 4 — the gate itself"), ("7", "Phase 5 — publish"),
             ("8", "Phase 6 — prove the gates actually work"),
             ("9", "Phase 7 — deploy on your own hardware"),
-            ("10", "Ten defects in the original brief"), ("11", "Verification checklist"),
-            ("12", "Where to go next")])
+            ("10", "Phase 8 — make it reusable"),
+            ("11", "Ten defects in the original brief"), ("12", "Verification checklist"),
+            ("13", "Where to go next")])
 
     # 1
     h1(d, "1", "What you are building")
@@ -282,9 +283,57 @@ def build_guide():
     para(d, "Do not put a self-hosted GitHub runner on a public repository. A runner executes "
             "workflow code from any fork's pull request, so anyone could open a PR and land code "
             "on your machine. Polling the registry has no inbound port and accepts no outside code.")
+    h2(d, "Preparing the host")
+    para(d, "Any Ubuntu or Debian machine with Docker will do. One script gets it ready: swap, "
+            "Docker Engine, Docker Compose, and a checksum-verified Trivy.")
+    code(d, ["sudo bash infra/host-bootstrap.sh"])
+    para(d, "It is idempotent, so running it twice is safe, and it refuses to run without root "
+            "rather than failing halfway through with confusing package errors. No cloud provider "
+            "is involved at any point: this project has no dependency on AWS or any specific host.")
 
     # 10
-    h1(d, "10", "Ten defects in the original brief")
+    h1(d, "10", "Phase 8 — make it reusable")
+    para(d, "Once the pipeline works for one repository, the obvious question is how a second one "
+            "gets it. Copy-paste is the wrong answer: a security fix would then have to be applied "
+            "N times, and the copies drift apart silently.")
+    h2(d, "Split the portable half from the repo-specific half")
+    code(d, [".github/workflows/security-gates.yml    on: workflow_call",
+             "    build · hadolint · sast · sca · gitleaks · image-scan · notify",
+             "",
+             ".github/workflows/devsecops.yml         ~20 lines: calls the above, then deploys"])
+    para(d, "Add on: workflow_call with typed inputs, and any repository can then call it:")
+    code(d, ["jobs:", "  gates:",
+             "    uses: <owner>/<repo>/.github/workflows/security-gates.yml@v1",
+             "    with:", "      dockerfile: Dockerfile", "      source-path: src",
+             "      requirements: requirements.txt"])
+    callout(d, "Two traps that will cost you an afternoon",
+            "GITHUB_TOKEN permissions are not inherited by a called workflow, so the caller must "
+            "grant packages: write itself if it wants to push. And the github context comes from "
+            "the caller, which is exactly why actions/checkout inside the shared workflow pulls "
+            "their code rather than yours.", FILL_RED, "B91C1C", RED)
+    h2(d, "Dogfood it")
+    para(d, "Make your own repository call its own reusable workflow, with no privileged local "
+            "copy. If the published interface breaks it breaks there first, rather than in somebody "
+            "else's repository.")
+    h2(d, "Add a local runner")
+    para(d, "Waiting four minutes for CI to report a lint error is a bad feedback loop, and a "
+            "developer who cannot reproduce a gate locally learns to route around it. This runs the "
+            "same gates in the same pinned container versions, and exits 0 or 1 so it drops into a "
+            "pre-push hook:")
+    code(d, ["./bin/devsecops-scan",
+             "./bin/devsecops-scan --source src --requirements requirements.txt",
+             "./bin/devsecops-scan --no-image     # skip the build and image scan",
+             "./bin/devsecops-scan --skip sca     # iterate on one gate"])
+    para(d, "Unlike CI it does not fail fast: it runs every gate and prints a table, because "
+            "locally the expensive thing is the round trip, not the processor.")
+    callout(d, "Worth knowing",
+            "Only the SAST and SCA jobs are language-specific. Hadolint, Gitleaks, Trivy and the "
+            "whole artifact-passing structure work unchanged on any repository with a Dockerfile. "
+            "The full adoption guide is docs/USE-IT-ON-YOUR-REPO.md.",
+            FILL_GREEN, "15803D", GREEN)
+
+    # 11
+    h1(d, "11", "Ten defects in the original brief")
     para(d, "Found by running the pipeline rather than reading it. All are corrected in this guide.")
     table(d, ["#", "Defect", "Consequence"],
           [["1", "severity CRITICAL,HIGH with exit-code 1", "permanently red from unfixable base-image CVEs"],
@@ -303,8 +352,8 @@ def build_guide():
             "to bypass gates, and a gate people route around is worse than no gate at all.",
             FILL_RED, "B91C1C", RED)
 
-    # 11
-    h1(d, "11", "Verification checklist")
+    # 12
+    h1(d, "12", "Verification checklist")
     for item in [
         "The pipeline runs automatically on push.",
         "Every gate can be shown failing, not just passing.",
@@ -327,8 +376,8 @@ def build_guide():
         r.font.size = Pt(10.5)
         r.font.color.rgb = INK2
 
-    # 12
-    h1(d, "12", "Where to go next")
+    # 13
+    h1(d, "13", "Where to go next")
     table(d, ["Idea", "Why"],
           [["Signed images (cosign)", "proves the image came from your pipeline, not merely that the digest matches"],
            ["SBOM generation (syft)", "a full ingredient list per build, for audits"],
@@ -357,7 +406,8 @@ def student_guide():
             ("4", "The tools and technologies"), ("5", "Core DevOps concepts"),
             ("6", "The story of the runs"), ("7", "Reading the evidence"),
             ("8", "What this does not catch"), ("9", "Glossary"),
-            ("10", "Where to find everything")])
+            ("10", "Running it without waiting for CI"),
+            ("11", "Where to find everything")])
 
     h1(d, "1", "The big picture: the toy racecar factory")
     para(d, "Imagine a factory that builds remote-controlled toy racecars.")
@@ -566,7 +616,38 @@ def student_guide():
            ["workflow", "the YAML file describing what runs and in what order"]],
           widths=[1.4, 5.4])
 
-    h1(d, "10", "Where to find everything")
+    h1(d, "10", "Running it without waiting for CI")
+    para(d, "Two things make this pipeline usable rather than merely correct. Neither is part of "
+            "the original brief.")
+    h2(d, "Run the same gates on your own machine")
+    para(d, "Waiting four minutes for CI to tell you about a lint error is a bad feedback loop, "
+            "and a developer who cannot reproduce a gate locally eventually learns to route around "
+            "it. One script runs all six gates in the same pinned container versions CI uses:")
+    code(d, ["./bin/devsecops-scan",
+             "./bin/devsecops-scan --source src --requirements requirements.txt",
+             "./bin/devsecops-scan --no-image     # skip the build and the image scan",
+             "./bin/devsecops-scan --skip sca     # iterate on one gate at a time"])
+    para(d, "It needs only Docker, it exits 0 or 1 so it works as a pre-push hook, and unlike CI "
+            "it does not fail fast: it runs every gate and prints a table, because locally the "
+            "expensive thing is the round trip rather than the processor. The point of matching CI's "
+            "versions exactly is that it passed locally actually means something.")
+    h2(d, "Let another repository borrow it")
+    para(d, "The pipeline is split into a portable half and a repo-specific half:")
+    code(d, [".github/workflows/security-gates.yml    on: workflow_call",
+             "    build · hadolint · sast · sca · gitleaks · image-scan · notify",
+             "",
+             ".github/workflows/devsecops.yml         ~20 lines: calls the above, then deploys"])
+    para(d, "Any repository can adopt the whole thing with about twelve lines, because the "
+            "github context comes from the caller, so actions/checkout pulls their code rather than "
+            "ours. The original repository calls its own shared workflow too, so the published "
+            "interface is the one being tested rather than a special local copy.")
+    callout(d, "The trap worth remembering",
+            "GITHUB_TOKEN permissions are not inherited by a called workflow. A caller that wants "
+            "to push an image must grant packages: write itself. This is the classic works in my "
+            "repository, fails in yours problem, and it costs people an afternoon every time.",
+            FILL_AMBER, "D97706", AMBER)
+
+    h1(d, "11", "Where to find everything")
     table(d, ["What", "Where"],
           [["Live dashboard", DASH],
            ["Repository", REPO],
