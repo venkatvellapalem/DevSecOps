@@ -619,7 +619,7 @@ function renderRuns(){
 
 function jobList(run, jobs){
   const rows = GATES.map(g => {
-    const jl = jobs.__jobs__ ? jobs.__jobs__.find(j => j.name === g.key) : null;
+    const jl = jobs.__jobs__ ? jobs.__jobs__.find(j => String(j.name || "").split(" / ").pop() === g.key) : null;
     const v = jobs[g.key];
     if (v === undefined) return "";
     const s  = jobState(v);
@@ -739,8 +739,12 @@ async function hydrate(runId, silent){
     const jobs = data.jobs || [];
     const map = { __jobs__: jobs, __dur__: {} };
     for (const j of jobs){
-      map[j.name] = j.conclusion;
-      map.__dur__[j.name] = dur(j.started_at, j.completed_at);
+      // Jobs called through a reusable workflow arrive namespaced, e.g.
+      // "gates / build". Match on the final segment so the dashboard keeps
+      // working whether the pipeline is inline or called.
+      const key = String(j.name || "").split(" / ").pop();
+      map[key] = j.conclusion;
+      map.__dur__[key] = dur(j.started_at, j.completed_at);
     }
     state.jobs[runId] = map;
   } catch(e){

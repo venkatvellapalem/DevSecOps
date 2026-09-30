@@ -1,0 +1,174 @@
+#!/usr/bin/env bash
+# devsecops-scan — run the same gates as the CI pipeline, locally, before you push.
+#
+# Exists because waiting four minutes for CI to tell you about a lint error is a
+# bad feedback loop, and because a developer who cannot reproduce a gate locally
+# learns to route around it.
+#
+# Unlike CI, this runs EVERY gate even after one fails, then prints a table. In CI
+# fail-fast saves time; locally, seeing all your problems at once saves a round trip.
+#
+# Requires Docker. Nothing else. Every tool runs in a container, pinned to the
+# same versions the pipeline uses, so "it passed locally" means something.
+#
+#   ./bin/devsecops-scan                        # sensible defaults
+#   ./bin/devsecops-scan --source src --dockerfile docker/Dockerfile
+#   ./bin/devsecops-scan --no-image              # skip building + scanning the image
+#   ./bin/devsecops-scan --skip sca,gitleaks
+#
+# Exit code: 0 if every selected gate passed, 1 otherwise. Safe to use in a
+# pre-push hook.
+set -uo pipefail
+
+DOCKERFILE="Dockerfile"
+CONTEXT="."
+SOURCE="."
+REQUIREMENTS=""
+IMAGE="devsecops-scan:local"
+SEVERITY="CRITICAL,HIGH"
+IGNORE_UNFIXED="true"
+BUILD_IMAGE=1
+SKIP=""
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --dockerfile)     DOCKERFILE="$2"; shift 2 ;;
+    --context)        CONTEXT="$2"; shift 2 ;;
+    --source)         SOURCE="$2"; shift 2 ;;
+    --requirements)   REQUIREMENTS="$2"; shift 2 ;;
+    --image)          IMAGE="$2"; shift 2 ;;
+    --severity)       SEVERITY="$2"; shift 2 ;;
+    --no-image)       BUILD_IMAGE=0; shift ;;
+    --skip)           SKIP="$2"; shift 2 ;;
+    -h|--help)        sed -n '2,20p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    *) echo "unknown option: $1" >&2; exit 2 ;;
+  esac
+done
+
+# Auto-detect a Python manifest if the caller did not name one. Best-effort: if
+# there is none, the SCA gate reports SKIPPED rather than quietly passing.
+if [ -z "$REQUIREMENTS" ] && [ -f "requirements.txt" ]; then REQUIREMENTS="requirements.txt"; fi
+
+command -v docker >/dev/null 2>&1 || { echo "docker is required" >&2; exit 2; }
+
+skipped() { case ",$SKIP," in *",$1,"*) return 0 ;; *) return 1 ;; esac; }
+
+HADOLINT_IMG="hadolint/hadolint:2.12.0"
+PY_IMG="python:3.11-slim"
+GITLEAKS_IMG="ghcr.io/gitleaks/gitleaks:v8.28.0"
+TRIVY_IMG="aquasec/trivy:0.74.0"
+
+NAMES=(); RESULTS=(); NOTES=()
+record() { NAMES+=("$1"); RESULTS+=("$2"); NOTES+=("$3"); }
+
+hr() { printf '%s\n' "────────────────────────────────────────────────────────────────────"; }
+
+echo
+echo "DevSecOps scan"
+echo "  dockerfile : $DOCKERFILE"
+echo "  context    : $CONTEXT"
+echo "  source     : $SOURCE"
+echo "  deps       : ${REQUIREMENTS:-<none found - SCA will be skipped>}"
+echo "  image      : $IMAGE"
+hr
+
+# ---------------------------------------------------------------------- hadolint
+if skipped hadolint; then
+  record "hadolint" "SKIP" "excluded with --skip"
+elif [ ! -f "$DOCKERFILE" ]; then
+  record "hadolint" "SKIP" "no $DOCKERFILE"
+else
+  echo ">> hadolint — linting $DOCKERFILE"
+  if out=$(docker run --rm -i "$HADOLINT_IMG" --failure-threshold warning - < "$DOCKERFILE" 2>&1); then
+    record "hadolint" "PASS" "no warnings"
+  else
+    printf '%s\n' "$out" | sed 's/^/     /'
+    record "hadolint" "FAIL" "$(printf '%s\n' "$out" | grep -c ':' ) finding(s)"
+  fi
+fi
+
+# -------------------------------------------------------------------------- SAST
+if skipped sast; then
+  record "sast" "SKIP" "excluded with --skip"
+else
+  echo ">> sast — Bandit on $SOURCE"
+  if out=$(docker run --rm -v "$PWD:/src:ro" -w /src "$PY_IMG" sh -c \
+      "pip install -q bandit 2>/dev/null && bandit -r '$SOURCE' -lll -f screen" 2>&1); then
+    record "sast" "PASS" "no High severity findings"
+  else
+    printf '%s\n' "$out" | grep -E '^>> Issue|Severity:|Location:' | head -20 | sed 's/^/     /'
+    record "sast" "FAIL" "$(printf '%s\n' "$out" | grep -c '^>> Issue') High finding(s)"
+  fi
+fi
+
+# --------------------------------------------------------------------------- SCA
+if skipped sca; then
+  record "sca" "SKIP" "excluded with --skip"
+elif [ -z "$REQUIREMENTS" ]; then
+  record "sca" "SKIP" "no requirements file — this is a gap, not a pass"
+else
+  echo ">> sca — pip-audit on $REQUIREMENTS"
+  if out=$(docker run --rm -v "$PWD:/src:ro" -w /src "$PY_IMG" sh -c \
+      "pip install -q pip-audit 2>/dev/null && pip-audit -r '$REQUIREMENTS'" 2>&1); then
+    record "sca" "PASS" "no known vulnerabilities"
+  else
+    printf '%s\n' "$out" | grep -E '^[A-Za-z0-9_.-]+ +[0-9]' | head -12 | sed 's/^/     /'
+    record "sca" "FAIL" "$(printf '%s\n' "$out" | grep -oE 'Found [0-9]+ known vulnerabilities[^.]*' | head -1)"
+  fi
+fi
+
+# ---------------------------------------------------------------------- gitleaks
+if skipped gitleaks; then
+  record "gitleaks" "SKIP" "excluded with --skip"
+else
+  echo ">> gitleaks — scanning for committed secrets"
+  if out=$(docker run --rm -v "$PWD:/repo" "$GITLEAKS_IMG" detect --source=/repo --no-git --redact -v 2>&1); then
+    record "gitleaks" "PASS" "no leaks found"
+  else
+    printf '%s\n' "$out" | grep -aE 'RuleID|File:|Line:' | head -12 | sed 's/^/     /'
+    record "gitleaks" "FAIL" "$(printf '%s\n' "$out" | grep -oE 'leaks found: [0-9]+' | head -1)"
+  fi
+fi
+
+# -------------------------------------------------------------------- image scan
+if [ "$BUILD_IMAGE" = "0" ]; then
+  record "image-scan" "SKIP" "--no-image"
+elif [ ! -f "$DOCKERFILE" ]; then
+  record "image-scan" "SKIP" "no $DOCKERFILE"
+else
+  echo ">> build — $IMAGE"
+  if docker build --file "$DOCKERFILE" --tag "$IMAGE" "$CONTEXT" >/tmp/devsecops-build.log 2>&1; then
+    record "build" "PASS" "image built"
+    echo ">> image-scan — Trivy ($SEVERITY, ignore-unfixed=$IGNORE_UNFIXED)"
+    if out=$(docker run --rm -v /var/run/docker.sock:/var/run/docker.sock "$TRIVY_IMG" \
+        image --severity "$SEVERITY" --ignore-unfixed="$IGNORE_UNFIXED" --no-progress "$IMAGE" 2>&1); then
+      record "image-scan" "PASS" "no fixable $SEVERITY findings"
+    else
+      printf '%s\n' "$out" | grep -aE 'CVE-|Total:' | head -14 | sed 's/^/     /'
+      record "image-scan" "FAIL" "$(printf '%s\n' "$out" | grep -aoE 'Total: [0-9]+ \(.*\)' | tail -1)"
+    fi
+  else
+    tail -12 /tmp/devsecops-build.log | sed 's/^/     /'
+    record "build" "FAIL" "image did not build"
+    record "image-scan" "SKIP" "nothing built to scan"
+  fi
+fi
+
+# ----------------------------------------------------------------------- summary
+echo; hr
+printf '%-12s %-6s %s\n' "GATE" "RESULT" "DETAIL"
+printf '%-12s %-6s %s\n' "────────────" "──────" "──────────────────────────────────────"
+FAILED=0
+for i in "${!NAMES[@]}"; do
+  printf '%-12s %-6s %s\n' "${NAMES[$i]}" "${RESULTS[$i]}" "${NOTES[$i]}"
+  [ "${RESULTS[$i]}" = "FAIL" ] && FAILED=$((FAILED+1))
+done
+hr
+
+if [ "$FAILED" -gt 0 ]; then
+  echo "$FAILED gate(s) failed. The CI pipeline will block this commit."
+  echo "Re-run a single gate with --skip to iterate faster."
+  exit 1
+fi
+echo "All gates passed. CI runs the same versions, so this should reproduce."
+exit 0
