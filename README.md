@@ -5,6 +5,7 @@ it, and publishes it **only if all six pass**. Built as Project #15 of the BCSSL
 Cybersecurity Lab Series.
 
 **[Live dashboard](https://venkatvellapalem.github.io/DevSecOps/)** ·
+[Run it on your repo](docs/USE-IT-ON-YOUR-REPO.md) ·
 [New here? Start with the handoff](docs/HANDOFF.md) ·
 [All runs](https://github.com/venkatvellapalem/DevSecOps/actions)
 
@@ -58,6 +59,9 @@ infra/
   ssh-ec2.sh          keeps the security group in sync with a flapping egress IP
 docs/
   index.html          live status dashboard (served by GitHub Pages)
+  USE-IT-ON-YOUR-REPO.md  how another repository adopts these gates
+bin/
+  devsecops-scan      run the same gates locally, before you push
   HANDOFF.md          start here: concepts, demo script, glossary
   WRITEUP.md          gates mapped to vulnerability classes
 evidence/             scanner logs and screenshots, per run
