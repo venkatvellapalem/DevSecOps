@@ -385,7 +385,7 @@ function ago(iso){ const s = Math.floor((Date.now()-new Date(iso))/1000);
 
 const state = {
   runs: [], jobs: {}, openRun: null, gateFilter: null, statusFilter: "all",
-  query: "", rate: null, loadingAll: false, busy: new Set()
+  query: "", rate: null, loadingAll: false, busy: new Set(), skippedWorkflows: 0
 };
 
 async function get(path){
@@ -493,7 +493,7 @@ function renderFlow(){
         <div class="st">${j ? STYLE[s].txt : "…"}${jb ? `<span class="dur">${jb}</span>` : ""}</div>
       </button>`;
     if (g.key === "image-scan"){
-      html += `<span class="barrier">all five<br>must pass</span>`;
+      html += `<span class="barrier">all ${GATES.length - 1}<br>must pass</span>`;
     } else if (i < GATES.length - 1){
       html += `<span class="arrow">→</span>`;
     }
@@ -558,7 +558,36 @@ function badgeFor(run, key){
 function renderRuns(){
   const rs = visibleRuns();
   $("count").textContent = `${rs.length} of ${state.runs.length} runs`;
-  if (!rs.length){ $("runs").innerHTML = `<tr><td colspan="10" class="empty">no runs match</td></tr>`; return; }
+
+  // The active gate filter is also the control that clears it, so the filter bar
+  // always says which gate you are looking at.
+  const chip = $("clearfilter");
+  if (state.gateFilter){
+    const g = GATE_BY_KEY[state.gateFilter];
+    const blocked = state.runs.filter(r => isBlocked(resultOf(r, state.gateFilter))).length;
+    chip.textContent = `${g.label} — showing ${blocked} blocked  ✕ clear`;
+    chip.classList.remove("hidden");
+  } else {
+    chip.classList.add("hidden");
+  }
+
+  if (!rs.length){
+    let why = "No runs match the current filters.";
+    if (state.gateFilter){
+      const g = GATE_BY_KEY[state.gateFilter];
+      const inspected = state.runs.filter(r => state.jobs[r.id]).length;
+      const blocked = state.runs.filter(r => isBlocked(resultOf(r, state.gateFilter))).length;
+      why = blocked
+        ? "No runs match the other filters on top of this gate."
+        : `<b>${esc(g.label)} has not blocked anything.</b> It passed in all ${inspected} runs
+           inspected, so there is nothing to show. Click <b>Load all runs</b> above to check the
+           rest of the history, or clear the gate filter.`;
+    } else if (state.query){
+      why = `No run matches “${esc(state.query)}”.`;
+    }
+    $("runs").innerHTML = `<tr><td colspan="10" class="empty">${why}</td></tr>`;
+    return;
+  }
 
   $("runs").innerHTML = rs.map(r => {
     const msg = (r.head_commit && r.head_commit.message || "").split("\n")[0];
@@ -649,7 +678,6 @@ function inspect(gateKey){
     ${g.cmd ? `<div class="box"><h4>Run it yourself</h4><pre>${esc(g.cmd)}</pre></div>` : ""}
     <div style="margin-top:14px"><button id="clearf">Clear filter</button></div>`;
   const c = $("clearf"); if (c) c.addEventListener("click", () => { state.gateFilter = null; renderFlow(); renderRuns(); inspectDefault(); });
-  $("clearfilter").classList.remove("hidden");
 }
 
 function inspectRun(runId){
@@ -740,7 +768,15 @@ async function loadAll(){
 async function load(){
   $("error").classList.add("hidden");
   try{
-    const runs = (await get(`${API}/actions/runs?per_page=20`)).workflow_runs || [];
+    // The repo has TWO workflows: this one, and GitHub's own "pages build and
+    // deployment" which fires on every push because Pages is enabled. Asking for
+    // /actions/runs returns both, so half the rows were Pages builds with no
+    // gates at all -- every cell rendered as "--" and they counted as neither
+    // green nor blocked, which is what made the summary numbers nonsense.
+    // Scope the query to our workflow by path.
+    const all = (await get(`${API}/actions/runs?per_page=50`)).workflow_runs || [];
+    const runs = all.filter(r => (r.path || "").endsWith("devsecops.yml"));
+    state.skippedWorkflows = all.length - runs.length;
     state.runs = runs;
     renderStats(); renderRuns(); renderCards();
     // Hydrate the newest few so the summary percentages mean something. Only the
@@ -751,6 +787,9 @@ async function load(){
     for (const r of runs.slice(0, 5)) await hydrate(r.id, true);
     renderFlow(); renderStats(); renderRuns(); renderCards(); inspectDefault();
     $("stamp").textContent = "updated " + new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+    $("spend").textContent = state.skippedWorkflows
+      ? `pipeline runs only — ${state.skippedWorkflows} GitHub Pages build runs excluded`
+      : "pipeline runs only";
     const hydrated = state.runs.filter(r => state.jobs[r.id]);
     const allOk = hydrated.length && GATES.filter(g=>g.key!=="deploy")
       .map(g => resultOf(hydrated[0], g.key)).every(v => v === "success");
@@ -814,7 +853,6 @@ $("lHand").href = `${WEB}/blob/main/docs/HANDOFF.md`;
 $("lWrite").href = `${WEB}/blob/main/docs/WRITEUP.md`;
 $("lArch").href = `${WEB}/blob/main/ARCHITECTURE.md`;
 $("repo").textContent = `${OWNER}/${REPO}`;
-$("spend").textContent = "6 requests on load, then one per run you expand";
 load();
 </script>
 </body>
