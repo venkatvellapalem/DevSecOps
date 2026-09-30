@@ -362,19 +362,41 @@ def build():
 
     # --------------------------------------------------------------- 16. dashboard
     s = blank(prs)
-    header(s, "A live dashboard, for humans", "because a green pipeline nobody looks at is not reassurance", BLUE)
-    bullets(s, [
-        ("Where:  ", "served by GitHub Pages from docs/index.html — a single self-contained file with no build step and no server."),
-        ("What it shows:  ", "current state, every gate's history, releases blocked, and a plain-language verdict of whether the release was blocked and why."),
-        ("Interactive:  ", "click any stage for what it checks and how to run it locally; click any run to expand every job with durations and a link to its log."),
-        ("Why it exists:  ", "a manager should not need to read YAML to answer \"are we safe to ship today?\""),
-    ])
-    callout(s, "DEMO IT LIVE", "https://venkatvellapalem.github.io/DevSecOps/", label_color=BLUE)
+    header(s, "A live dashboard, for humans",
+           "because a green pipeline nobody looks at is not reassurance", BLUE)
+    from PIL import Image as _I2
+    iw, ih = _I2.open(os.path.join(DIAG, "dashboard.png")).size
+    w = Inches(8.2)
+    h = int(w * ih / iw)
+    s.shapes.add_picture(os.path.join(DIAG, "dashboard.png"), Inches(0.62), Inches(1.78),
+                         width=w, height=h)
+    text(s, Inches(0.62), Inches(6.72), Inches(8.2), Inches(0.4),
+         [[("https://venkatvellapalem.github.io/DevSecOps/", {"size": 12, "color": BLUE})]],
+         align=PP_ALIGN.CENTER, space_after=0)
+
+    px, py, pw = Inches(9.15), Inches(1.78), Inches(3.56)
+    rect(s, px, py, pw, Inches(4.82), fill=BG, line=LINE, shape=MSO_SHAPE.ROUNDED_RECTANGLE)
+    text(s, px + Inches(0.22), py + Inches(0.22), pw - Inches(0.44), Inches(4.4), [
+        [("What you are looking at", {"size": 11.5, "bold": True, "color": BLUE})],
+        [("One self-contained HTML file. No framework, no build step, no server to run.",
+          {"size": 11.5, "color": INK2})],
+        [("Live", {"size": 11.5, "bold": True, "color": BLUE})],
+        [("Reads the public GitHub API. The numbers are real, not a mockup.",
+          {"size": 11.5, "color": INK2})],
+        [("Interactive", {"size": 11.5, "bold": True, "color": BLUE})],
+        [("Click any stage for what it checks. Click any run to expand every job.",
+          {"size": 11.5, "color": INK2})],
+        [("Why it exists", {"size": 11.5, "bold": True, "color": BLUE})],
+        [("A manager should not need to read YAML to answer: are we safe to ship today?",
+          {"size": 11.5, "color": INK2})],
+    ], space_after=7)
     footer(s, nxt())
-    notes(s, "Open this live during the presentation if you have network. Click one gate and let the inspector "
-             "panel appear — it shows what that gate checks, how many runs it has blocked, and the exact command "
-             "to reproduce it locally. That interactivity is what makes it feel like a product rather than a "
-             "status page.")
+    notes(s, "Open this live rather than describing it -- network permitting. Click one gate and let the "
+             "inspector panel appear: it shows what that gate checks, how many runs it has blocked, and the "
+             "exact command to reproduce it locally. Then click a run row and let it expand to show every job "
+             "with its duration and a link to its log. That interactivity is what makes this feel like a "
+             "product rather than a status page. If the network fails, the bullets on the right still carry "
+             "the message.")
 
     # ---------------------------------------------------------- 17. defects found
     s = blank(prs)
