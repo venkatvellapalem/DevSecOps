@@ -151,6 +151,9 @@ def build():
 
     # ------------------------------------------------------------- 1. title
     s = blank(prs)
+    # Advance the counter here even though this slide shows no number, otherwise
+    # every footer is off by one against the actual slide position.
+    nxt()
     rect(s, 0, 0, SW, SH, fill=DARK)
     rect(s, 0, 0, SW, Inches(0.09), fill=BLUE)
     text(s, Inches(1.0), Inches(2.15), Inches(11.3), Inches(1.2),
@@ -494,6 +497,7 @@ def build():
 
     # ------------------------------------------------------------- 22. closing
     s = blank(prs)
+    nxt()
     rect(s, 0, 0, SW, SH, fill=DARK)
     rect(s, 0, 0, SW, Inches(0.09), fill=GREEN)
     text(s, Inches(1.0), Inches(2.0), Inches(11.3), Inches(1.0),
