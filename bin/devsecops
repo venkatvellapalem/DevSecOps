@@ -1,0 +1,213 @@
+#!/usr/bin/env bash
+# bin/devsecops — one-command integration.
+#
+#   init    wire this repository up to the shared security gates
+#   scan    run the same gates locally, right now, before you push
+#
+# Run it from inside ANY repository with a single command:
+#
+#   bash <(curl -fsSL https://raw.githubusercontent.com/venkatvellapalem/DevSecOps/main/bin/devsecops) init
+#
+# What init does:
+#   1. detects the repository root, the Dockerfile, the dependency manifest and
+#      the language
+#   2. writes .github/workflows/security-gates.yml, a ~12-line caller of the
+#      shared reusable workflow — no scanners are installed into your repo, you
+#      reference ours
+#   3. tells you exactly what to do next
+#
+# It never modifies anything except that one file (and refuses to overwrite an
+# existing one without --force). It does not need credentials, and it does not
+# touch anything outside the repository.
+#
+# The gates themselves live in the reusable workflow. This script is only the
+# on-ramp: it writes the twelve lines that say "run your gates on my code".
+set -euo pipefail
+
+BASE="https://raw.githubusercontent.com/venkatvellapalem/DevSecOps/main"
+GATES_REF="venkatvellapalem/DevSecOps/.github/workflows/security-gates.yml@v1"
+SCAN_URL="$BASE/bin/devsecops-scan"
+
+usage() {
+  sed -n '2,14p' "$0" 2>/dev/null | sed 's/^# \{0,1\}//' || true
+  echo
+  echo "usage: devsecops <init|scan> [options]"
+  echo "       devsecops init [--dockerfile PATH] [--context PATH]"
+  echo "                       [--source PATH] [--requirements PATH] [--force]"
+  echo "       devsecops scan [--same options as bin/devsecops-scan]"
+}
+
+die() { echo "devsecops: $*" >&2; exit 1; }
+
+find_root() {
+  local d="$PWD"
+  while [ "$d" != "/" ]; do
+    [ -d "$d/.git" ] && { echo "$d"; return 0; }
+    d="$(dirname "$d")"
+  done
+  return 1
+}
+
+first_file() { for p in "$@"; do [ -f "$p" ] && { echo "$p"; return 0; }; done; return 1; }
+
+slug() { echo "${1:-scan-target}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9._-]/-/g'; }
+
+detect() {
+  ROOT=$(find_root) || ROOT="$PWD"
+  cd "$ROOT"
+
+  DOCKERFILE=""
+  for p in Dockerfile docker/Dockerfile app/Dockerfile build/Dockerfile Dockerfile.prod; do
+    if [ -f "$p" ]; then DOCKERFILE="$p"; break; fi
+  done
+
+  # Look at the repository root first, then search subdirectories (but never
+  # into .git or node_modules). Strip the leading ./ that find adds.
+  MANIFEST=$(first_file requirements.txt pyproject.toml Pipfile poetry.lock \
+             package.json package-lock.json yarn.lock pnpm-lock.yaml \
+             go.mod Cargo.toml) || true
+  if [ -z "$MANIFEST" ]; then
+    MANIFEST=$(find . -maxdepth 3 -type f \
+      \( -name requirements.txt -o -name package.json -o -name pyproject.toml \
+         -o -name Pipfile -o -name poetry.lock -o -name go.mod -o -name Cargo.toml \
+         -o -name package-lock.json -o -name yarn.lock -o -name pnpm-lock.yaml \) \
+      -not -path './.git/*' -not -path '*/node_modules/*' 2>/dev/null | head -1 || true)
+  fi
+  MANIFEST="${MANIFEST#./}"
+
+  LANG="unknown"
+  case "$(basename "$MANIFEST")" in
+    requirements.txt|pyproject.toml|Pipfile|poetry.lock) LANG="python" ;;
+    package.json|package-lock.json|yarn.lock|pnpm-lock.yaml) LANG="node" ;;
+    go.mod) LANG="go" ;;
+    Cargo.toml) LANG="rust" ;;
+  esac
+
+  CONTEXT="."
+  SOURCE="."
+  if [ -n "$DOCKERFILE" ] && [ "$DOCKERFILE" != "Dockerfile" ]; then
+    CONTEXT="$(dirname "$DOCKERFILE")"
+  fi
+  if [ "$LANG" = "python" ] && [ -n "$MANIFEST" ]; then
+    SOURCE="$(dirname "$MANIFEST")"
+    SOURCE="${SOURCE#./}"
+    [ "$SOURCE" = "." ] || true
+  fi
+}
+
+do_init() {
+  local dockerfile context source requirements force=""
+  dockerfile=""; context=""; source=""; requirements=""
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --dockerfile) dockerfile="$2"; shift 2 ;;
+      --context) context="$2"; shift 2 ;;
+      --source) source="$2"; shift 2 ;;
+      --requirements) requirements="$2"; shift 2 ;;
+      --force) force=1; shift ;;
+      -h|--help) usage; exit 0 ;;
+      *) die "unknown option: $1" ;;
+    esac
+  done
+
+  detect
+  [ -z "$dockerfile" ] && dockerfile="${DOCKERFILE:-Dockerfile}"
+  [ -z "$context" ] && context="$CONTEXT"
+  [ -z "$source" ] && source="$SOURCE"
+  [ -z "$requirements" ] && requirements="$MANIFEST"
+
+  local out_dir="$ROOT/.github/workflows"
+  local out_file="$out_dir/security-gates.yml"
+
+  if [ -f "$out_file" ] && [ -z "$force" ]; then
+    die "$out_file already exists. Use --force to overwrite it."
+  fi
+  mkdir -p "$out_dir"
+
+  local image
+  image="$(slug "$(basename "$ROOT")")"
+
+  # The manifest only feeds the SCA gate if it is a Python manifest; otherwise
+  # leaving it empty makes the shared workflow skip SCA loudly (it says so in the
+  # run summary) rather than silently passing.
+  if [ "$LANG" != "python" ]; then requirements=""; fi
+
+  cat > "$out_file" <<'YML'
+# Generated by `devsecops init`. This is the whole integration: run the shared
+# gates on this repository's code. The gates themselves live in the reusable
+# workflow, not here, so a security fix ships once and every adopter inherits it.
+name: Security gates
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  gates:
+    uses: __GATES_REF__
+    with:
+      dockerfile: __DOCKERFILE__
+      context: __CONTEXT__
+      source-path: __SOURCE__
+      requirements: __REQUIREMENTS__
+      image-name: __IMAGE__
+YML
+  # Substitute the placeholders without exposing them to shell expansion.
+  sed -i \
+    -e "s|__GATES_REF__|$GATES_REF|" \
+    -e "s|__DOCKERFILE__|$dockerfile|" \
+    -e "s|__CONTEXT__|$context|" \
+    -e "s|__SOURCE__|$source|" \
+    -e "s|__REQUIREMENTS__|$requirements|" \
+    -e "s|__IMAGE__|$image|" \
+    "$out_file"
+
+  echo
+  echo "Wrote $out_file"
+  echo "  detected : language=$LANG  dockerfile=$dockerfile  manifest=${requirements:-<none>}"
+  echo
+
+  if [ "$LANG" = "python" ]; then
+    echo "You are all set. Next:"
+    echo "  1. git add .github/workflows/security-gates.yml && git commit && git push"
+    echo "  2. watch it run at github.com/<you>/<repo>/actions"
+    echo
+    echo "To run the same gates before you push:  devsecops scan"
+  else
+    echo "WARNING: this looks like a $LANG project, not Python."
+    echo "  hadolint, gitleaks and the image scan work on any language. The SAST and"
+    echo "  SCA gates are Python-specific, so the SCA gate will be skipped and SAST"
+    echo "  will find no Python to scan. Swap those two jobs for your ecosystem's"
+    echo "  equivalents (semgrep, npm audit / osv-scanner) — see"
+    echo "  https://github.com/venkatvellapalem/DevSecOps/blob/main/docs/USE-IT-ON-YOUR-REPO.md"
+    echo
+    if [ -z "$DOCKERFILE" ]; then
+      echo "  Also: no Dockerfile was found, so build/hadolint/image-scan will not run."
+      echo "  Add a Dockerfile and re-run this script."
+    fi
+  fi
+}
+
+do_scan() {
+  local tmp
+  tmp="$(mktemp -d)"
+  trap 'rm -rf "$tmp"' EXIT
+  echo "devsecops: fetching the local scanner (pinned to the same versions CI uses)…"
+  curl -fsSL "$SCAN_URL" -o "$tmp/devsecops-scan" || die "could not fetch $SCAN_URL"
+  chmod +x "$tmp/devsecops-scan"
+  exec "$tmp/devsecops-scan" "$@"
+}
+
+main() {
+  local cmd="${1:-help}"
+  shift || true
+  case "$cmd" in
+    init) do_init "$@" ;;
+    scan) do_scan "$@" ;;
+    help|-h|--help) usage; exit 0 ;;
+    *) usage; exit 1 ;;
+  esac
+}
+
+main "$@"
