@@ -1,12 +1,63 @@
 # Use this on your repo
 
-Two ways in, depending on how much you want.
+## The one command
+
+From inside any repository:
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/venkatvellapalem/DevSecOps/main/bin/devsecops) init
+```
+
+That is the entire integration. It detects your Dockerfile, dependency manifest and
+language, and writes a ~12-line workflow that runs the shared gates on your code.
+Then push, and watch the gates run at **github.com/&lt;you&gt;/&lt;repo&gt;/actions**.
+
+To run the same gates *before* you push:
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/venkatvellapalem/DevSecOps/main/bin/devsecops) scan
+```
+
+`scan` needs Docker and nothing else. Both commands are read-only except for
+writing that one workflow file, and they never install anything into your repo —
+you reference our gates, you do not copy them.
 
 ---
 
-## Option A — call the shared workflow (recommended)
+## What the one command does, step by step
 
-Add **one file** to your repository. No scanners to install, no config, no secrets.
+1. Finds the repository root (walks up to `.git`).
+2. Detects the Dockerfile (root, `docker/`, `app/`, `build/`), the dependency
+   manifest (searches root first, then subdirectories, skipping `.git` and
+   `node_modules`), and the language.
+3. Writes `.github/workflows/security-gates.yml` — a caller of the shared reusable
+   workflow, with the inputs already filled in for your layout.
+4. Tells you what to do next, and warns you if it found a problem (no Dockerfile,
+   or a non-Python language, where SAST and SCA are Python-specific).
+
+It refuses to overwrite an existing workflow unless you pass `--force`.
+
+```bash
+bash <(curl -fsSL .../bin/devsecops) init --dockerfile docker/Dockerfile \
+                                           --source src \
+                                           --requirements requirements.txt
+```
+
+If you would rather not pipe a script into bash — reasonable, for a security
+project — download and read it first:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/venkatvellapalem/DevSecOps/main/bin/devsecops -o devsecops
+less devsecops            # ~120 readable lines, no surprises
+chmod +x devsecops && ./devsecops init
+```
+
+---
+
+## Option A — write the caller by hand (same result, no script)
+
+Prefer to see exactly what lands in your repo? The one command writes this file.
+You can create it yourself:
 
 ```yaml
 # .github/workflows/security.yml
